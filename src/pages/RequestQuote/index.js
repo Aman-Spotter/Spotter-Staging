@@ -16,6 +16,9 @@ import {
   User,
   Building,
   Phone,
+  AlertCircle,
+  CheckCircle2,
+  Clock,
 } from 'lucide-react';
 import InputMask from 'react-input-mask';
 import styled from 'styled-components';
@@ -475,8 +478,22 @@ const RequestQuote = () => {
           <S.FormContainer>
             <S.Form onSubmit={handleSubmit}>
               {/* Name Field */}
-              <S.FormGroup>
-                <S.Label htmlFor="name">Full Name</S.Label>
+              <S.FormGroup delay="0.1s">
+                <S.Label htmlFor="name" className={formData.name.trim() ? 'has-content' : ''}>
+                  Full Name
+                  <S.FieldStatus>
+                    {formData.name.trim() && !validationErrors.name && (
+                      <S.FieldValidIcon>
+                        <CheckCircle2 size={16} />
+                      </S.FieldValidIcon>
+                    )}
+                    {validationErrors.name && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.InputWrapper>
                   <S.InputIcon>
                     <User size={20} />
@@ -502,13 +519,30 @@ const RequestQuote = () => {
                   show={!!(touchedFields.name && validationErrors.name)}
                   aria-live="polite"
                 >
+                  <AlertCircle size={16} />
                   {touchedFields.name && validationErrors.name}
                 </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Email Field */}
-              <S.FormGroup>
-                <S.Label htmlFor="email">Email Address</S.Label>
+              <S.FormGroup delay="0.2s">
+                <S.Label htmlFor="email" className={formData.email.trim() ? 'has-content' : ''}>
+                  Email Address
+                  <S.FieldStatus>
+                    {formData.email.trim() &&
+                      !validationErrors.email &&
+                      /\S+@\S+\.\S+/.test(formData.email) && (
+                        <S.FieldValidIcon>
+                          <CheckCircle2 size={16} />
+                        </S.FieldValidIcon>
+                      )}
+                    {validationErrors.email && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.InputWrapper>
                   <S.InputIcon>
                     <Mail size={20} />
@@ -533,17 +567,28 @@ const RequestQuote = () => {
                   show={!!(touchedFields.email && validationErrors.email)}
                   aria-live="polite"
                 >
-                  {touchedFields.email && validationErrors.email ? (
-                    validationErrors.email
-                  ) : (
-                    <>&nbsp;</>
-                  )}
+                  <AlertCircle size={16} />
+                  {touchedFields.email && validationErrors.email}
                 </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Company Field */}
-              <S.FormGroup>
-                <S.Label htmlFor="company">Company Name</S.Label>
+              <S.FormGroup delay="0.3s">
+                <S.Label htmlFor="company" className={formData.company.trim() ? 'has-content' : ''}>
+                  Company Name
+                  <S.FieldStatus>
+                    {formData.company.trim() && !validationErrors.company && (
+                      <S.FieldValidIcon>
+                        <CheckCircle2 size={16} />
+                      </S.FieldValidIcon>
+                    )}
+                    {validationErrors.company && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.InputWrapper>
                   <S.InputIcon>
                     <Building size={20} />
@@ -570,13 +615,29 @@ const RequestQuote = () => {
                   show={!!(touchedFields.company && validationErrors.company)}
                   aria-live="polite"
                 >
+                  <AlertCircle size={16} />
                   {touchedFields.company && validationErrors.company}
                 </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Phone Field */}
-              <S.FormGroup>
-                <S.Label htmlFor="phone">Phone Number</S.Label>
+              <S.FormGroup delay="0.4s">
+                <S.Label htmlFor="phone" className={formData.phone.trim() ? 'has-content' : ''}>
+                  Phone Number
+                  <S.FieldStatus>
+                    {formData.phone.replace(/[^\d]/g, '').length === 10 &&
+                      !validationErrors.phone && (
+                        <S.FieldValidIcon>
+                          <CheckCircle2 size={16} />
+                        </S.FieldValidIcon>
+                      )}
+                    {validationErrors.phone && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.InputWrapper>
                   <S.InputIcon>
                     <Phone size={20} />
@@ -595,7 +656,6 @@ const RequestQuote = () => {
                         name="phone"
                         placeholder="(555) 123-4567"
                         inputMode="numeric"
-                        pattern="[0-9]*"
                         hasError={touchedFields.phone && validationErrors.phone}
                         aria-describedby={
                           touchedFields.phone && validationErrors.phone ? 'phone-error' : undefined
@@ -610,12 +670,22 @@ const RequestQuote = () => {
                   show={!!(touchedFields.phone && validationErrors.phone)}
                   aria-live="polite"
                 >
+                  <AlertCircle size={16} />
                   {touchedFields.phone && validationErrors.phone}
                 </S.ErrorMessage>
               </S.FormGroup>
               {/* Message Field - Full Width */}
-              <S.FormGroup className="full-width">
-                <S.Label htmlFor="message">Additional Message</S.Label>
+              <S.FormGroup className="full-width" delay="0.5s">
+                <S.Label htmlFor="message" className={formData.message.trim() ? 'has-content' : ''}>
+                  Additional Message
+                  <S.FieldStatus>
+                    {formData.message.trim() && (
+                      <S.FieldValidIcon>
+                        <CheckCircle2 size={16} />
+                      </S.FieldValidIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.TextareaWrapper>
                   <S.TextareaIcon>
                     <MessageSquare size={20} />
@@ -642,18 +712,33 @@ const RequestQuote = () => {
                   show={!!(touchedFields.message && validationErrors.message)}
                   aria-live="polite"
                 >
+                  <AlertCircle size={16} />
                   {touchedFields.message && validationErrors.message}
                 </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Products Section - Full Width */}
-              <S.FormGroup className="full-width">
-                <S.Label className="apps-grid-label">Product Interest:</S.Label>
+              <S.FormGroup className="full-width" delay="0.6s">
+                <S.Label className="apps-grid-label">
+                  Product Interest:
+                  <S.FieldStatus>
+                    {formData.selectedApps.length > 0 && (
+                      <S.FieldValidIcon>
+                        <CheckCircle2 size={16} />
+                      </S.FieldValidIcon>
+                    )}
+                    {touchedFields.selectedApps && validationErrors.selectedApps && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.FormHelperText>
                   Please select at least one product you&apos;re interested in.
                 </S.FormHelperText>
                 <S.AppsGrid hasError={touchedFields.selectedApps && validationErrors.selectedApps}>
-                  {apps.map((app) => {
+                  {apps.map((app, index) => {
                     const IconComponent = app.icon;
                     const isSelected = formData.selectedApps.includes(app.id);
                     const isDisabled =
@@ -665,9 +750,10 @@ const RequestQuote = () => {
                         isSelected={isSelected}
                         isDisabled={isDisabled}
                         onClick={() => handleAppToggle(app.id)}
+                        style={{ animationDelay: `${0.8 + index * 0.1}s` }}
                       >
                         <S.AppIcon isSelected={isSelected} isDisabled={isDisabled}>
-                          <IconComponent size={28} />
+                          <IconComponent size={32} />
                         </S.AppIcon>
                         <S.AppInfo>
                           <S.AppName isDisabled={isDisabled}>{app.name}</S.AppName>
@@ -687,26 +773,30 @@ const RequestQuote = () => {
                   show={!!(touchedFields.selectedApps && validationErrors.selectedApps)}
                   aria-live="polite"
                 >
+                  <AlertCircle size={16} />
                   {touchedFields.selectedApps && validationErrors.selectedApps}
                 </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Error Message - Full Width */}
               {submitError && (
-                <S.FormGroup className="full-width">
-                  <S.ErrorMessage className="error-message">{submitError}</S.ErrorMessage>
+                <S.FormGroup className="full-width" delay="0.8s">
+                  <S.ErrorMessage className="error-message" show>
+                    <AlertCircle size={16} />
+                    {submitError}
+                  </S.ErrorMessage>
                 </S.FormGroup>
               )}
 
               {/* Submit Button - Full Width */}
-              <S.FormGroup className="full-width">
+              <S.FormGroup className="full-width" delay="0.9s">
                 <S.SubmitButton
                   type="submit"
                   disabled={!isFormValid() || isSubmitting}
                   isSubmitting={isSubmitting}
                 >
                   <S.ButtonIcon isSubmitting={isSubmitting}>
-                    <Send size={18} />
+                    {isSubmitting ? <Clock size={20} /> : <Send size={20} />}
                   </S.ButtonIcon>
                   {isSubmitting ? 'Submitting Request...' : 'Request Quote'}
                 </S.SubmitButton>
