@@ -1,0 +1,6 @@
+runtime: nodejs18
+service: spotter-ai
+build_env_variables:
+  GOOGLE_NODE_RUN_SCRIPTS: '' # prevent runnign npm run build on GAE
+
+entrypoint: node server/server.js

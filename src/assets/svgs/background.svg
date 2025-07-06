@@ -1,0 +1,26 @@
+<svg width="1440" height="823" viewBox="0 0 1440 823" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1115_828)">
+<rect width="1440" height="823" fill="white"/>
+<mask id="mask0_1115_828" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="959">
+<rect width="1440" height="959" fill="#F6F8FA"/>
+</mask>
+<g mask="url(#mask0_1115_828)">
+<mask id="mask1_1115_828" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-561" y="-230" width="2230" height="1036">
+<ellipse cx="554" cy="288" rx="1115" ry="518" fill="#061830"/>
+</mask>
+<g mask="url(#mask1_1115_828)">
+<rect width="1440" height="823" fill="#061830"/>
+<ellipse cx="174" cy="903.5" rx="907" ry="944.5" fill="url(#paint0_linear_1115_828)" fill-opacity="0.5"/>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_1115_828" x1="873.747" y1="332.789" x2="-302.421" y2="1207.08" gradientUnits="userSpaceOnUse">
+<stop offset="0.0415058" stop-color="#008080"/>
+<stop offset="1" stop-color="#007A9D" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="clip0_1115_828">
+<rect width="1440" height="823" fill="white"/>
+</clipPath>
+</defs>
+</svg>

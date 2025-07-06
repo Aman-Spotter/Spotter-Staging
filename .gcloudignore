@@ -1,0 +1,7 @@
+.gitignore
+.gcloudignore
+cloudbuild.yaml
+app.yaml
+scr/
+public/
+node_modules/

@@ -1,0 +1,97 @@
+steps:
+  - name: 'node:18-buster'
+    entrypoint: 'yarn'
+    args: ['--ignore-platform']
+
+  - name: 'node:18-buster'
+    entrypoint: 'yarn'
+    args: ['build']
+    env:
+      - NODE_OPTIONS=--max-old-space-size=8192
+      - GENERATE_SOURCEMAP=false
+
+      - REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_51KR2ZfHkHOfVAn87a6crkaREF6XDFpzAi2PF1kETFkNoLaHLti1k3Z0M4JmCUYEuVaWkZmc3eGGECXIKfVsjGczU00x78kzNiH
+      - REACT_APP_STRIPE_OWNER_PRICE_ID=price_1OMswyHkHOfVAn87zuUOk9r3
+      - REACT_APP_HOSTNAME=${_REACT_APP_HOSTNAME}
+      - REACT_APP_API_URL=${_REACT_APP_API_URL}
+      - REACT_APP_EXTENSION_API_URL=${_REACT_APP_EXTENSION_API_URL}
+      - REACT_APP_PLAYSTORE_URL=${_REACT_APP_PLAYSTORE_URL}
+      - REACT_APP_APPSTORE_URL=${_REACT_APP_APPSTORE_URL}
+      - REACT_APP_FACEBOOK=${_REACT_APP_FACEBOOK}
+      - REACT_APP_TWITTER=${_REACT_APP_TWITTER}
+      - REACT_APP_LINKEDIN=${_REACT_APP_LINKEDIN}
+      - REACT_APP_GOOGLE_API_KEY=${_REACT_APP_GOOGLE_API_KEY}
+      - REACT_APP_ENV=DEVELOPMENT
+      - REACT_APP_GTAG=${_REACT_APP_GTAG}
+
+      # Backend Environment Variables
+      - SERVER_PORT=8080
+      - NODE_ENV=development
+      - STRIPE_SECRET_KEY=${_STRIPE_SECRET_KEY}
+      - STRIPE_PROF_PLAN_PRICE_ID=${_STRIPE_PROF_PLAN_PRICE_ID}
+      - STRIPE_YEARLY_PRICE_ID=${_STRIPE_YEARLY_PRICE_ID}
+      - DRF_API_URL=${_DRF_API_URL}
+      - SLACK_SENTINEL_WEBHOOK_URL=${_SLACK_SENTINEL_WEBHOOK_URL}
+      - SLACK_MAIN_WEHOOK_URL=${_SLACK_MAIN_WEHOOK_URL}
+      - SMTP_HOST=${_SMTP_HOST}
+      - SMTP_PORT=${_SMTP_PORT}
+      - SMTP_USER=${_SMTP_USER}
+      - SMTP_PASS=${_SMTP_PASS}
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'gcloud'
+    args:
+      [
+        'container',
+        'clusters',
+        'get-credentials',
+        '${_CLOUDSDK_CONTAINER_CLUSTER}',
+        '--region',
+        '${_CLOUDSDK_COMPUTE_REGION}',
+        '--project',
+        '${PROJECT_ID}',
+      ]
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'mv'
+    args: ['package.appengine.json', 'package.json']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'rm'
+    args: ['yarn.lock']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'gcloud'
+    args: ['app', 'deploy']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'gcloud'
+    args:
+      [
+        'compute',
+        'url-maps',
+        'invalidate-cdn-cache',
+        '${_LOAD_BALANCER}',
+        '--path',
+        '/*',
+        '--async',
+      ]
+
+substitutions:
+  _CLOUDSDK_CONTAINER_CLUSTER: autopilot-trbs-cluster
+  _LOAD_BALANCER: spotter-ai-gae-lb-1
+  _CLOUDSDK_COMPUTE_ZONE: us-central1-c
+  _CLOUDSDK_COMPUTE_REGION: us-central1
+
+  _REACT_APP_HOSTNAME: 'https://dev.spotter.ai'
+  _REACT_APP_API_URL: 'https://api-dev.truckbase.ai/graphql/'
+  _REACT_APP_EXTENSION_API_URL: 'https://trbsextension-dev.truckbase.ai/trbsextension/'
+  _REACT_APP_PLAYSTORE_URL: 'https://play.google.com/store/apps/details?id=com.spotter.ai'
+  _REACT_APP_APPSTORE_URL: 'https://apps.apple.com/us/app/spotter-ai/id1670506993'
+  _REACT_APP_FACEBOOK: 'https://www.facebook.com/spotterai'
+  _REACT_APP_TWITTER: 'https://twitter.com/spotter_ai'
+  _REACT_APP_LINKEDIN: 'https://www.linkedin.com/company/spotter-labs'
+  _REACT_APP_GOOGLE_API_KEY: '${_REACT_APP_GOOGLE_API_KEY}'
+  _REACT_APP_GTAG: G-4W6L768EJ6
+
+options:
+  logging: CLOUD_LOGGING_ONLY
