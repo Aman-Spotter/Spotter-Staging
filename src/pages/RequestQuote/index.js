@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -16,7 +16,14 @@ import {
   User,
   Building,
   Phone,
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  ArrowRight,
+  Home,
 } from 'lucide-react';
+import InputMask from 'react-input-mask';
+
 import { useIsMobile } from 'hooks';
 import { Navbar, Footer } from 'components';
 import * as S from './styles';
@@ -26,19 +33,25 @@ const RequestQuote = () => {
   const location = useLocation();
   const { isMobile } = useIsMobile();
   const [isVisible, setIsVisible] = useState(false);
-
   // Check if coming from product pages with product parameter
   const urlParams = new URLSearchParams(location.search);
   const productParam = urlParams.get('product');
   const isSentinelFlow = productParam === 'sentinel';
   const isTMSFlow = productParam === 'tms';
+  const nameInputRef = useRef(null);
+
+  const placeholderText = isSentinelFlow
+    ? "Additional Message - Tell us about your fleet size, current safety challenges, or specific Sentinel features you're interested in..."
+    : isTMSFlow
+    ? "Additional Message - Tell us about your fleet size, current TMS challenges, or specific TMS features you're interested in..."
+    : 'Additional Message - Tell us more about your specific needs, company size, or any questions you have...';
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
     phone: '',
-    selectedApps: isSentinelFlow ? ['sentinel'] : isTMSFlow ? ['tms'] : [], // Auto-select product based on flow
+    selectedApps: isSentinelFlow ? ['sentinel'] : isTMSFlow ? ['tms'] : [],
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -91,6 +104,9 @@ const RequestQuote = () => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
     setIsVisible(true);
+    if (nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
   }, []);
 
   // Individual field validation functions
@@ -117,18 +133,30 @@ const RequestQuote = () => {
         }
         return '';
 
-      case 'phone':
-        if ((isSentinelFlow || isTMSFlow) && !value.trim()) {
+      case 'phone': {
+        const { phone } = allFormData;
+        // Remove all non-digits
+        const cleanedPhone = phone.replace(/[^\d]/g, '');
+
+        if (!cleanedPhone) {
           return 'Phone number is required';
         }
-        // Optional: Add phone format validation
-        if (value.trim() && !/^[+]?[1-9][\d\s\-()]{0,20}$/.test(value.replace(/[\s\-()]/g, ''))) {
-          return 'Please enter a valid phone number';
+
+        // If the input is not fully filled (less than 10 digits)
+        if (phone.includes('_') || cleanedPhone.length < 10) {
+          return 'Enter a 10-digit US phone number.';
         }
+
+        // Only allow 10 digits, area code 2-9
+        const isValid = /^[2-9]\d{9}$/.test(cleanedPhone);
+        if (!isValid) {
+          return 'Enter a 10-digit US phone number.';
+        }
+
         return '';
+      }
 
       case 'selectedApps': {
-        // Use the selectedApps from allFormData, not the value parameter
         const selectedApps = allFormData.selectedApps || [];
         if (selectedApps.length === 0) {
           return 'Please select at least one product';
@@ -149,12 +177,6 @@ const RequestQuote = () => {
     };
     setFormData(newFormData);
 
-    // Clear any previous submit errors
-    if (submitError) {
-      setSubmitError('');
-    }
-
-    // Update validation errors in real-time if the field has been touched
     if (touchedFields[name]) {
       const fieldError = validateField(name, value, newFormData);
       setValidationErrors((prev) => ({
@@ -179,6 +201,21 @@ const RequestQuote = () => {
       ...prev,
       [name]: fieldError,
     }));
+  };
+
+  const handlePhoneInputChange = (e) => {
+    const { value } = e.target;
+    const newFormData = { ...formData, phone: value };
+    setFormData(newFormData);
+
+    // ONLY validate on change if the field has already been touched (blurred)
+    if (touchedFields.phone) {
+      const fieldError = validateField('phone', value, newFormData);
+      setValidationErrors((prev) => ({
+        ...prev,
+        phone: fieldError,
+      }));
+    }
   };
 
   const handleAppToggle = (appId) => {
@@ -299,9 +336,11 @@ const RequestQuote = () => {
     setValidationErrors({});
 
     try {
+      // Create the full phone number in E.164 format
+      const fullPhoneNumber = `+1${formData.phone.replace(/[^\d]/g, '')}`;
       // If coming from product-specific flow, send to Slack
       if (isSentinelFlow || isTMSFlow) {
-        const slackResult = await sendToSlack(formData);
+        const slackResult = await sendToSlack({ ...formData, phone: fullPhoneNumber });
 
         if (!slackResult.success) {
           throw new Error(
@@ -318,7 +357,7 @@ const RequestQuote = () => {
         // 2. Just simulate the old behavior
 
         // Option 1: Send all requests through backend (recommended)
-        const result = await sendToSlack(formData);
+        const result = await sendToSlack({ ...formData, phone: fullPhoneNumber });
 
         if (!result.success) {
           throw new Error(result.error || 'Failed to submit request. Please try again.');
@@ -359,8 +398,8 @@ const RequestQuote = () => {
       const phone = formData.phone.trim();
 
       // Check phone format if provided
-      const isPhoneValid =
-        phone && /^[+]?[1-9][\d\s\-()]{0,20}$/.test(phone.replace(/[\s\-()]/g, ''));
+      const cleaned = phone.replace(/[^\d]/g, '');
+      const isPhoneValid = cleaned && /^(1)?\d{10}$/.test(cleaned);
 
       isValid = isValid && name && company && isPhoneValid;
     }
@@ -374,6 +413,23 @@ const RequestQuote = () => {
     return isValid && !hasValidationErrors;
   };
 
+  const handleSuccessAction = (action) => {
+    if (action === 'home') {
+      history.push('/');
+    } else if (action === 'new') {
+      setIsSubmitted(false);
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        selectedApps: isSentinelFlow ? ['sentinel'] : isTMSFlow ? ['tms'] : [],
+        message: '',
+      });
+      setValidationErrors({});
+    }
+  };
+
   if (isSubmitted) {
     return (
       <S.Layout>
@@ -385,17 +441,19 @@ const RequestQuote = () => {
             </S.SuccessIcon>
             <S.SuccessTitle>
               {isSentinelFlow
-                ? 'Sentinel Quote Request Submitted!'
+                ? 'Sentinel Information Request Submitted!'
                 : isTMSFlow
-                ? 'TMS Quote Request Submitted!'
-                : 'Quote Request Submitted!'}
+                ? 'TMS Information Request Submitted!'
+                : 'Information Request Submitted!'}
             </S.SuccessTitle>
             <S.SuccessMessage>{successMessage}</S.SuccessMessage>
             <S.SuccessActions>
-              <S.PrimaryButton onClick={() => history.push('/')}>
-                Return to Homepage
+              <S.PrimaryButton onClick={() => handleSuccessAction('home')}>
+                <Home size={20} />
+                Back to Home
               </S.PrimaryButton>
-              <S.SecondaryButton onClick={() => window.location.reload()}>
+              <S.SecondaryButton onClick={() => handleSuccessAction('new')}>
+                <ArrowRight size={20} />
                 Submit Another Request
               </S.SecondaryButton>
             </S.SuccessActions>
@@ -421,6 +479,7 @@ const RequestQuote = () => {
           />
         ))}
       </S.BackgroundElements>
+      <S.FloatingDecorations />
 
       <Navbar absolute showAuthUrls />
 
@@ -429,8 +488,6 @@ const RequestQuote = () => {
           <S.Header>
             <S.Title>
               Request <S.Highlight>For Information</S.Highlight>
-              {/* <br /> */}
-              {/* <span style={{ position: 'relative', left: '8px' }}>for your business needs</span> */}
             </S.Title>
             {(isSentinelFlow || isTMSFlow) && (
               <S.Subtitle>
@@ -443,117 +500,262 @@ const RequestQuote = () => {
           <S.FormContainer>
             <S.Form onSubmit={handleSubmit}>
               {/* Name Field */}
-              <S.FormGroup>
+              <S.FormGroup delay="0.1s">
+                <S.Label htmlFor="name" className={formData.name.trim() ? 'has-content' : ''}>
+                  Full Name
+                  <S.FieldStatus>
+                    {formData.name.trim() && !validationErrors.name && (
+                      <S.FieldValidIcon>
+                        <CheckCircle2 size={16} />
+                      </S.FieldValidIcon>
+                    )}
+                    {validationErrors.name && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.InputWrapper>
                   <S.InputIcon>
                     <User size={20} />
                   </S.InputIcon>
                   <S.Input
+                    ref={nameInputRef}
                     type="text"
+                    id="name"
                     name="name"
-                    placeholder="Full Name"
+                    placeholder="John Doe"
                     value={formData.name}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     hasError={touchedFields.name && validationErrors.name}
+                    aria-describedby={
+                      touchedFields.name && validationErrors.name ? 'name-error' : undefined
+                    }
+                    aria-invalid={!!(touchedFields.name && validationErrors.name)}
                   />
                 </S.InputWrapper>
-                {touchedFields.name && validationErrors.name && (
-                  <S.ErrorMessage>{validationErrors.name}</S.ErrorMessage>
-                )}
+                <S.ErrorMessage
+                  id="name-error"
+                  show={!!(touchedFields.name && validationErrors.name)}
+                  aria-live="polite"
+                >
+                  {touchedFields.name && validationErrors.name}
+                </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Email Field */}
-              <S.FormGroup>
+              <S.FormGroup delay="0.2s">
+                <S.Label htmlFor="email" className={formData.email.trim() ? 'has-content' : ''}>
+                  Email Address
+                  <S.FieldStatus>
+                    {formData.email.trim() &&
+                      !validationErrors.email &&
+                      /\S+@\S+\.\S+/.test(formData.email) && (
+                        <S.FieldValidIcon>
+                          <CheckCircle2 size={16} />
+                        </S.FieldValidIcon>
+                      )}
+                    {validationErrors.email && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.InputWrapper>
                   <S.InputIcon>
                     <Mail size={20} />
                   </S.InputIcon>
                   <S.Input
                     type="email"
+                    id="email"
                     name="email"
-                    placeholder="Email Address"
+                    placeholder="you@company.com"
                     value={formData.email}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     hasError={touchedFields.email && validationErrors.email}
+                    aria-describedby={
+                      touchedFields.email && validationErrors.email ? 'email-error' : undefined
+                    }
+                    aria-invalid={!!(touchedFields.email && validationErrors.email)}
                   />
                 </S.InputWrapper>
-                {touchedFields.email && validationErrors.email && (
-                  <S.ErrorMessage>{validationErrors.email}</S.ErrorMessage>
-                )}
+                <S.ErrorMessage
+                  id="email-error"
+                  show={!!(touchedFields.email && validationErrors.email)}
+                  aria-live="polite"
+                >
+                  {touchedFields.email && validationErrors.email}
+                </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Company Field */}
-              <S.FormGroup>
+              <S.FormGroup delay="0.3s">
+                <S.Label htmlFor="company" className={formData.company.trim() ? 'has-content' : ''}>
+                  Company Name
+                  <S.FieldStatus>
+                    {formData.company.trim() && !validationErrors.company && (
+                      <S.FieldValidIcon>
+                        <CheckCircle2 size={16} />
+                      </S.FieldValidIcon>
+                    )}
+                    {validationErrors.company && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.InputWrapper>
                   <S.InputIcon>
                     <Building size={20} />
                   </S.InputIcon>
                   <S.Input
                     type="text"
+                    id="company"
                     name="company"
-                    placeholder="Company Name"
+                    placeholder="Acme Inc."
                     value={formData.company}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     hasError={touchedFields.company && validationErrors.company}
+                    aria-describedby={
+                      touchedFields.company && validationErrors.company
+                        ? 'company-error'
+                        : undefined
+                    }
+                    aria-invalid={!!(touchedFields.company && validationErrors.company)}
                   />
                 </S.InputWrapper>
-                {touchedFields.company && validationErrors.company && (
-                  <S.ErrorMessage>{validationErrors.company}</S.ErrorMessage>
-                )}
+                <S.ErrorMessage
+                  id="company-error"
+                  show={!!(touchedFields.company && validationErrors.company)}
+                  aria-live="polite"
+                >
+                  {touchedFields.company && validationErrors.company}
+                </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Phone Field */}
-              <S.FormGroup>
+              <S.FormGroup delay="0.4s">
+                <S.Label htmlFor="phone" className={formData.phone.trim() ? 'has-content' : ''}>
+                  Phone Number
+                  <S.FieldStatus>
+                    {formData.phone.replace(/[^\d]/g, '').length === 10 &&
+                      !validationErrors.phone && (
+                        <S.FieldValidIcon>
+                          <CheckCircle2 size={16} />
+                        </S.FieldValidIcon>
+                      )}
+                    {validationErrors.phone && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.InputWrapper>
                   <S.InputIcon>
                     <Phone size={20} />
                   </S.InputIcon>
-                  <S.Input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
+                  <InputMask
+                    mask="(999) 999-9999"
                     value={formData.phone}
-                    onChange={handleInputChange}
+                    onChange={handlePhoneInputChange}
                     onBlur={handleInputBlur}
-                    hasError={touchedFields.phone && validationErrors.phone}
-                  />
+                  >
+                    {(inputProps) => (
+                      <S.Input
+                        {...inputProps}
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="(555) 123-4567"
+                        inputMode="numeric"
+                        hasError={touchedFields.phone && validationErrors.phone}
+                        aria-describedby={
+                          touchedFields.phone && validationErrors.phone ? 'phone-error' : undefined
+                        }
+                        aria-invalid={!!(touchedFields.phone && validationErrors.phone)}
+                      />
+                    )}
+                  </InputMask>
                 </S.InputWrapper>
-                {touchedFields.phone && validationErrors.phone && (
-                  <S.ErrorMessage>{validationErrors.phone}</S.ErrorMessage>
-                )}
+                <S.ErrorMessage
+                  id="phone-error"
+                  show={!!(touchedFields.phone && validationErrors.phone)}
+                  aria-live="polite"
+                >
+                  {touchedFields.phone && validationErrors.phone}
+                </S.ErrorMessage>
               </S.FormGroup>
               {/* Message Field - Full Width */}
-              <S.FormGroup className="full-width">
+              <S.FormGroup className="full-width" delay="0.5s">
+                <S.Label htmlFor="message" className={formData.message.trim() ? 'has-content' : ''}>
+                  Additional Message
+                  <S.FieldStatus>
+                    {formData.message.trim() && (
+                      <S.FieldValidIcon>
+                        <CheckCircle2 size={16} />
+                      </S.FieldValidIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
                 <S.TextareaWrapper>
                   <S.TextareaIcon>
                     <MessageSquare size={20} />
                   </S.TextareaIcon>
                   <S.Textarea
+                    id="message"
                     name="message"
-                    placeholder={
-                      isSentinelFlow
-                        ? "Additional Message - Tell us about your fleet size, current safety challenges, or specific Sentinel features you're interested in..."
-                        : isTMSFlow
-                        ? "Additional Message - Tell us about your fleet size, current TMS challenges, or specific TMS features you're interested in..."
-                        : 'Additional Message - Tell us more about your specific needs, company size, or any questions you have...'
-                    }
+                    placeholder={placeholderText}
                     value={formData.message}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     rows={4}
                     hasError={touchedFields.message && validationErrors.message}
+                    aria-describedby={
+                      touchedFields.message && validationErrors.message
+                        ? 'message-error'
+                        : undefined
+                    }
+                    aria-invalid={!!(touchedFields.message && validationErrors.message)}
                   />
                 </S.TextareaWrapper>
+                <S.ErrorMessage
+                  id="message-error"
+                  show={!!(touchedFields.message && validationErrors.message)}
+                  aria-live="polite"
+                >
+                  {touchedFields.message && validationErrors.message}
+                </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Products Section - Full Width */}
-              <S.FormGroup className="full-width">
-                <S.Label className="apps-grid-label">Product Interest:</S.Label>
-                <S.AppsGrid hasError={touchedFields.selectedApps && validationErrors.selectedApps}>
-                  {apps.map((app) => {
+              <S.FormGroup className="full-width" delay="0.6s">
+                <S.Label className="apps-grid-label">
+                  Product Interest:
+                  <S.FieldStatus>
+                    {formData.selectedApps.length > 0 && (
+                      <S.FieldValidIcon>
+                        <CheckCircle2 size={16} />
+                      </S.FieldValidIcon>
+                    )}
+                    {touchedFields.selectedApps && validationErrors.selectedApps && (
+                      <S.FieldErrorIcon>
+                        <AlertCircle size={16} />
+                      </S.FieldErrorIcon>
+                    )}
+                  </S.FieldStatus>
+                </S.Label>
+                <S.FormHelperText>
+                  Please select at least one product you&apos;re interested in.
+                </S.FormHelperText>
+                <S.AppsGrid>
+                  {apps.map((app, index) => {
                     const IconComponent = app.icon;
                     const isSelected = formData.selectedApps.includes(app.id);
                     const isDisabled =
@@ -565,10 +767,10 @@ const RequestQuote = () => {
                         isSelected={isSelected}
                         isDisabled={isDisabled}
                         onClick={() => handleAppToggle(app.id)}
+                        style={{ animationDelay: `${0.8 + index * 0.1}s` }}
                       >
-                        <S.AppCardGlow isSelected={isSelected} />
                         <S.AppIcon isSelected={isSelected} isDisabled={isDisabled}>
-                          <IconComponent size={28} />
+                          <IconComponent size={32} />
                         </S.AppIcon>
                         <S.AppInfo>
                           <S.AppName isDisabled={isDisabled}>{app.name}</S.AppName>
@@ -583,27 +785,33 @@ const RequestQuote = () => {
                     );
                   })}
                 </S.AppsGrid>
-                {touchedFields.selectedApps && validationErrors.selectedApps && (
-                  <S.ErrorMessage>{validationErrors.selectedApps}</S.ErrorMessage>
-                )}
+                <S.ErrorMessage
+                  id="selectedApps-error"
+                  show={!!(touchedFields.selectedApps && validationErrors.selectedApps)}
+                  aria-live="polite"
+                >
+                  {touchedFields.selectedApps && validationErrors.selectedApps}
+                </S.ErrorMessage>
               </S.FormGroup>
 
               {/* Error Message - Full Width */}
               {submitError && (
-                <S.FormGroup className="full-width">
-                  <S.ErrorMessage className="error-message">{submitError}</S.ErrorMessage>
+                <S.FormGroup className="full-width" delay="0.8s">
+                  <S.ErrorMessage className="error-message" show>
+                    {submitError}
+                  </S.ErrorMessage>
                 </S.FormGroup>
               )}
 
               {/* Submit Button - Full Width */}
-              <S.FormGroup className="full-width">
+              <S.FormGroup className="full-width" delay="0.9s">
                 <S.SubmitButton
                   type="submit"
                   disabled={!isFormValid() || isSubmitting}
                   isSubmitting={isSubmitting}
                 >
                   <S.ButtonIcon isSubmitting={isSubmitting}>
-                    <Send size={18} />
+                    {isSubmitting ? <Clock size={20} /> : <Send size={20} />}
                   </S.ButtonIcon>
                   {isSubmitting ? 'Submitting Request...' : 'Request Quote'}
                 </S.SubmitButton>

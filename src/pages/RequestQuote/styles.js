@@ -109,6 +109,201 @@ const spin = keyframes`
   }
 `;
 
+// Simple Error Message Component
+export const ErrorMessage = styled.div`
+  display: ${({ show }) => (show ? 'block' : 'none')};
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 6px;
+  font-weight: 400;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.75rem;
+    margin-top: 3px;
+  }
+`;
+
+// Wrapper for Input
+export const InputWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+export const InputIcon = styled.div`
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  z-index: 3;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 768px) {
+    left: 10px;
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    left: 8px;
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  background: #ffffff;
+  border: 2px solid ${({ hasError }) => (hasError ? '#ef4444' : '#e2e8f0')};
+  border-radius: 6px;
+  color: #1e293b;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 10px 10px 10px 38px;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 8px 8px 32px;
+    font-size: 0.75rem;
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${({ hasError }) => (hasError ? '#ef4444' : '#40e0d0')};
+    box-shadow: 0 0 0 3px
+      ${({ hasError }) => (hasError ? 'rgba(239, 68, 68, 0.1)' : 'rgba(64, 224, 208, 0.1)')};
+  }
+
+  &:focus + ${InputIcon} {
+    color: ${({ hasError }) => (hasError ? '#ef4444' : '#40e0d0')};
+  }
+
+  &:hover:not(:focus) {
+    border-color: ${({ hasError }) => (hasError ? '#ef4444' : '#cbd5e1')};
+  }
+`;
+
+// Textarea Styles
+export const TextareaWrapper = styled.div`
+  position: relative;
+  display: flex;
+`;
+
+export const TextareaIcon = styled.div`
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #64748b;
+  z-index: 3;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 768px) {
+    top: 10px;
+    left: 10px;
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    top: 8px;
+    left: 8px;
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+`;
+
+export const Textarea = styled.textarea`
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  background: #ffffff;
+  border: 2px solid ${({ hasError }) => (hasError ? '#ef4444' : '#e2e8f0')};
+  border-radius: 6px;
+  color: #1e293b;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+  max-height: 100px;
+  transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 10px 10px 10px 38px;
+    font-size: 0.8rem;
+    min-height: 50px;
+    max-height: 80px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 8px 8px 32px;
+    font-size: 0.75rem;
+    min-height: 40px;
+    max-height: 60px;
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${({ hasError }) => (hasError ? '#ef4444' : '#40e0d0')};
+    box-shadow: 0 0 0 3px
+      ${({ hasError }) => (hasError ? 'rgba(239, 68, 68, 0.1)' : 'rgba(64, 224, 208, 0.1)')};
+  }
+
+  &:focus + ${TextareaIcon} {
+    color: ${({ hasError }) => (hasError ? '#ef4444' : '#40e0d0')};
+  }
+
+  &:hover:not(:focus) {
+    border-color: ${({ hasError }) => (hasError ? '#ef4444' : '#cbd5e1')};
+  }
+`;
+
 // Layout
 export const Layout = styled.div`
   width: 100%;
@@ -410,61 +605,61 @@ export const FormContainer = styled.div`
 export const Form = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px 16px;
+  gap: 8px 16px;
   position: relative;
   z-index: 2;
 
   /* Ultra-wide and very large screens (2560px+) */
   @media (min-width: 2560px) {
-    gap: 32px 48px;
+    gap: 16px 32px;
   }
 
   /* Very large screens (1920px-2559px) */
   @media (min-width: 1920px) and (max-width: 2559px) {
-    gap: 24px 40px;
+    gap: 12px 24px;
   }
 
   /* Large screens (1680px-1919px) */
   @media (min-width: 1680px) and (max-width: 1919px) {
-    gap: 20px 36px;
+    gap: 10px 20px;
   }
 
   /* Medium-large screens (1440px-1679px) */
   @media (min-width: 1440px) and (max-width: 1679px) {
-    gap: 18px 32px;
+    gap: 8px 18px;
   }
 
   /* Medium desktop screens (1280px-1439px) */
   @media (min-width: 1280px) and (max-width: 1439px) {
-    gap: 16px 28px;
+    gap: 8px 16px;
   }
 
   /* Small desktop screens (1024px-1279px) */
   @media (min-width: 1024px) and (max-width: 1279px) {
-    gap: 14px 24px;
+    gap: 6px 14px;
   }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 6px;
   }
 
   @media (max-width: 480px) {
-    gap: 6px;
+    gap: 4px;
   }
 `;
 
 export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0;
 
   @media (max-width: 768px) {
-    gap: 3px;
+    gap: 0;
   }
 
   @media (max-width: 480px) {
-    gap: 3px;
+    gap: 0;
   }
 
   /* Full width sections */
@@ -485,7 +680,7 @@ export const FormGroup = styled.div`
   /* Submit section takes full width */
   &:has(button) {
     grid-column: 1 / -1;
-    margin-top: 4px;
+    margin-top: 8px;
   }
 
   /* Error message takes full width */
@@ -499,13 +694,44 @@ export const Label = styled.label`
   font-weight: 600;
   color: #334155;
   margin-bottom: 2px;
+  /* Hide labels visually but keep for accessibility */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+
+  /* Show labels for apps grid */
+  &.apps-grid-label {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0 0 2px 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    border: auto;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #334155;
+    display: block;
+  }
 
   @media (max-width: 768px) {
-    font-size: 0.75rem;
+    &.apps-grid-label {
+      font-size: 0.75rem;
+    }
   }
 
   @media (max-width: 480px) {
-    font-size: 0.7rem;
+    &.apps-grid-label {
+      font-size: 0.7rem;
+    }
   }
 `;
 
@@ -515,171 +741,32 @@ export const RequiredAsterisk = styled.span`
   font-weight: 600;
 `;
 
-// Input Styles
-export const InputWrapper = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
+export const FieldStatus = styled.div`
+  display: none; /* Hide field status indicators */
 `;
 
-export const InputIcon = styled.div`
-  position: absolute;
-  left: 10px;
+export const FieldValidIcon = styled.div`
+  display: none; /* Hide validation icons */
+`;
+
+export const FieldErrorIcon = styled.div`
+  display: none; /* Hide error icons */
+`;
+
+export const FormHelperText = styled.p`
+  font-size: 0.7rem;
   color: #64748b;
-  z-index: 3;
-  pointer-events: none;
-  transition: all 0.3s ease;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
 
-  svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  @media (max-width: 768px) {
-    left: 8px;
-    svg {
-      width: 14px;
-      height: 14px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    left: 6px;
-    svg {
-      width: 12px;
-      height: 12px;
-    }
-  }
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  padding: 10px 10px 10px 40px;
-  background: #ffffff;
-  border: 1px solid ${({ hasError }) => (hasError ? '#f84960' : '#e2e8f0')};
-  border-radius: 6px;
-  color: #1e293b;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-
-  @media (max-width: 768px) {
-    padding: 8px 8px 8px 36px;
-    font-size: 0.8rem;
-  }
-
-  @media (max-width: 480px) {
-    padding: 6px 6px 6px 32px;
+  @media (min-width: 1440px) {
     font-size: 0.75rem;
-  }
-
-  &::placeholder {
-    color: #94a3b8;
-    font-weight: 400;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: ${({ hasError }) => (hasError ? '#f84960' : '#40e0d0')};
-    box-shadow: 0 0 0 2px
-      ${({ hasError }) => (hasError ? 'rgba(248, 73, 96, 0.1)' : 'rgba(64, 224, 208, 0.1)')};
-  }
-
-  &:focus + ${InputIcon} {
-    color: ${({ hasError }) => (hasError ? '#f84960' : '#40e0d0')};
-  }
-
-  &:hover:not(:focus) {
-    border-color: ${({ hasError }) => (hasError ? '#f84960' : '#cbd5e1')};
-  }
-`;
-
-// Textarea Styles
-export const TextareaWrapper = styled.div`
-  position: relative;
-  display: flex;
-`;
-
-export const TextareaIcon = styled.div`
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  color: #64748b;
-  z-index: 3;
-  pointer-events: none;
-  transition: all 0.3s ease;
-
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  @media (max-width: 768px) {
-    top: 10px;
-    left: 10px;
-    svg {
-      width: 16px;
-      height: 16px;
-    }
+    margin: 0 0 5px 0;
   }
 
   @media (max-width: 480px) {
-    top: 8px;
-    left: 8px;
-    svg {
-      width: 14px;
-      height: 14px;
-    }
-  }
-`;
-
-export const Textarea = styled.textarea`
-  width: 100%;
-  padding: 10px 10px 10px 40px;
-  background: #ffffff;
-  border: 1px solid ${({ hasError }) => (hasError ? '#f84960' : '#e2e8f0')};
-  border-radius: 6px;
-  color: #1e293b;
-  font-size: 0.85rem;
-  font-weight: 500;
-  font-family: inherit;
-  resize: vertical;
-  min-height: 50px;
-  max-height: 80px;
-  transition: all 0.2s ease;
-
-  @media (max-width: 768px) {
-    padding: 8px 8px 8px 36px;
-    font-size: 0.8rem;
-    min-height: 40px;
-    max-height: 60px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 6px 6px 6px 32px;
-    font-size: 0.75rem;
-    min-height: 35px;
-    max-height: 50px;
-  }
-
-  &::placeholder {
-    color: #94a3b8;
-    font-weight: 400;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: ${({ hasError }) => (hasError ? '#f84960' : '#40e0d0')};
-    box-shadow: 0 0 0 3px
-      ${({ hasError }) => (hasError ? 'rgba(248, 73, 96, 0.1)' : 'rgba(64, 224, 208, 0.1)')};
-  }
-
-  &:focus + ${TextareaIcon} {
-    color: ${({ hasError }) => (hasError ? '#f84960' : '#40e0d0')};
-  }
-
-  &:hover:not(:focus) {
-    border-color: ${({ hasError }) => (hasError ? '#f84960' : '#cbd5e1')};
+    font-size: 0.65rem;
+    margin: 0 0 2px 0;
   }
 `;
 
@@ -894,16 +981,6 @@ export const ButtonIcon = styled.span`
     transition: all 0.3s ease;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
-`;
-
-export const ErrorMessage = styled.div`
-  color: #f84960;
-  font-size: 0.75rem;
-  font-weight: 400;
-  margin-top: 4px;
-  margin-bottom: 0;
-  line-height: 1.2;
-  grid-column: 1 / -1;
 `;
 
 // Success Section
