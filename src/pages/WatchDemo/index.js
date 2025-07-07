@@ -69,6 +69,7 @@ const Sentinel = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef(null);
   const [isVisible, setIsVisible] = useState({});
 
@@ -76,6 +77,11 @@ const Sentinel = () => {
     if (videoRef.current.paused) {
       videoRef.current.play();
       setIsPlaying(true);
+      setShowThumbnail(false);
+      // On desktop, hide controls after starting playback unless hovering
+      if (!isMobile) {
+        setShowControls(false);
+      }
     } else {
       videoRef.current.pause();
       setIsPlaying(false);
@@ -251,12 +257,20 @@ const Sentinel = () => {
                   <video
                     ref={videoRef}
                     onClick={togglePlayPause}
-                    onPlay={() => setIsPlaying(true)}
+                    onPlay={() => {
+                      setIsPlaying(true);
+                      setShowThumbnail(false);
+                      // On desktop, hide controls after starting playback unless hovering
+                      if (!isMobile) {
+                        setShowControls(false);
+                      }
+                    }}
                     onPause={() => setIsPlaying(false)}
                     onTimeUpdate={handleVideoTimeUpdate}
                     controls={false}
                     playsInline
-                    autoPlay
+                    preload="metadata"
+                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23f8fafc;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23e2e8f0;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='450' fill='url(%23grad)'/%3E%3C/svg%3E"
                     controlsList="nodownload nofullscreen noremoteplayback"
                     disablePictureInPicture
                     style={{ position: 'relative', zIndex: 1 }}
@@ -265,6 +279,22 @@ const Sentinel = () => {
                     <track kind="captions" srcLang="en" label="English captions" />
                     Your browser does not support the video tag.
                   </video>
+
+                  {/* Simple Video Play Overlay */}
+                  {showThumbnail && (
+                    <S.VideoThumbnailOverlay onClick={togglePlayPause}>
+                      <S.PlayButtonContainer>
+                        <S.PlayButtonRing>
+                          <S.PlayButtonInner>
+                            <S.PlayIcon>
+                              <Video size={24} />
+                            </S.PlayIcon>
+                          </S.PlayButtonInner>
+                        </S.PlayButtonRing>
+                        <S.PlayHint>Click to play</S.PlayHint>
+                      </S.PlayButtonContainer>
+                    </S.VideoThumbnailOverlay>
+                  )}
 
                   <S.ModernControlsContainer
                     className={`modern-controls${showControls ? ' show' : ''}`}

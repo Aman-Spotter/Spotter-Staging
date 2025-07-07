@@ -274,50 +274,42 @@ export const PricingSubtitle = styled.p`
 `;
 export const PricingContent = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 1fr 400px;
+  gap: 48px;
   align-items: center;
   justify-items: center;
-  max-width: 1300px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 
-  /* Large tablet range - prevent overflow */
-  @media (max-width: 1520px) and (min-width: 1241px) {
-    max-width: 1400px;
-    gap: 30px;
-    padding: 0 30px;
-  }
-
-  @media (max-width: 1240px) {
-    max-width: 1200px;
-    gap: 28px;
-  }
-  @media (max-width: 1024px) and (min-width: 825px) {
-    max-width: 1000px;
+  /* Large screens */
+  @media (max-width: 1400px) {
+    max-width: 1100px;
     gap: 40px;
   }
-  @media (max-width: 824px) and (min-width: 769px) {
-    max-width: 900px;
+
+  @media (max-width: 1200px) {
+    max-width: 1000px;
     gap: 36px;
+    grid-template-columns: 1fr 380px;
   }
-  @media (max-width: 968px) {
+
+  @media (max-width: 1024px) {
     grid-template-columns: 1fr;
-    gap: 32px;
-    text-align: center;
+    gap: 48px;
     max-width: 800px;
+    text-align: center;
   }
+
   @media (max-width: 768px) {
-    gap: 24px;
+    gap: 40px;
     max-width: 100%;
-    padding: 0;
-    grid-template-columns: 1fr;
+    padding: 0 16px;
   }
+
   @media (max-width: 480px) {
     gap: 32px;
-    max-width: 100%;
-    padding: 0;
-    grid-template-columns: 1fr;
+    padding: 0 12px;
   }
 `;
 export const PricingImageContainer = styled.div`
@@ -327,49 +319,70 @@ export const PricingImageContainer = styled.div`
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   transition-delay: ${({ delay }) => delay};
   width: 100%;
-  max-width: 850px;
-  margin: 0;
+  max-width: 700px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* Large tablet range - prevent overflow */
-  @media (max-width: 1520px) and (min-width: 1241px) {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
+  @media (max-width: 1400px) {
+    max-width: 600px;
   }
 
-  /* Medium tablet range */
-  @media (max-width: 1240px) and (min-width: 1025px) {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
+  @media (max-width: 1200px) {
+    max-width: 550px;
+  }
+
+  @media (max-width: 1024px) {
+    max-width: 650px;
+    margin: 0 auto;
   }
 
   @media (max-width: 768px) {
-    max-width: 100%;
-    width: 100%;
-    margin: 0 0 30px 0;
+    max-width: 500px;
+    margin: 0 auto;
   }
+
   @media (max-width: 480px) {
     max-width: 100%;
-    width: 100%;
-    margin: 0 0 24px 0;
+    margin: 0 auto;
   }
 `;
 export const PricingImage = styled.div`
   position: relative;
-  transition: all 0.4s ease;
-  transform: scale(1.35);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
   transform-origin: center center;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  border-radius: 18px;
-  background: #f8fafc;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 32px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(64, 224, 208, 0.1) 0%,
+      rgba(32, 178, 170, 0.05) 50%,
+      rgba(0, 128, 128, 0.1) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    border-radius: 20px;
+    z-index: 1;
+  }
 
   &:hover .modern-controls,
   &:focus-within .modern-controls {
@@ -379,34 +392,13 @@ export const PricingImage = styled.div`
   }
 
   &:hover {
-    transform: scale(1.37) translate(0, 0);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25), 0 0 30px rgba(64, 224, 208, 0.3),
-      0 0 60px rgba(32, 178, 170, 0.2), 0 0 90px rgba(0, 128, 128, 0.1);
-  }
+    transform: scale(1.02) translateY(-4px);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4), 0 16px 48px rgba(64, 224, 208, 0.2),
+      0 8px 32px rgba(32, 178, 170, 0.3), 0 0 40px rgba(64, 224, 208, 0.15),
+      0 0 0 1px rgba(64, 224, 208, 0.2);
 
-  /* Large tablet range - fix for overflow issues */
-  @media (max-width: 1520px) and (min-width: 1241px) {
-    transform: scale(1.15);
-    max-width: 90%;
-    margin: 0 auto;
-
-    &:hover {
-      transform: scale(1.17) translate(0, 0);
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25), 0 0 25px rgba(64, 224, 208, 0.25),
-        0 0 50px rgba(32, 178, 170, 0.15), 0 0 75px rgba(0, 128, 128, 0.1);
-    }
-  }
-
-  /* Medium tablet range */
-  @media (max-width: 1240px) and (min-width: 1025px) {
-    transform: scale(1.1);
-    max-width: 85%;
-    margin: 0 auto;
-
-    &:hover {
-      transform: scale(1.12) translate(0, 0);
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25), 0 0 25px rgba(64, 224, 208, 0.25),
-        0 0 50px rgba(32, 178, 170, 0.15), 0 0 75px rgba(0, 128, 128, 0.1);
+    &::before {
+      opacity: 1;
     }
   }
 
@@ -441,74 +433,245 @@ export const PricingImage = styled.div`
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 18px;
-    background: #f8fafc;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     box-shadow: none;
     cursor: pointer;
-  }
-
-  @media (max-width: 1024px) and (min-width: 825px) {
-    transform: scale(1);
-    max-width: 75%;
-    margin: 0 auto;
-
-    &:hover {
-      transform: scale(1.02) translate(0, 0);
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25), 0 0 25px rgba(64, 224, 208, 0.25),
-        0 0 50px rgba(32, 178, 170, 0.15), 0 0 75px rgba(0, 128, 128, 0.1);
-    }
-  }
-
-  @media (max-width: 824px) and (min-width: 769px) {
-    transform: scale(0.9);
-    max-width: 75%;
-    margin: 0 auto;
-
-    &:hover {
-      transform: scale(0.92) translate(0, 0);
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25), 0 0 25px rgba(64, 224, 208, 0.25),
-        0 0 50px rgba(32, 178, 170, 0.15), 0 0 75px rgba(0, 128, 128, 0.1);
-    }
+    position: relative;
+    z-index: 2;
   }
 
   @media (max-width: 768px) {
-    transform: scale(0.95);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    background: #f8fafc;
-    max-width: 80%;
-    margin: 0 auto;
+    border-radius: 16px;
+
+    &::before {
+      border-radius: 16px;
+    }
 
     &:hover {
-      transform: scale(0.97) translate(0, 0);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 20px rgba(64, 224, 208, 0.2),
-        0 0 40px rgba(32, 178, 170, 0.1);
+      transform: scale(1.01) translateY(-2px);
+    }
+
+    video {
+      border-radius: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    border-radius: 12px;
+
+    &::before {
+      border-radius: 12px;
+    }
+
+    &:hover {
+      transform: scale(1.005) translateY(-1px);
     }
 
     video {
       border-radius: 12px;
     }
   }
+`;
+
+// Modern Video Play Overlay Components
+export const VideoThumbnailOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.4s ease;
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.6) 50%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 12px;
+  }
 
   @media (max-width: 480px) {
-    transform: scale(1);
     border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    background: #f8fafc;
-    max-width: 92%;
-    margin: 0 auto;
+  }
+`;
 
-    &:hover {
-      transform: scale(1.01) translate(0, 0);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 0 15px rgba(64, 224, 208, 0.15),
-        0 0 30px rgba(32, 178, 170, 0.1);
+export const PlayButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+
+  ${VideoThumbnailOverlay}:hover & {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    gap: 14px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 12px;
+  }
+`;
+
+export const PlayButtonRing = styled.div`
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Outer ring with subtle pulse */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(64, 224, 208, 0.3);
+    z-index: -1;
+  }
+
+  /* Inner glow ring */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border-radius: 50%;
+    background: rgba(64, 224, 208, 0.08);
+    transition: all 0.3s ease;
+    z-index: -1;
+  }
+
+  ${VideoThumbnailOverlay}:hover & {
+    &::before {
+      border-color: rgba(64, 224, 208, 0.5);
+      transform: scale(1.05);
     }
 
-    video {
-      border-radius: 10px;
+    &::after {
+      background: rgba(64, 224, 208, 0.15);
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+  }
+
+  @media (max-width: 480px) {
+    width: 85px;
+    height: 85px;
+  }
+`;
+
+export const PlayButtonInner = styled.div`
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #40e0d0, #20b2aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 8px 24px rgba(64, 224, 208, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+
+  ${VideoThumbnailOverlay}:hover & {
+    transform: scale(1.1);
+    box-shadow: 0 12px 32px rgba(64, 224, 208, 0.6), 0 4px 16px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    width: 65px;
+    height: 65px;
+  }
+
+  @media (max-width: 480px) {
+    width: 55px;
+    height: 55px;
+  }
+`;
+
+export const PlayIcon = styled.div`
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+
+  @media (max-width: 768px) {
+    margin-left: 3px;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    margin-left: 2px;
+
+    svg {
+      width: 18px;
+      height: 18px;
     }
   }
 `;
+
+export const PlayHint = styled.div`
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+
+  ${VideoThumbnailOverlay}:hover & {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
+`;
+
 export const CenterPlayButton = styled.button`
   position: absolute;
   top: 50%;
@@ -598,13 +761,20 @@ export const ModernControlsContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
-  padding: 20px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.7) 40%,
+    rgba(0, 0, 0, 0.3) 70%,
+    transparent 100%
+  );
+  padding: 24px;
   z-index: 10;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s ease;
-  transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(20px);
+  border-radius: 0 0 20px 20px;
 
   &.show {
     opacity: 1;
@@ -662,62 +832,89 @@ export const ModernControlsContainer = styled.div`
 
 export const ModernTimelineBar = styled.div`
   width: 100%;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 16px;
-  transition: all 0.2s ease;
+  margin-bottom: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 12;
   pointer-events: auto;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(64, 224, 208, 0.2) 0%,
+      rgba(32, 178, 170, 0.3) 50%,
+      rgba(64, 224, 208, 0.2) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+  }
 
   &:hover {
-    height: 6px;
-    background: rgba(255, 255, 255, 0.4);
+    height: 8px;
+    background: rgba(255, 255, 255, 0.25);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   @media (max-width: 768px) {
-    height: 3px;
-    margin-bottom: 12px;
+    height: 4px;
+    margin-bottom: 16px;
 
     &:hover {
-      height: 5px;
+      height: 6px;
     }
   }
 `;
 
 export const ModernTimelineProgress = styled.div`
   height: 100%;
-  background: linear-gradient(90deg, #40e0d0 0%, #20b2aa 100%);
-  border-radius: 2px;
+  background: linear-gradient(90deg, #40e0d0 0%, #20b2aa 50%, #008080 100%);
+  border-radius: 8px;
   transition: width 0.15s linear;
   position: relative;
+  box-shadow: 0 0 20px rgba(64, 224, 208, 0.4);
 
   &::after {
     content: '';
     position: absolute;
-    right: -6px;
+    right: -8px;
     top: 50%;
     transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    background: #fff;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #40e0d0, #20b2aa);
+    border: 2px solid #fff;
     border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(64, 224, 208, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   ${ModernTimelineBar}:hover &::after {
     opacity: 1;
+    transform: translateY(-50%) scale(1.2);
   }
 
   @media (max-width: 768px) {
     &::after {
-      width: 10px;
-      height: 10px;
-      right: -5px;
+      width: 12px;
+      height: 12px;
+      right: -6px;
+      border-width: 1px;
     }
   }
 `;
@@ -763,26 +960,52 @@ export const ModernControlsRight = styled.div`
 `;
 
 export const ModernPlayPauseButton = styled.button`
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(64, 224, 208, 0.9), rgba(32, 178, 170, 0.9));
   color: #fff;
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  font-size: 18px;
-  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 20px;
   position: relative;
   z-index: 15;
   pointer-events: auto;
+  box-shadow: 0 8px 24px rgba(64, 224, 208, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: conic-gradient(
+      from 0deg,
+      rgba(64, 224, 208, 0.6),
+      rgba(32, 178, 170, 0.8),
+      rgba(0, 128, 128, 0.6),
+      rgba(64, 224, 208, 0.6)
+    );
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
+    background: linear-gradient(135deg, rgba(64, 224, 208, 1), rgba(32, 178, 170, 1));
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+    box-shadow: 0 12px 32px rgba(64, 224, 208, 0.6), 0 6px 16px rgba(0, 0, 0, 0.4);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   &:active {
@@ -792,18 +1015,19 @@ export const ModernPlayPauseButton = styled.button`
   svg {
     margin-left: 2px; /* Slight offset for play icon */
     pointer-events: none;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   }
 
   @media (max-width: 768px) {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
   }
 
   @media (max-width: 480px) {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
 `;
 
@@ -820,7 +1044,6 @@ export const ModernSeekButton = styled.button`
   justify-content: center;
   transition: all 0.2s ease;
   font-size: 16px;
-  backdrop-filter: blur(10px);
   position: relative;
   z-index: 15;
   pointer-events: auto;
@@ -885,7 +1108,6 @@ export const ModernFullscreenButton = styled.button`
   justify-content: center;
   transition: all 0.2s ease;
   font-size: 16px;
-  backdrop-filter: blur(10px);
   position: relative;
   z-index: 15;
   pointer-events: auto;
@@ -982,7 +1204,7 @@ export const PricingPlanCard = styled.div`
   @media (max-width: 480px) {
     padding: 20px 16px;
     border-radius: 12px;
-    max-width: 94%;
+    max-width: 100%;
     width: 100%;
     font-size: 0.95em;
     margin: 0;
