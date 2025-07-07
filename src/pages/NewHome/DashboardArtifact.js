@@ -3011,7 +3011,6 @@ const DashboardArtifact = () => {
         {/* TMS Card - Fourth */}
         <Card>
           <GlassmorphismBackground />
-          <AnimatedTruck delay={5} />
           <CardHoverOverlay onClick={() => handleCardNavigation('/tms')}>
             <CardHoverTitle>TMS</CardHoverTitle>
           </CardHoverOverlay>
