@@ -55,6 +55,7 @@ import truckElectricImg from 'assets/truck-electric.png';
 import fileCheck2Img from 'assets/file-check-2.png';
 import crosshairImg from 'assets/crosshair.png';
 import databaseBackupImg from 'assets/database-backup.png';
+import videoThumbnailPlaceholder from 'assets/images/sentinel/thumbnail-image.png';
 import * as S from './styles';
 
 const Sentinel = () => {
@@ -270,7 +271,7 @@ const Sentinel = () => {
                     controls={false}
                     playsInline
                     preload="metadata"
-                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23f8fafc;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23e2e8f0;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='450' fill='url(%23grad)'/%3E%3C/svg%3E"
+                    poster={videoThumbnailPlaceholder}
                     controlsList="nodownload nofullscreen noremoteplayback"
                     disablePictureInPicture
                     style={{ position: 'relative', zIndex: 1 }}

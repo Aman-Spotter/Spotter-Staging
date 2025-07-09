@@ -688,6 +688,23 @@ export const DesktopMockup = styled.div`
     transform: scale(1.5);
   }
 
+  /* Ultra-wide screens with limited height (e.g., 2560×1080 monitors)
+     The default 1.5 scale can cause the mockup to overlap other hero elements
+     on monitors that are very wide but not proportionally tall. We reduce the
+     scale slightly when the viewport height is under 1300 px to keep the
+     layout balanced. */
+  @media (min-width: 2560px) and (max-height: 1300px) {
+    transform: scale(1.25);
+  }
+
+  /* Standard 27–32" 1440p ultra-wide (2560×1440) screens
+     Height is larger than 1080 px but the 1.5 scale is still a bit too big.
+     Dial the scale back to 1.3 to avoid any overlap while keeping the
+     mockup prominent. */
+  @media (min-width: 2560px) and (max-height: 1450px) {
+    transform: scale(1.3);
+  }
+
   /* Very large screens (1920px-2559px) */
   @media (min-width: 1920px) and (max-width: 2559px) {
     max-width: 1400px;
