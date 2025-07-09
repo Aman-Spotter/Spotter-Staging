@@ -104,6 +104,12 @@ const CCPA = () => {
           return 'Please select a state';
         }
         return '';
+      case 'zipcode':
+        // ZIP code is optional, but if provided it must be exactly 5 digits
+        if (value && !/^\d{5}$/.test(value)) {
+          return 'Please enter a valid 5-digit ZIP code';
+        }
+        return '';
       default:
         return '';
     }
@@ -111,9 +117,12 @@ const CCPA = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // For ZIP code, allow only digits and limit to 5 characters
+    const processedValue = name === 'zipcode' ? value.replace(/\D/g, '').slice(0, 5) : value;
+
     const newFormData = {
       ...formData,
-      [name]: value,
+      [name]: processedValue,
     };
     setFormData(newFormData);
 
@@ -180,6 +189,10 @@ const CCPA = () => {
     // State validation
     const stateError = validateField('state', formData.state);
     if (stateError) newErrors.state = stateError;
+
+    // Zipcode validation (only if provided)
+    const zipcodeError = validateField('zipcode', formData.zipcode);
+    if (zipcodeError) newErrors.zipcode = zipcodeError;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -379,7 +392,13 @@ const CCPA = () => {
                   onChange={handleInputChange}
                   onBlur={handleInputBlur}
                   placeholder="Enter zip code"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]{5}"
+                  maxLength={5}
+                  $hasError={errors.zipcode}
                 />
+                {errors.zipcode && <S.ErrorText>{errors.zipcode}</S.ErrorText>}
               </S.FormGroup>
             </S.FormRow>
 
