@@ -324,6 +324,8 @@ export const PricingImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 20px;
+  overflow: hidden;
 
   @media (max-width: 1400px) {
     max-width: 600px;
@@ -347,23 +349,10 @@ export const PricingImageContainer = styled.div`
     max-width: 100%;
     margin: 0 auto;
   }
-`;
-export const PricingImage = styled.div`
-  position: relative;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: scale(1);
-  transform-origin: center center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 32px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  overflow: hidden;
-  cursor: pointer;
-  width: 100%;
-  max-width: 100%;
+
+  /* Maintain 16:9 aspect-ratio so the thumbnail sets the
+     correct height before the video metadata loads */
+  aspect-ratio: 16 / 9;
 
   &::before {
     content: '';
@@ -393,9 +382,7 @@ export const PricingImage = styled.div`
 
   &:hover {
     transform: scale(1.02) translateY(-4px);
-    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4), 0 16px 48px rgba(64, 224, 208, 0.2),
-      0 8px 32px rgba(32, 178, 170, 0.3), 0 0 40px rgba(64, 224, 208, 0.15),
-      0 0 0 1px rgba(64, 224, 208, 0.2);
+    box-shadow: 0 0 60px rgba(64, 224, 208, 0.25), 0 0 0 1px rgba(64, 224, 208, 0.2);
 
     &::before {
       opacity: 1;
@@ -431,7 +418,7 @@ export const PricingImage = styled.div`
 
   video {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
     border-radius: 20px;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -439,6 +426,7 @@ export const PricingImage = styled.div`
     cursor: pointer;
     position: relative;
     z-index: 2;
+    object-fit: cover; /* eliminate black letterbox bars */
   }
 
   @media (max-width: 768px) {
@@ -474,6 +462,31 @@ export const PricingImage = styled.div`
   }
 `;
 
+// Wrapper element housing the video, overlay and controls.
+// It keeps `index.js` happy (expects <S.PricingImage>) and
+// lets us apply any video-level hover effects separately from the
+// outer responsive container.
+export const PricingImage = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+
+  /* Inherit the 16:9 ratio from the container, but ensure
+     the wrapper itself doesn’t collapse if used elsewhere */
+  aspect-ratio: inherit;
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* match above */
+    border-radius: inherit;
+  }
+`;
+
 // Modern Video Play Overlay Components
 export const VideoThumbnailOverlay = styled.div`
   position: absolute;
@@ -481,12 +494,14 @@ export const VideoThumbnailOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  /* Darker overlay for better contrast with the new poster */
   background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0.7) 100%
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.85) 100%
   );
+  backdrop-filter: blur(3px);
   border-radius: 18px;
   display: flex;
   align-items: center;
@@ -541,6 +556,12 @@ export const PlayButtonRing = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  /* Ensure the ring and its glow are perfectly circular */
+  border-radius: 50%;
+
+  /* Subtle pulsating glow */
+  animation: ${videoPulse} 6s ease-in-out infinite;
 
   /* Outer ring with subtle pulse */
   &::before {
@@ -774,7 +795,8 @@ export const ModernControlsContainer = styled.div`
   pointer-events: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateY(20px);
-  border-radius: 0 0 20px 20px;
+  /* Match parent radius so gradient never breaks the rounded corners */
+  border-radius: inherit;
 
   &.show {
     opacity: 1;
@@ -1137,6 +1159,9 @@ export const ModernFullscreenButton = styled.button`
     font-size: 12px;
   }
 `;
+
+// Mute / Unmute button – shares styling with ModernFullscreenButton
+export const ModernMuteButton = styled(ModernFullscreenButton)``;
 
 export const ModernPauseIcon = styled.span`
   font-size: 18px;

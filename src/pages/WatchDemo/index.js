@@ -33,6 +33,8 @@ import {
   Download,
   Maximize,
   Minimize,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import { FaPlay, FaPause, FaUndo, FaRedo } from 'react-icons/fa';
 
@@ -70,6 +72,7 @@ const Sentinel = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef(null);
   const [isVisible, setIsVisible] = useState({});
@@ -119,6 +122,13 @@ const Sentinel = () => {
     }
   };
 
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
+
   const handleMouseMove = () => setShowControls(true);
   const handleMouseLeave = () => {
     if (!isMobile) {
@@ -157,6 +167,10 @@ const Sentinel = () => {
       case 'f':
         e.preventDefault();
         toggleFullscreen();
+        break;
+      case 'm':
+        e.preventDefault();
+        toggleMute();
         break;
       default:
         break;
@@ -269,6 +283,7 @@ const Sentinel = () => {
                     onPause={() => setIsPlaying(false)}
                     onTimeUpdate={handleVideoTimeUpdate}
                     controls={false}
+                    muted={isMuted}
                     playsInline
                     preload="metadata"
                     poster={videoThumbnailPlaceholder}
@@ -343,6 +358,14 @@ const Sentinel = () => {
                       </S.ModernControlsLeft>
 
                       <S.ModernControlsRight>
+                        <S.ModernMuteButton
+                          type="button"
+                          onClick={toggleMute}
+                          aria-label={isMuted ? 'Unmute' : 'Mute'}
+                        >
+                          {isMuted ? <VolumeX /> : <Volume2 />}
+                        </S.ModernMuteButton>
+
                         <S.ModernFullscreenButton
                           type="button"
                           onClick={toggleFullscreen}
