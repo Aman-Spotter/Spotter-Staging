@@ -1014,7 +1014,7 @@ export const FloatingElement = styled.div`
 `;
 
 export const Container = styled.div`
-  max-width: 1200px;
+  max-width: 2000px;
   margin: 0 auto;
   padding: 0 24px;
   position: relative;
@@ -4836,6 +4836,18 @@ export const CTAHighlight = styled.span`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #40e0d0, #20b2aa);
+    border-radius: 2px;
+  }
 `;
 
 export const CTASubtitle = styled.p`
@@ -5910,39 +5922,28 @@ export const PricingToggleButton = styled.button`
 
 export const PricingContent = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-  max-width: 1200px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  align-items: start;
+  justify-content: center;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 20px;
 
-  @media (max-width: 1240px) {
-    max-width: 1100px;
-    gap: 60px;
-  }
-
   @media (max-width: 1024px) {
-    max-width: 1000px;
-    gap: 50px;
-  }
-
-  @media (max-width: 968px) {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    text-align: center;
     max-width: 800px;
+    gap: 32px;
   }
 
   @media (max-width: 768px) {
-    gap: 32px;
-    max-width: 100%;
-    padding: 0 16px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 500px;
   }
 
   @media (max-width: 480px) {
-    gap: 24px;
-    padding: 0 12px;
+    padding: 0 16px;
+    gap: 20px;
   }
 `;
 
@@ -5950,149 +5951,47 @@ export const PricingPlanCard = styled.div`
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
-  padding: 40px;
-  position: relative;
-  backdrop-filter: blur(20px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: ${({ isVisible, isAnimating }) => {
-    if (isAnimating) return 0.7;
-    return isVisible ? 1 : 0;
-  }};
-  transform: ${({ isVisible, isAnimating }) => {
-    if (isAnimating) return 'scale(0.98) translateY(5px)';
-    return isVisible ? 'translateY(0)' : 'translateY(30px)';
-  }};
-  transition-delay: ${({ delay }) => delay};
-  overflow: hidden;
+  padding: 32px 28px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 420px;
+  height: 580px; /* Fixed height instead of min-height */
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  position: relative;
+  backdrop-filter: blur(10px);
+
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transform: ${(props) => (props.isVisible ? 'translateY(0)' : 'translateY(30px)')};
+  animation-delay: ${(props) => props.delay || '0s'};
+  animation-fill-mode: both;
 
   &:hover {
-    transform: ${({ isAnimating }) =>
-      isAnimating ? 'scale(0.98) translateY(5px)' : 'translateY(-8px)'};
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(64, 224, 208, 0.15);
     border-color: rgba(64, 224, 208, 0.3);
-    box-shadow: 0 20px 60px rgba(64, 224, 208, 0.1);
   }
 
-  @media (max-width: 968px) {
-    margin: 0 auto;
+  @media (max-width: 1024px) {
+    padding: 28px 24px 24px 24px;
+    height: 520px; /* Fixed height instead of min-height */
+    max-width: 380px;
   }
 
   @media (max-width: 768px) {
-    padding: 32px 24px;
-    border-radius: 20px;
+    padding: 24px 20px 20px 20px;
+    height: 480px; /* Fixed height instead of min-height */
     max-width: 100%;
+    margin: 0 auto;
   }
 
   @media (max-width: 480px) {
-    padding: 24px 20px;
-    border-radius: 16px;
-  }
-`;
-
-export const PricingCardGlow = styled.div`
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, #40e0d0, #20b2aa, #008080);
-  border-radius: 24px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-
-  ${PricingPlanCard}:hover & {
-    opacity: 0.1;
-  }
-`;
-
-export const PricingCardHeader = styled.div`
-  margin-bottom: 32px;
-  text-align: center;
-
-  @media (max-width: 480px) {
-    margin-bottom: 24px;
-  }
-`;
-
-export const PricingPlanName = styled.h3`
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 16px;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  @media (max-width: 480px) {
-    font-size: 22px;
-    margin-bottom: 12px;
-  }
-`;
-
-export const PricingAmount = styled.div`
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 8px;
-
-  @media (max-width: 480px) {
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-`;
-
-export const PricingPrice = styled.span`
-  font-size: 48px;
-  font-weight: 700;
-  color: #40e0d0;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  @media (max-width: 480px) {
-    font-size: 40px;
-  }
-`;
-
-export const PricingPeriod = styled.span`
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  @media (max-width: 480px) {
-    font-size: 14px;
-  }
-`;
-
-export const PricingSavings = styled.div`
-  margin-top: 8px;
-  padding: 0 12px;
-  background: rgba(64, 224, 208, 0.1);
-  border: 1px solid rgba(64, 224, 208, 0.3);
-  border-radius: 20px;
-  color: #40e0d0;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px; /* Fixed height to maintain layout consistency */
-  line-height: 1;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  transform: ${({ isVisible }) => (isVisible ? 'scale(1)' : 'scale(0.95)')};
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: ${({ isVisible }) => (isVisible ? 'pulse 2s infinite' : 'none')};
-
-  @keyframes pulse {
-    0%,
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.05);
-      opacity: 0.8;
-    }
+    padding: 20px 16px 16px 16px;
+    height: 465px; /* Fixed height instead of min-height */
+    border-radius: 20px;
   }
 `;
 
@@ -6101,16 +6000,165 @@ export const PricingFeatures = styled.div`
   flex-direction: column;
   gap: 16px;
   margin-bottom: 40px;
+  flex-grow: 1;
+  justify-content: flex-start;
+  height: 320px; /* Fixed height for consistency */
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     gap: 14px;
     margin-bottom: 32px;
+    height: 280px; /* Fixed height for consistency */
+  }
+
+  @media (max-width: 768px) {
+    gap: 12px;
+    margin-bottom: 28px;
+    height: 240px; /* Fixed height for consistency */
   }
 
   @media (max-width: 480px) {
-    gap: 12px;
-    margin-bottom: 28px;
+    gap: 10px;
+    margin-bottom: 24px;
+    height: 220px; /* Fixed height for consistency */
   }
+`;
+
+export const PricingImageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center; // Vertically center the image with the cards
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  margin-top: 24px;
+`;
+
+export const PricingImage = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 130%%;
+    max-width: 350px;
+    max-height: 350px;
+    min-width: 180px;
+    min-height: 120px;
+    object-fit: contain;
+    border-radius: 18px;
+    box-shadow: none;
+    background: none;
+  }
+  @media (max-width: 1024px) {
+    img {
+      max-width: 260px;
+      max-height: 220px;
+    }
+  }
+  @media (max-width: 900px) {
+    img {
+      max-width: 180px;
+      max-height: 120px;
+    }
+  }
+`;
+
+// Pricing Card Components
+export const PricingCardGlow = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(64, 224, 208, 0.1), rgba(32, 178, 170, 0.1));
+  border-radius: 24px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+
+  ${PricingPlanCard}:hover & {
+    opacity: 1;
+  }
+`;
+
+export const PricingCardHeader = styled.div`
+  text-align: center;
+  margin-bottom: 32px;
+  min-height: 140px; /* Fixed minimum height to accommodate savings badge */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  @media (max-width: 768px) {
+    margin-bottom: 28px;
+    min-height: 130px; /* Fixed minimum height for tablets */
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 24px;
+    min-height: 120px; /* Fixed minimum height for mobile */
+  }
+`;
+
+export const PricingPlanName = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 16px;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  @media (max-width: 768px) {
+    font-size: 1.375rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+  }
+`;
+
+export const PricingAmount = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const PricingPrice = styled.span`
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  @media (max-width: 768px) {
+    font-size: 2.25rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2rem;
+  }
+`;
+
+export const PricingPeriod = styled.span`
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+`;
+
+export const PricingSavings = styled.div`
+  margin-top: 6px;
+  padding: 3px 8px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 6px;
+  color: #10b981;
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transition: opacity 0.3s ease;
+  display: inline-block;
+  text-align: center;
 `;
 
 export const PricingFeature = styled.div`
@@ -6122,373 +6170,258 @@ export const PricingFeature = styled.div`
 export const PricingFeatureIcon = styled.div`
   width: 20px;
   height: 20px;
+  background: #10b981;
   border-radius: 50%;
-  background: linear-gradient(135deg, #40e0d0, #20b2aa);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: white;
   flex-shrink: 0;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
 `;
 
 export const PricingFeatureText = styled.span`
-  font-size: 16px;
-  color: #40e0d0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 500;
+  line-height: 1.4;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
 
   @media (max-width: 480px) {
-    font-size: 15px;
+    font-size: 0.85rem;
+    line-height: 1.5;
   }
 `;
 
 export const PricingButton = styled.button`
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
   padding: 16px 24px;
   background: linear-gradient(135deg, #40e0d0, #20b2aa);
+  color: white;
   border: none;
   border-radius: 12px;
-  color: #ffffff;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+  min-height: 48px;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(64, 224, 208, 0.4);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.6s ease;
-  }
-
-  &:hover::before {
-    left: 100%;
+    box-shadow: 0 8px 25px rgba(64, 224, 208, 0.3);
   }
 
   @media (max-width: 768px) {
     padding: 14px 20px;
-    font-size: 15px;
-    min-height: 52px;
+    font-size: 0.9rem;
+    min-height: 44px;
   }
 
   @media (max-width: 480px) {
-    padding: 12px 18px;
-    font-size: 14px;
-    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 0.875rem;
+    min-height: 40px;
     border-radius: 10px;
   }
 `;
 
-export const PricingImageContainer = styled.div`
-  position: relative;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  transform: ${({ isVisible }) => (isVisible ? 'translateY(0)' : 'translateY(30px)')};
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-delay: ${({ delay }) => delay};
-
-  /* Balanced container size for equal grid columns */
-  width: 120%;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: -20%;
-
-  @media (max-width: 1200px) {
-    width: 110%;
-    max-width: 650px;
-    margin-right: -10%;
-  }
-
-  @media (max-width: 968px) {
-    order: -1;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto 32px auto;
-  }
+// Statistics Components
+export const StatisticsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-top: 48px;
 
   @media (max-width: 768px) {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto 24px auto;
-  }
-
-  @media (max-width: 480px) {
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto 20px auto;
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 `;
 
-export const PricingImage = styled.div`
-  position: relative;
+export const StatisticCard = styled.div`
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
   transition: all 0.3s ease;
-
-  /* Greatly increased image size */
-  transform: scale(1.3);
-  transform-origin: center;
+  animation: ${(props) => (props.isVisible ? fadeInUp : 'none')} 0.6s ease-out;
+  animation-delay: ${(props) => props.delay || '0s'};
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
 
   &:hover {
-    transform: scale(1.35);
-  }
-
-  img {
-    width: 100%;
-    height: auto;
-    display: block;
-    /* Enhanced image quality for larger size */
-    object-fit: contain;
-    max-height: none;
-  }
-
-  @media (max-width: 968px) {
-    transform: scale(1.1);
-
-    &:hover {
-      transform: scale(1.15);
-    }
-  }
-
-  @media (max-width: 768px) {
-    transform: scale(1);
-
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
-
-  @media (max-width: 480px) {
-    transform: scale(0.95);
-
-    &:hover {
-      transform: scale(1);
-    }
+    transform: translateY(-4px);
+    border-color: rgba(64, 224, 208, 0.3);
+    box-shadow: 0 12px 40px rgba(64, 224, 208, 0.1);
   }
 `;
 
-// Intro Slide Styles
-export const IntroSlide = styled.div`
-  animation: ${fadeInUp} 0.8s ease-out;
-  position: relative;
-  overflow: visible;
-  margin-top: 0;
+export const StatisticIcon = styled.div`
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  background: rgba(64, 224, 208, 0.1);
+  border-radius: 16px;
+
+  img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
 `;
 
-export const IntroContent = styled.div`
+export const StatisticValue = styled.div`
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+`;
+
+export const StatisticTitle = styled.h4`
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+`;
+
+export const StatisticDescription = styled.p`
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+`;
+
+// Upload Demo Components
+export const UploadSlide = styled.div`
   position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 40px 20px;
-`;
-
-export const IntroIcon = styled.div`
-  display: inline-flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #40e0d0, #20b2aa);
-  border-radius: 50%;
-  margin-bottom: 24px;
-  color: white;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    background: linear-gradient(135deg, #40e0d0, #20b2aa);
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: ${modernPulse} 2s ease-in-out infinite;
-  }
-`;
-
-export const IntroTitle = styled.h2`
-  font-size: 28px;
-  font-weight: 700;
-  color: white;
-  line-height: 1.4;
-  margin-bottom: 32px;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  @media (max-width: 768px) {
-    font-size: 24px;
-  }
-`;
-
-export const IntroButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #40e0d0, #20b2aa);
-  color: white;
-  border: none;
-  padding: 16px 32px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(64, 224, 208, 0.4);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-// Upload Slide Styles
-export const UploadSlide = styled.div`
-  animation: ${fadeInUp} 0.8s ease-out;
-  position: relative;
-  overflow: visible;
-  margin-top: 0;
-  min-height: 500px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  animation: ${fadeInUp} 0.6s ease-out;
 `;
 
 export const UploadContent = styled.div`
-  position: relative;
-  z-index: 2;
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+  max-width: 400px;
 `;
 
 export const UploadHeader = styled.div`
-  text-align: center;
-  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
 
-export const UploadBackButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 24px;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  &:hover {
-    color: white;
-    border-color: rgba(255, 255, 255, 0.4);
-    background: rgba(255, 255, 255, 0.05);
-  }
-`;
-
-export const UploadTitle = styled.h2`
-  font-size: 32px;
+export const UploadTitle = styled.h3`
+  font-size: 1.5rem;
   font-weight: 700;
-  color: white;
-  margin-bottom: 12px;
+  color: #ffffff;
+  margin: 0;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
 
 export const UploadSubtitle = styled.p`
+  font-size: 1rem;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 18px;
-  line-height: 1.6;
+  margin: 0;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-`;
-
-export const CDLImageContainer = styled.div`
-  position: relative;
-  max-width: 500px;
-  margin: 0 auto;
-  cursor: pointer;
-  transition: all 0.4s ease;
-
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-  }
-
-  &:hover > div:first-child {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-
-  &:hover > div:last-child {
-    opacity: 1;
-    transform: translateY(0);
-  }
 `;
 
 export const CDLImageGlow = styled.div`
   position: absolute;
-  inset: -20px;
-  background: linear-gradient(135deg, #40e0d0, #20b2aa);
-  border-radius: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(64, 224, 208, 0.3), rgba(32, 178, 170, 0.3));
+  border-radius: 16px;
   opacity: 0;
-  transition: all 0.4s ease;
-  filter: blur(20px);
-  z-index: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+`;
+
+export const CDLImageContainer = styled.div`
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+
+    ${CDLImageGlow} {
+      opacity: 1;
+    }
+  }
 `;
 
 export const CDLImage = styled.div`
   position: relative;
-  z-index: 1;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  z-index: 2;
 
   img {
     width: 100%;
+    max-width: 300px;
     height: auto;
-    display: block;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
   }
 `;
 
 export const CDLClickPrompt = styled.div`
   position: absolute;
-  bottom: -60px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
+  transform: translate(-50%, -50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 0.5rem;
   background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(64, 224, 208, 0.3);
+  color: white;
+  padding: 1rem;
   border-radius: 12px;
-  padding: 16px 24px;
+  backdrop-filter: blur(10px);
   opacity: 0;
-  transition: all 0.4s ease;
-  z-index: 2;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+  pointer-events: none;
+
+  ${CDLImageContainer}:hover & {
+    opacity: 1;
+  }
 `;
 
 export const CDLClickIcon = styled.div`
@@ -6499,132 +6432,36 @@ export const CDLClickIcon = styled.div`
 `;
 
 export const CDLClickText = styled.span`
-  color: white;
-  font-size: 16px;
+  font-size: 0.875rem;
   font-weight: 600;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
 
-// STATISTICS SECTION STYLES
-export const StatisticsContainer = styled.div`
-  margin-top: 80px;
-  width: 100%;
-  padding: 0 20px;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  transform: translateY(${({ isVisible }) => (isVisible ? '0' : '40px')});
-  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-
-  @media (max-width: 768px) {
-    margin-top: 60px;
-    padding: 0 16px;
-  }
-`;
-
-export const StatisticsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  @media (max-width: 1024px) {
-    gap: 20px;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  @media (max-width: 380px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-`;
-
-export const StatisticCard = styled.div`
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(64, 224, 208, 0.15);
-  border-radius: 16px;
-  padding: 24px 16px;
-  text-align: center;
-  backdrop-filter: blur(20px);
-  transition: all 0.3s ease;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  transform: translateY(${({ isVisible }) => (isVisible ? '0' : '30px')});
-  transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1) ${({ delay }) => delay || '0s'},
-    transform 0.6s cubic-bezier(0.23, 1, 0.32, 1) ${({ delay }) => delay || '0s'};
-  min-height: 200px;
+// Enterprise card features with same dimensions as regular features
+export const PricingFeaturesEnterprise = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-
-  &:hover {
-    transform: translateY(-4px);
-    border-color: rgba(64, 224, 208, 0.25);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  }
-
-  @media (max-width: 768px) {
-    padding: 20px 12px;
-    min-height: 180px;
-  }
-`;
-
-export const StatisticIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  margin: 0 auto 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(64, 224, 208, 0.1);
-  border-radius: 50%;
-  border: 1px solid rgba(64, 224, 208, 0.2);
-
-  img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-  }
-`;
-
-export const StatisticValue = styled.div`
-  font-size: 42px;
-  font-weight: 700;
-  color: #1a202c;
-  margin-bottom: 12px;
-  line-height: 1;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  gap: 16px; // Reduced spacing to fit same height
+  margin-bottom: 40px; // Same margin as regular features
+  flex-grow: 1;
+  justify-content: flex-start;
+  height: 320px; // Fixed height to match regular features
 
   @media (max-width: 1024px) {
-    font-size: 36px;
+    gap: 10px; // Reduced spacing to fit same height
+    margin-bottom: 32px; // Same margin as regular features
+    height: 280px; // Fixed height to match regular features
   }
 
   @media (max-width: 768px) {
-    font-size: 32px;
+    gap: 8px; // Reduced spacing to fit same height
+    margin-bottom: 28px; // Same margin as regular features
+    height: 240px; // Fixed height to match regular features
   }
-`;
 
-export const StatisticTitle = styled.div`
-  font-size: 15px;
-  font-weight: 600;
-  color: #1a202c;
-  margin-bottom: 8px;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  line-height: 1.2;
-`;
-
-export const StatisticDescription = styled.div`
-  font-size: 13px;
-  line-height: 1.4;
-  color: #666;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  word-wrap: break-word;
-  hyphens: auto;
-
-  @media (max-width: 768px) {
-    font-size: 12px;
+  @media (max-width: 480px) {
+    gap: 6px; // Reduced spacing to fit same height
+    margin-bottom: 24px; // Same margin as regular features
+    height: 220px; // Fixed height to match regular features
   }
 `;

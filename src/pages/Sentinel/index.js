@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { throttle } from 'lodash';
 import {
   FileText,
   Scan,
@@ -61,14 +62,14 @@ import swiftLogo from 'assets/images/sentinel/trusted/swift.png';
 // Import productivity assets
 import groupImage from 'assets/group.svg';
 
-// Import pricing assets
-import pcImage from 'assets/pc.png';
-
 // Import statistics assets
 import truckElectricImg from 'assets/truck-electric.png';
 import fileCheck2Img from 'assets/file-check-2.png';
 import crosshairImg from 'assets/crosshair.png';
 import databaseBackupImg from 'assets/database-backup.png';
+
+// Import pricing assets
+import pcImage from 'assets/pc.png';
 
 import * as S from './styles';
 
@@ -137,7 +138,7 @@ const Sentinel = () => {
   const radarRef = useRef(null);
   const testimonialAutoplayRef = useRef(null);
 
-  // Floating particles for gallery section - inspired by NewHome
+  // Floating particles for gallery section - optimized for performance
   const galleryParticles = [
     { id: 'gallery-1', type: 'dot', size: 'large', color: 'teal', speed: 'slow' },
     { id: 'gallery-2', type: 'ring', size: 'medium', color: 'red', speed: 'medium' },
@@ -145,12 +146,6 @@ const Sentinel = () => {
     { id: 'gallery-4', type: 'diamond', size: 'medium', color: 'green', speed: 'slow' },
     { id: 'gallery-5', type: 'ring', size: 'large', color: 'teal', speed: 'medium' },
     { id: 'gallery-6', type: 'dot', size: 'small', color: 'purple', speed: 'fast' },
-    { id: 'gallery-7', type: 'ring', size: 'medium', color: 'cyan', speed: 'slow' },
-    { id: 'gallery-8', type: 'diamond', size: 'small', color: 'red', speed: 'medium' },
-    { id: 'gallery-9', type: 'dot', size: 'large', color: 'green', speed: 'fast' },
-    { id: 'gallery-10', type: 'ring', size: 'small', color: 'purple', speed: 'slow' },
-    { id: 'gallery-11', type: 'diamond', size: 'medium', color: 'teal', speed: 'medium' },
-    { id: 'gallery-12', type: 'dot', size: 'medium', color: 'cyan', speed: 'fast' },
   ];
 
   const processingSteps = [
@@ -235,21 +230,27 @@ const Sentinel = () => {
   // Simplified scroll performance optimization
   useEffect(() => {
     let ticking = false;
+    let mounted = true;
 
     const handleScroll = () => {
-      if (!ticking) {
+      if (!ticking && mounted) {
         requestAnimationFrame(() => {
+          if (!mounted) return;
+
           setIsScrolling(true);
 
           // Clear existing timeout
           if (scrollTimeoutRef.current) {
             clearTimeout(scrollTimeoutRef.current);
+            scrollTimeoutRef.current = null;
           }
 
           // Set scrolling to false after scroll ends
           scrollTimeoutRef.current = setTimeout(() => {
-            setIsScrolling(false);
-          }, 100); // Reduced from 150ms
+            if (mounted) {
+              setIsScrolling(false);
+            }
+          }, 100);
 
           ticking = false;
         });
@@ -260,9 +261,11 @@ const Sentinel = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
+      mounted = false;
       window.removeEventListener('scroll', handleScroll);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = null;
       }
     };
   }, []);
@@ -411,7 +414,7 @@ const Sentinel = () => {
   const [shuffledTestimonials, setShuffledTestimonials] = useState([]);
 
   useEffect(() => {
-    if (testimonials.length > 0) {
+    if (testimonials.length > 0 && shuffledTestimonials.length === 0) {
       const shuffleArray = (array) => {
         const newArray = [...array];
         for (let i = newArray.length - 1; i > 0; i -= 1) {
@@ -422,11 +425,15 @@ const Sentinel = () => {
       };
       const newShuffled = shuffleArray(testimonials);
       setShuffledTestimonials(newShuffled);
-      // Optionally, reset to the first testimonial of the shuffled list
-      // setCurrentTestimonial(0);
-      // setTestimonialState(prev => ({ ...prev, currentIndex: 0, nextIndex: 0 }));
+      setCurrentTestimonial(0);
+      setTestimonialState({
+        currentIndex: 0,
+        isTransitioning: false,
+        nextIndex: 0,
+        direction: 'next',
+      });
     }
-  }, []); // Runs once on mount since testimonials is a constant
+  }, [testimonials.length, shuffledTestimonials.length]); // Only run when needed
 
   // Enhanced testimonial transition functions
   const transitionToTestimonial = useCallback(
@@ -461,9 +468,10 @@ const Sentinel = () => {
   );
 
   const goToNextTestimonial = useCallback(() => {
-    if (shuffledTestimonials.length === 0 || testimonialState.isTransitioning) return;
-    const nextIndex = (testimonialState.currentIndex + 1) % shuffledTestimonials.length;
-    transitionToTestimonial(nextIndex, 'next');
+    if (shuffledTestimonials.length > 0 && !testimonialState.isTransitioning) {
+      const nextIndex = (testimonialState.currentIndex + 1) % shuffledTestimonials.length;
+      transitionToTestimonial(nextIndex, 'next');
+    }
   }, [
     testimonialState.currentIndex,
     testimonialState.isTransitioning,
@@ -473,14 +481,18 @@ const Sentinel = () => {
 
   // Testimonial autoplay functionality
   useEffect(() => {
+    // If there are no testimonials yet, return a no-op cleanup for consistent return behaviour
+    if (shuffledTestimonials.length === 0) {
+      return () => {};
+    }
+
     const startAutoplay = () => {
       // Clear any existing interval before starting a new one to prevent multiple intervals
       if (testimonialAutoplayRef.current) {
         clearInterval(testimonialAutoplayRef.current);
+        testimonialAutoplayRef.current = null;
       }
-      testimonialAutoplayRef.current = setInterval(() => {
-        goToNextTestimonial();
-      }, 5000); // Change testimonial every 5 seconds
+      testimonialAutoplayRef.current = setInterval(goToNextTestimonial, 5000); // 5 s cadence
     };
 
     const stopAutoplay = () => {
@@ -490,24 +502,30 @@ const Sentinel = () => {
       }
     };
 
-    startAutoplay();
+    // Start autoplay after short delay to ensure component has mounted
+    const timeoutId = setTimeout(startAutoplay, 100);
 
-    // Clean up on unmount
+    // Cleanup on unmount or dependency change
     return () => {
+      clearTimeout(timeoutId);
       stopAutoplay();
     };
-  }, [goToNextTestimonial]);
+  }, [goToNextTestimonial, shuffledTestimonials.length]);
 
   // Intersection Observer for animations
   useEffect(() => {
+    let mounted = true;
+
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          setIsVisible((prev) => ({
-            ...prev,
-            [entry.target.id]: entry.isIntersecting,
-          }));
-        });
+        if (mounted) {
+          entries.forEach((entry) => {
+            setIsVisible((prev) => ({
+              ...prev,
+              [entry.target.id]: entry.isIntersecting,
+            }));
+          });
+        }
       },
       {
         threshold: 0.05,
@@ -515,89 +533,92 @@ const Sentinel = () => {
       }
     );
 
-    document.querySelectorAll('[data-animate]').forEach((el) => {
-      observer.observe(el);
-    });
+    // Small delay to ensure DOM is ready
+    const setupObserver = () => {
+      if (mounted) {
+        const elements = document.querySelectorAll('[data-animate]');
+        elements.forEach((el) => {
+          if (mounted) {
+            observer.observe(el);
+          }
+        });
+      }
+    };
 
-    return () => observer.disconnect();
+    const timeoutId = setTimeout(setupObserver, 100);
+
+    return () => {
+      mounted = false;
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
   }, []);
 
-  // Chart mouse handlers
-  const handleChartMouseMove = (e) => {
-    if (!chartRef.current) return;
-    const rect = chartRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const xPercent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+  // Throttled chart mouse handlers for performance
+  const throttledChartMouseMove = useCallback(
+    throttle((e) => {
+      if (!chartRef.current) return;
 
-    // Calculate dynamic values based on mouse position
-    const maxWeeks = 50; // Maximum weeks as shown in chart
-    const currentWeek = Math.round((xPercent / 100) * maxWeeks);
-    const currentDay = currentWeek * 7; // Convert weeks to days
+      try {
+        const rect = chartRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xPercent = Math.max(0, Math.min(100, (x / rect.width) * 100));
 
-    // More realistic progression - exponential growth for competitors, linear for Spotter
-    // Competitors: Exponential increase showing poor scaling
-    const competitorBase = (xPercent / 100) ** 1.8 * 28; // Exponential curve up to 28%
-    const competitorRate = Math.max(0, competitorBase);
+        // Calculate dynamic values based on mouse position
+        const maxWeeks = 50; // Maximum weeks as shown in chart
+        const currentWeek = Math.round((xPercent / 100) * maxWeeks);
+        const currentDay = currentWeek * 7; // Convert weeks to days
 
-    // Spotter: Much better performance with slower, linear growth
-    const spotterBase = (xPercent / 100) * 8.5; // Linear growth up to 8.5% (much better)
-    const spotterRate = Math.max(0, spotterBase);
+        // More realistic progression - exponential growth for competitors, linear for Spotter
+        // Competitors: Exponential increase showing poor scaling
+        const competitorBase = (xPercent / 100) ** 1.8 * 28; // Exponential curve up to 28%
+        const competitorRate = Math.max(0, competitorBase);
 
-    // Ensure Spotter is always better (at least 60% better performance)
-    const adjustedSpotterRate = Math.min(spotterRate, competitorRate * 0.4);
+        // Spotter: Much better performance with slower, linear growth
+        const spotterBase = (xPercent / 100) * 8.5; // Linear growth up to 8.5% (much better)
+        const spotterRate = Math.max(0, spotterBase);
 
-    // Calculate positions on actual SVG paths
-    let redBallX = 0;
-    let redBallY = 0;
-    let tealBallX = 0;
-    let tealBallY = 0;
+        // Ensure Spotter is always better (at least 60% better performance)
+        const adjustedSpotterRate = Math.min(spotterRate, competitorRate * 0.4);
 
-    try {
-      const svgElement = chartRef.current.querySelector('svg');
-      const redPath = svgElement?.querySelector('#red-line');
-      const tealPath = svgElement?.querySelector('#teal-line');
+        // Simplified fallback calculation instead of expensive SVG path operations
+        const redBallX = (xPercent / 100) * 725;
+        const redBallY = 20 + (competitorRate / 28) * 30;
+        const tealBallX = (xPercent / 100) * 725;
+        const tealBallY = 50 + (adjustedSpotterRate / 8.5) * 60;
 
-      if (redPath && tealPath) {
-        const redPathLength = redPath.getTotalLength();
-        const tealPathLength = tealPath.getTotalLength();
+        setChartState({
+          mouseX: x,
+          mouseY: y,
+          isHovering: true,
+          hoveredPath: null,
+          currentDay,
+          competitorRate: competitorRate.toFixed(1),
+          spotterRate: adjustedSpotterRate.toFixed(1),
+          chartWidth: rect.width,
+          redBallX,
+          redBallY,
+          tealBallX,
+          tealBallY,
+        });
 
-        // Get point at percentage along the path
-        const redPoint = redPath.getPointAtLength((xPercent / 100) * redPathLength);
-        const tealPoint = tealPath.getPointAtLength((xPercent / 100) * tealPathLength);
-
-        redBallX = redPoint.x;
-        redBallY = redPoint.y;
-        tealBallX = tealPoint.x;
-        tealBallY = tealPoint.y;
+        // Use requestAnimationFrame for DOM updates
+        requestAnimationFrame(() => {
+          // eslint-disable-next-line arrow-body-style
+          if (chartRef.current) {
+            chartRef.current.style.setProperty('--card-x', `calc(${xPercent}% - 106px)`);
+            chartRef.current.style.setProperty('--card-opacity', '1');
+          }
+        });
+      } catch (error) {
+        console.warn('Chart mouse move error:', error);
       }
-    } catch (error) {
-      // Fallback to approximation if getPointAtLength fails
-      redBallX = (xPercent / 100) * 725;
-      redBallY = 20 + (competitorRate / 28) * 30;
-      tealBallX = (xPercent / 100) * 725;
-      tealBallY = 50 + (adjustedSpotterRate / 8.5) * 60;
-    }
+    }, 16), // ~60fps throttling
+    []
+  );
 
-    setChartState({
-      mouseX: x,
-      mouseY: y,
-      isHovering: true,
-      hoveredPath: null,
-      currentDay,
-      competitorRate: competitorRate.toFixed(1),
-      spotterRate: adjustedSpotterRate.toFixed(1),
-      chartWidth: rect.width,
-      redBallX,
-      redBallY,
-      tealBallX,
-      tealBallY,
-    });
-
-    // Update CSS custom properties for chart card positioning
-    chartRef.current.style.setProperty('--card-x', `calc(${xPercent}% - 106px)`);
-    chartRef.current.style.setProperty('--card-opacity', '1');
-  };
+  const handleChartMouseMove = throttledChartMouseMove;
 
   const handleChartMouseLeave = () => {
     if (!chartRef.current) return;
@@ -670,6 +691,45 @@ const Sentinel = () => {
   // Get plan details from URL params or default
   const urlParams = new URLSearchParams(location.search);
   const planType = urlParams.get('plan') || 'monthly';
+
+  // General cleanup on unmount to prevent memory leaks
+  useEffect(
+    () => () => {
+      // Clear all timeouts and intervals
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = null;
+      }
+      if (testimonialAutoplayRef.current) {
+        clearInterval(testimonialAutoplayRef.current);
+        testimonialAutoplayRef.current = null;
+      }
+
+      // Reset states to prevent memory leaks
+      setIsScrolling(false);
+      setIsVisible({});
+      setChartState({
+        mouseX: 0,
+        mouseY: 0,
+        isHovering: false,
+        hoveredPath: null,
+        currentDay: 0,
+        competitorRate: '0.0',
+        spotterRate: '0.0',
+        chartWidth: 0,
+        redBallX: 0,
+        redBallY: 0,
+        tealBallX: 0,
+        tealBallY: 0,
+      });
+      setRadarState({
+        mouseX: 0,
+        mouseY: 0,
+        isHovering: false,
+      });
+    },
+    []
+  );
 
   return (
     <>
@@ -1314,7 +1374,7 @@ const Sentinel = () => {
         <S.BenefitsSection id="benefits" data-animate>
           <S.BenefitsBackground />
           <S.BenefitsFloatingElements isScrolling={isScrolling}>
-            {Array.from({ length: 8 }, (_, i) => (
+            {Array.from({ length: 4 }, (_, i) => (
               <S.BenefitsParticle
                 key={`benefits-particle-${i}`}
                 delay={`${i * 0.4}s`}
@@ -1377,7 +1437,7 @@ const Sentinel = () => {
         <S.PricingSection id="pricing" data-animate>
           <S.PricingBackground />
           <S.PricingFloatingElements>
-            {Array.from({ length: 12 }, (_, i) => (
+            {Array.from({ length: 6 }, (_, i) => (
               <S.PricingParticle
                 key={`pricing-particle-${i}`}
                 delay={`${i * 0.3}s`}
@@ -1396,14 +1456,15 @@ const Sentinel = () => {
                   <S.PricingBadgeIcon>
                     <DollarSign size={16} />
                   </S.PricingBadgeIcon>
-                  Our Pricing Plan
+                  Pricing Plans
                 </S.PricingBadge>
                 <S.PricingTitle>
-                  Explore the right plan
-                  <S.PricingHighlight> Tailored to your needs</S.PricingHighlight>
+                  Choose your
+                  <S.PricingHighlight> Safety Plan</S.PricingHighlight>
                 </S.PricingTitle>
                 <S.PricingSubtitle>
-                  Explore the right plan tailored to match your specific requirements and ambitions.
+                  Start with our free plan or upgrade to Enterprise for advanced monitoring and 24/7
+                  support.
                 </S.PricingSubtitle>
               </S.PricingHeader>
 
@@ -1425,6 +1486,7 @@ const Sentinel = () => {
               </S.PricingToggle>
 
               <S.PricingContent>
+                {/* Starter Plan */}
                 <S.PricingPlanCard
                   isVisible={isVisible.pricing}
                   delay="0.2s"
@@ -1432,7 +1494,81 @@ const Sentinel = () => {
                 >
                   <S.PricingCardGlow />
                   <S.PricingCardHeader>
-                    <S.PricingPlanName>Professional</S.PricingPlanName>
+                    <S.PricingPlanName>Starter</S.PricingPlanName>
+                    <S.PricingAmount>
+                      <S.PricingPrice>Free</S.PricingPrice>
+                      <S.PricingPeriod>No subscription fees</S.PricingPeriod>
+                    </S.PricingAmount>
+                  </S.PricingCardHeader>
+
+                  <S.PricingFeatures>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>Start checking drivers instantly</S.PricingFeatureText>
+                    </S.PricingFeature>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>Pull MVR instantly</S.PricingFeatureText>
+                    </S.PricingFeature>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>Pull PSP instantly</S.PricingFeatureText>
+                    </S.PricingFeature>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>Check driver reviews</S.PricingFeatureText>
+                    </S.PricingFeature>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>AI driver assessment</S.PricingFeatureText>
+                    </S.PricingFeature>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>Drag/drop driver assessment</S.PricingFeatureText>
+                    </S.PricingFeature>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>No need to sign a contract</S.PricingFeatureText>
+                    </S.PricingFeature>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>No subscription fees</S.PricingFeatureText>
+                    </S.PricingFeature>
+                  </S.PricingFeatures>
+
+                  <S.PricingButton onClick={() => history.push('/payment?plan=starter')}>
+                    <S.ButtonIcon>
+                      <Rocket size={16} />
+                    </S.ButtonIcon>
+                    Get started →
+                  </S.PricingButton>
+                </S.PricingPlanCard>
+
+                {/* Enterprise Plan */}
+                <S.PricingPlanCard
+                  isVisible={isVisible.pricing}
+                  delay="0.3s"
+                  isAnimating={isPricingAnimating}
+                >
+                  <S.PricingCardGlow />
+                  <S.PricingCardHeader>
+                    <S.PricingPlanName>Enterprise</S.PricingPlanName>
                     <S.PricingAmount>
                       <S.PricingPrice>${pricingPlan === 'monthly' ? '35' : '28'}</S.PricingPrice>
                       <S.PricingPeriod>per month</S.PricingPeriod>
@@ -1442,44 +1578,56 @@ const Sentinel = () => {
                     </S.PricingSavings>
                   </S.PricingCardHeader>
 
-                  <S.PricingFeatures>
+                  <S.PricingFeaturesEnterprise>
                     <S.PricingFeature>
                       <S.PricingFeatureIcon>
                         <Check size={16} />
                       </S.PricingFeatureIcon>
-                      <S.PricingFeatureText>Pull MVR</S.PricingFeatureText>
+                      <S.PricingFeatureText>MVR monitoring</S.PricingFeatureText>
                     </S.PricingFeature>
                     <S.PricingFeature>
                       <S.PricingFeatureIcon>
                         <Check size={16} />
                       </S.PricingFeatureIcon>
-                      <S.PricingFeatureText>Pull PSP</S.PricingFeatureText>
+                      <S.PricingFeatureText>Start checking drivers instantly</S.PricingFeatureText>
                     </S.PricingFeature>
                     <S.PricingFeature>
                       <S.PricingFeatureIcon>
                         <Check size={16} />
                       </S.PricingFeatureIcon>
-                      <S.PricingFeatureText>Check CDL scan</S.PricingFeatureText>
+                      <S.PricingFeatureText>Pull MVR instantly</S.PricingFeatureText>
                     </S.PricingFeature>
                     <S.PricingFeature>
                       <S.PricingFeatureIcon>
                         <Check size={16} />
                       </S.PricingFeatureIcon>
-                      <S.PricingFeatureText>Check DAC</S.PricingFeatureText>
+                      <S.PricingFeatureText>Pull PSP instantly</S.PricingFeatureText>
                     </S.PricingFeature>
                     <S.PricingFeature>
                       <S.PricingFeatureIcon>
                         <Check size={16} />
                       </S.PricingFeatureIcon>
-                      <S.PricingFeatureText>AI extraction of CDL, MVR and PSP</S.PricingFeatureText>
+                      <S.PricingFeatureText>Check driver reviews</S.PricingFeatureText>
                     </S.PricingFeature>
                     <S.PricingFeature>
                       <S.PricingFeatureIcon>
                         <Check size={16} />
                       </S.PricingFeatureIcon>
-                      <S.PricingFeatureText>AI Driver Assessment</S.PricingFeatureText>
+                      <S.PricingFeatureText>AI driver assessment</S.PricingFeatureText>
                     </S.PricingFeature>
-                  </S.PricingFeatures>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>No need to sign a contract</S.PricingFeatureText>
+                    </S.PricingFeature>
+                    <S.PricingFeature>
+                      <S.PricingFeatureIcon>
+                        <Check size={16} />
+                      </S.PricingFeatureIcon>
+                      <S.PricingFeatureText>Drag/drop driver assessment</S.PricingFeatureText>
+                    </S.PricingFeature>
+                  </S.PricingFeaturesEnterprise>
 
                   <S.PricingButton onClick={() => history.push(`/payment?plan=${pricingPlan}`)}>
                     <S.ButtonIcon>
@@ -1488,12 +1636,6 @@ const Sentinel = () => {
                     Get started →
                   </S.PricingButton>
                 </S.PricingPlanCard>
-
-                <S.PricingImageContainer isVisible={isVisible.pricing} delay="0.4s">
-                  <S.PricingImage>
-                    <img src={pcImage} alt="Spotter Sentinel Dashboard" />
-                  </S.PricingImage>
-                </S.PricingImageContainer>
               </S.PricingContent>
             </S.PricingContainer>
           </S.Container>
@@ -1503,7 +1645,7 @@ const Sentinel = () => {
         <S.TestimonialsSection id="testimonials" data-animate>
           <S.TestimonialsBackground />
           <S.TestimonialsFloatingElements>
-            {Array.from({ length: 8 }, (_, i) => (
+            {Array.from({ length: 4 }, (_, i) => (
               <S.TestimonialsParticle
                 key={`testimonials-particle-${i}`}
                 delay={`${i * 0.4}s`}
@@ -1541,21 +1683,21 @@ const Sentinel = () => {
                   delay="0.3s"
                   isTransitioning={testimonialState.isTransitioning}
                   direction={testimonialState.direction}
-                  onMouseEnter={() => {
+                  onMouseEnter={useCallback(() => {
                     // Pause autoplay on hover
                     if (testimonialAutoplayRef.current) {
                       clearInterval(testimonialAutoplayRef.current);
                       testimonialAutoplayRef.current = null;
                     }
-                  }}
-                  onMouseLeave={() => {
+                  }, [])}
+                  onMouseLeave={useCallback(() => {
                     // Resume autoplay on mouse leave only if it was stopped by hover
-                    if (!testimonialAutoplayRef.current) {
+                    if (!testimonialAutoplayRef.current && shuffledTestimonials.length > 0) {
                       testimonialAutoplayRef.current = setInterval(() => {
                         goToNextTestimonial();
                       }, 5000);
                     }
-                  }}
+                  }, [goToNextTestimonial, shuffledTestimonials.length])}
                 >
                   <S.TestimonialCardGlow />
 
@@ -1705,7 +1847,7 @@ const Sentinel = () => {
         <S.CTASection id="cta" data-animate>
           <S.CTABackground />
           <S.CTAFloatingElements>
-            {Array.from({ length: 10 }, (_, i) => (
+            {Array.from({ length: 5 }, (_, i) => (
               <S.CTAFloatingElement key={`cta-element-${i}`} delay={`${i * 0.5}s`} position={i} />
             ))}
           </S.CTAFloatingElements>
