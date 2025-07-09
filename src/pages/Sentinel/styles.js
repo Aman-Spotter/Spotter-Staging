@@ -6005,8 +6005,8 @@ export const PricingFeatures = styled.div`
   height: 320px; /* Fixed height for consistency */
 
   @media (max-width: 1024px) {
-    gap: 14px;
-    margin-bottom: 32px;
+    gap: 11px;
+    margin-bottom: 24px;
     height: 280px; /* Fixed height for consistency */
   }
 
@@ -6089,6 +6089,7 @@ export const PricingCardHeader = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center; /* Center children horizontally */
 
   @media (max-width: 768px) {
     margin-bottom: 28px;
@@ -6151,13 +6152,17 @@ export const PricingSavings = styled.div`
   padding: 3px 8px;
   background: rgba(16, 185, 129, 0.15);
   border: 1px solid rgba(16, 185, 129, 0.3);
-  border-radius: 6px;
+  /* Make it a pill badge and center it */
+  border-radius: 9999px;
+  margin: 8px auto 0; /* Center horizontally with some spacing */
+  width: fit-content;
+  padding: 4px 16px;
   color: #10b981;
   font-size: 0.7rem;
   font-weight: 500;
   opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  display: ${(props) => (props.isVisible ? 'inline-block' : 'none')};
   transition: opacity 0.3s ease;
-  display: inline-block;
   text-align: center;
 `;
 

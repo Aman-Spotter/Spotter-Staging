@@ -34,7 +34,6 @@ import {
 
 import { Footer, Navbar } from 'components';
 import { useIsMobile } from 'hooks';
-import { useABTest } from 'hooks/useABTest';
 import BgSvg from 'assets/svgs/background.svg';
 import MobileBgSvg from 'assets/svgs/mobile_bg.svg';
 
@@ -77,10 +76,8 @@ const Sentinel = () => {
   const history = useHistory();
   const location = useLocation();
   const { isMobile } = useIsMobile();
-  const abTest = useABTest('sentinel_hero_cta', [
-    { name: 'A', text: 'Buy Now' },
-    { name: 'B', text: 'Get Started Today' },
-  ]);
+  // Static hero button text (A/B test temporarily disabled)
+  const heroButtonText = 'Buy Now';
   const [demoMode, setDemoMode] = useState('intro'); // 'intro', 'upload', 'processing', 'complete'
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
@@ -771,7 +768,7 @@ const Sentinel = () => {
                   <S.NewHeroButtonIcon>
                     <Rocket size={16} />
                   </S.NewHeroButtonIcon>
-                  {abTest.text}
+                  {heroButtonText}
                 </S.NewHeroPrimaryButton>
                 <S.NewHeroSecondaryButton
                   onClick={startDemo}
