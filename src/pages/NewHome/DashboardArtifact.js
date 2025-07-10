@@ -572,7 +572,7 @@ const Card = styled.div`
     }
 
     &:hover {
-      transform: translateY(-4px) rotateX(2deg);
+      transform: translateY(-4px);
       box-shadow: 0 12px 36px rgba(64, 224, 208, 0.15);
     }
   }
@@ -658,6 +658,21 @@ const CardHoverOverlay = styled.div`
       transform: none;
     }
   }
+
+  /* Tablet & below: remove blur and scaling to avoid partial overlay artefacts */
+  @media (max-width: 1024px) {
+    backdrop-filter: none;
+    background: rgba(26, 35, 50, 0.96);
+    transform: scale(1);
+
+    ${Card}:hover & {
+      transform: scale(1);
+    }
+
+    &:hover {
+      transform: scale(1);
+    }
+  }
 `;
 
 const CardHoverTitle = styled.div`
@@ -677,7 +692,7 @@ const CardHoverTitle = styled.div`
   word-break: break-word;
 
   .visit {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 1px;
   }
@@ -2059,7 +2074,7 @@ const RedesignedLoadMatchContainer = styled.div`
 
   @media (max-width: 768px) {
     height: 100%;
-    max-height: 148px;
+    max-height: 169px;
     overflow: hidden;
     justify-content: space-between;
   }

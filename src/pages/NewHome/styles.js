@@ -335,8 +335,6 @@ export const CenteredHeroContent = styled.div`
   margin-bottom: 15px;
   text-align: center;
   flex-shrink: 0;
-
-  /* Move title up slightly */
   position: relative;
   top: -25px;
 
@@ -367,7 +365,7 @@ export const HeroTitle = styled.h1`
 
   /* Desktop font size adjustments */
   @media (min-width: 1920px) {
-    font-size: clamp(4.5rem, 6vw, 5.4rem);
+    font-size: 70px
     line-height: 1.05;
   }
 
@@ -398,6 +396,8 @@ export const HeroTitle = styled.h1`
   @media (max-width: 768px) {
     font-size: 2.75rem;
     line-height: 1.2;
+    position: relative;
+    top: 35px;
   }
 
   @media (max-width: 480px) {
@@ -461,7 +461,7 @@ export const HeroButtons = styled.div`
   /* Neutralize upward offset for ultra-wide */
   @media (min-width: 2560px) {
     top: 0;
-    margin-top: 40px; /* extra space under mockup */
+    margin-top: 40px;
   }
 `;
 
@@ -863,6 +863,22 @@ export const DesktopMockup = styled.div`
   /* Further reduce mockup scale for ultra-wide displays with limited height */
   @media (min-width: 2560px) and (max-height: 1200px) {
     transform: scale(1.1);
+  }
+
+  /* Additional ultra-wide fine-tuning – favour width over height */
+  /* 21:9 ratio around 2560×1080 – widen slightly, reduce height */
+  @media (min-width: 2560px) and (max-height: 1150px) {
+    transform: scaleX(0.8) scaleY(0.7);
+  }
+
+  /* 3440×1440 ultra-wide */
+  @media (min-width: 3400px) and (max-height: 1600px) {
+    transform: scaleX(1.3) scaleY(0.9);
+  }
+
+  /* 32:9 & wider (3840×1080, 5120×1440, etc.) */
+  @media (min-width: 3800px) and (max-height: 1500px) {
+    transform: scaleX(1.2) scaleY(1.1);
   }
 `;
 
@@ -1591,6 +1607,27 @@ export const FeaturesGrid = styled.div`
     gap: 32px;
     max-width: 1600px;
   }
+
+  /* Super ultra-wide (≈3440px) */
+  @media (min-width: 3440px) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 40px;
+    max-width: 2000px;
+  }
+
+  /* 4K ultra-wide (≈3840px) */
+  @media (min-width: 3840px) {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 48px;
+    max-width: 2400px;
+  }
+
+  /* Dual-wide / Super-ultra-wide (5120px+) */
+  @media (min-width: 5120px) {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 60px;
+    max-width: 2800px;
+  }
 `;
 
 export const FeatureCard = styled.div`
@@ -1911,6 +1948,27 @@ export const StatsGrid = styled.div`
     grid-template-columns: repeat(4, 1fr);
     gap: 64px;
     max-width: 1600px;
+  }
+
+  /* Super ultra-wide (≈3440px) */
+  @media (min-width: 3440px) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 80px;
+    max-width: 2000px;
+  }
+
+  /* 4K ultra-wide (≈3840px) */
+  @media (min-width: 3840px) {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 96px;
+    max-width: 2400px;
+  }
+
+  /* Dual-wide / Super-ultra-wide (5120px+) */
+  @media (min-width: 5120px) {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 120px;
+    max-width: 2800px;
   }
 `;
 
