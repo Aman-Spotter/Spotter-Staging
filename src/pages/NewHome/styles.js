@@ -322,6 +322,10 @@ export const CenteredHeroContainer = styled.div`
   @media (max-width: 480px) {
     padding: 0 16px;
   }
+
+  @media (min-width: 2560px) {
+    gap: clamp(3rem, 5vh, 6rem);
+  }
 `;
 
 export const CenteredHeroContent = styled.div`
@@ -345,6 +349,11 @@ export const CenteredHeroContent = styled.div`
   @media (max-width: 375px) {
     margin-bottom: 12px;
   }
+
+  /* Reduce upward offset on ultra-wide screens to avoid overlap */
+  @media (min-width: 2560px) {
+    top: 0;
+  }
 `;
 
 export const HeroTitle = styled.h1`
@@ -358,7 +367,7 @@ export const HeroTitle = styled.h1`
 
   /* Desktop font size adjustments */
   @media (min-width: 1920px) {
-    font-size: clamp(4.5rem, 6vw, 6rem);
+    font-size: clamp(4.5rem, 6vw, 5.4rem);
     line-height: 1.05;
   }
 
@@ -447,6 +456,12 @@ export const HeroButtons = styled.div`
   @media (max-width: 375px) {
     margin-top: 10px;
     padding: 0 12px;
+  }
+
+  /* Neutralize upward offset for ultra-wide */
+  @media (min-width: 2560px) {
+    top: 0;
+    margin-top: 40px; /* extra space under mockup */
   }
 `;
 
@@ -843,6 +858,11 @@ export const DesktopMockup = styled.div`
   /* Combined width + height constraints for problematic desktop screens only */
   @media (max-width: 1280px) and (max-height: 800px) and (min-width: 1024px) {
     transform: scale(0.7);
+  }
+
+  /* Further reduce mockup scale for ultra-wide displays with limited height */
+  @media (min-width: 2560px) and (max-height: 1200px) {
+    transform: scale(1.1);
   }
 `;
 
@@ -1564,6 +1584,13 @@ export const FeaturesGrid = styled.div`
     grid-template-columns: 1fr;
     padding: 0 20px;
   }
+
+  /* Ultra-wide screens (e.g., 2560px & up) */
+  @media (min-width: 2560px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    max-width: 1600px;
+  }
 `;
 
 export const FeatureCard = styled.div`
@@ -1877,6 +1904,13 @@ export const StatsGrid = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+
+  /* Ultra-wide screens (e.g., 2560px & up) */
+  @media (min-width: 2560px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 64px;
+    max-width: 1600px;
   }
 `;
 
