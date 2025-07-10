@@ -5106,6 +5106,7 @@ export const ProductivityButton = styled.button`
 
 // WHY SPOTTER SECTION STYLES
 export const WhySpotterSection = styled.section`
+  /* Tighten vertical spacing */
   padding: 120px 0;
   position: relative;
   overflow: hidden;
@@ -5113,6 +5114,7 @@ export const WhySpotterSection = styled.section`
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
   @media (max-width: 768px) {
+    /* Extra-small screens get slightly tighter spacing */
     padding: 80px 0;
   }
 `;
@@ -5138,6 +5140,9 @@ export const WhySpotterContainer = styled.div`
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transform: ${({ isVisible }) => (isVisible ? 'translateY(0)' : 'translateY(50px)')};
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Constrain inner content width for better side margins */
+  max-width: 1000px;
+  margin: 0 auto;
 `;
 
 export const WhySpotterHeader = styled.div`
@@ -5145,7 +5150,7 @@ export const WhySpotterHeader = styled.div`
   margin-bottom: 80px;
 
   @media (max-width: 768px) {
-    margin-bottom: 60px;
+    margin-bottom: 50px;
   }
 `;
 
@@ -5170,19 +5175,19 @@ export const WhySpotterBadgeIcon = styled.div`
 `;
 
 export const WhySpotterTitle = styled.h2`
-  font-size: 48px;
+  font-size: 44px;
   font-weight: 700;
   color: white;
   margin-bottom: 24px;
-  line-height: 1.2;
+  line-height: 1.25;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
   @media (max-width: 768px) {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   @media (max-width: 480px) {
-    font-size: 28px;
+    font-size: 24px;
   }
 `;
 
@@ -5218,7 +5223,7 @@ export const AccuracyChartContainer = styled.div`
   transition-delay: 0.2s;
 
   @media (max-width: 768px) {
-    margin-bottom: 60px;
+    margin-bottom: 40px;
   }
 `;
 
@@ -5229,6 +5234,8 @@ export const ChartWrapper = styled.div`
   border-radius: 16px;
   padding: 40px;
   backdrop-filter: blur(10px);
+  max-width: 1000px;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     padding: 20px;
@@ -5240,7 +5247,7 @@ export const ChartHoverArea = styled.div`
   top: 40px;
   left: 40px;
   right: 40px;
-  bottom: 100px;
+  bottom: 120px; /* match taller SVG */
   z-index: 10;
   cursor: crosshair;
 
@@ -5257,7 +5264,7 @@ export const ChartLines = styled.div`
   top: 40px;
   left: 40px;
   right: 40px;
-  bottom: 100px;
+  bottom: 120px;
   pointer-events: none;
 
   @media (max-width: 768px) {
@@ -5313,7 +5320,7 @@ export const ChartLabel = styled.span`
 
 export const ChartSvg = styled.svg`
   width: 100%;
-  height: 144px;
+  height: 160px;
   margin-bottom: 40px;
 
   path {
@@ -5329,7 +5336,7 @@ export const ChartSvg = styled.svg`
   }
 
   @media (max-width: 768px) {
-    height: 100px;
+    height: 120px;
     margin-bottom: 20px;
   }
 `;
@@ -5926,7 +5933,7 @@ export const PricingToggleButton = styled.button`
 export const PricingContent = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
+  gap: 32px;
   align-items: start;
   justify-content: center;
   max-width: 900px;
@@ -5954,14 +5961,14 @@ export const PricingPlanCard = styled.div`
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
-  padding: 32px 28px 28px 28px;
+  padding: 32px 28px ${(props) => (props.hasSavings ? '20px' : '28px')} 28px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: stretch;
   width: 100%;
   max-width: 420px;
-  height: 580px; /* Fixed height instead of min-height */
+  min-height: 560px;
   box-sizing: border-box;
   transition: all 0.3s ease;
   position: relative;
@@ -6088,7 +6095,7 @@ export const PricingCardGlow = styled.div`
 export const PricingCardHeader = styled.div`
   text-align: center;
   margin-bottom: 32px;
-  min-height: 140px; /* Fixed minimum height to accommodate savings badge */
+  min-height: ${(props) => (props.hasSavings ? '108px' : '140px')}; /* adjust for badge */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -6159,13 +6166,18 @@ export const PricingSavings = styled.div`
   border-radius: 9999px;
   margin: 8px auto 0; /* Center horizontally with some spacing */
   width: fit-content;
-  padding: 4px 16px;
+  padding: 2px 16px;
   color: #10b981;
   font-size: 0.7rem;
   font-weight: 500;
+  /* Smooth appear/disappear */
+  overflow: hidden;
+  display: block;
+  max-height: ${(props) => (props.isVisible ? '32px' : '0px')};
+  margin-top: ${(props) => (props.isVisible ? '8px' : '0px')};
   opacity: ${(props) => (props.isVisible ? 1 : 0)};
-  display: ${(props) => (props.isVisible ? 'inline-block' : 'none')};
-  transition: opacity 0.3s ease;
+  transform: translateY(${(props) => (props.isVisible ? '0' : '-6px')});
+  transition: max-height 0.35s ease, margin-top 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
   text-align: center;
 `;
 
@@ -6459,7 +6471,8 @@ export const PricingFeaturesEnterprise = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px; // Reduced spacing to fit same height
-  margin-bottom: 40px; // Same margin as regular features
+  margin-bottom: ${(props) =>
+    props.hasSavings ? '29px' : '40px'}; // Same margin as regular features
   flex-grow: 1;
   justify-content: flex-start;
   height: 320px; // Fixed height to match regular features

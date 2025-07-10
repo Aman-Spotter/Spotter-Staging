@@ -134,6 +134,8 @@ const Sentinel = () => {
   const chartRef = useRef(null);
   const radarRef = useRef(null);
   const testimonialAutoplayRef = useRef(null);
+  const redPathRef = useRef(null);
+  const tealPathRef = useRef(null);
 
   // Floating particles for gallery section - optimized for performance
   const galleryParticles = [
@@ -558,14 +560,19 @@ const Sentinel = () => {
 
       try {
         const rect = chartRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
+        const PADDING_X = 40; // left & right padding on ChartWrapper / ChartHoverArea
+        const innerWidth = rect.width - PADDING_X * 2;
+        let x = e.clientX - rect.left - PADDING_X; // position within the actual chart area
         const y = e.clientY - rect.top;
-        const xPercent = Math.max(0, Math.min(100, (x / rect.width) * 100));
 
-        // Calculate dynamic values based on mouse position
+        // Clamp X to [0, innerWidth]
+        x = Math.max(0, Math.min(innerWidth, x));
+
+        const xPercent = (x / innerWidth) * 100; // 0–100 across drawable area
+
         const maxWeeks = 50; // Maximum weeks as shown in chart
         const currentWeek = Math.round((xPercent / 100) * maxWeeks);
-        const currentDay = currentWeek * 7; // Convert weeks to days
+        const currentDay = currentWeek * 7; // Convert weeks to days for tooltip
 
         // More realistic progression - exponential growth for competitors, linear for Spotter
         // Competitors: Exponential increase showing poor scaling
@@ -579,11 +586,33 @@ const Sentinel = () => {
         // Ensure Spotter is always better (at least 60% better performance)
         const adjustedSpotterRate = Math.min(spotterRate, competitorRate * 0.4);
 
-        // Simplified fallback calculation instead of expensive SVG path operations
-        const redBallX = (xPercent / 100) * 725;
-        const redBallY = 20 + (competitorRate / 28) * 30;
-        const tealBallX = (xPercent / 100) * 725;
-        const tealBallY = 50 + (adjustedSpotterRate / 8.5) * 60;
+        // Use actual SVG paths to get precise Y positions
+        const viewboxX = (xPercent / 100) * 725; // SVG viewBox width
+
+        const getYAtX = (pathEl, xCoord) => {
+          if (!pathEl) return 0;
+          const total = pathEl.getTotalLength();
+          let start = 0;
+          let end = total;
+          let target;
+          for (let i = 0; i < 8; i += 1) {
+            target = (start + end) / 2;
+            const pos = pathEl.getPointAtLength(target);
+            if (pos.x < xCoord) {
+              start = target;
+            } else {
+              end = target;
+            }
+          }
+          const point = pathEl.getPointAtLength((start + end) / 2);
+          return point.y;
+        };
+
+        const redBallX = viewboxX;
+        const tealBallX = viewboxX;
+
+        const redBallY = getYAtX(redPathRef.current, viewboxX);
+        const tealBallY = getYAtX(tealPathRef.current, viewboxX);
 
         setChartState({
           mouseX: x,
@@ -604,7 +633,11 @@ const Sentinel = () => {
         requestAnimationFrame(() => {
           // eslint-disable-next-line arrow-body-style
           if (chartRef.current) {
-            chartRef.current.style.setProperty('--card-x', `calc(${xPercent}% - 106px)`);
+            // Position card respecting 40px padding on both sides
+            chartRef.current.style.setProperty(
+              '--card-x',
+              `calc(${xPercent}% + ${PADDING_X}px - 106px)`
+            );
             chartRef.current.style.setProperty('--card-opacity', '1');
           }
         });
@@ -1123,8 +1156,8 @@ const Sentinel = () => {
                   Why Spotter?
                 </S.WhySpotterBadge>
                 <S.WhySpotterTitle>
-                  The most effective application at predicting future{' '}
-                  <S.WhySpotterHighlight>Driver Safety</S.WhySpotterHighlight> behavior
+                  The most effective application at predicting future
+                  <S.WhySpotterHighlight> Driver Safety</S.WhySpotterHighlight> behavior
                 </S.WhySpotterTitle>
                 <S.WhySpotterSubtitle>
                   Identify high risk drivers using the largest pool of data on driver safety
@@ -1161,6 +1194,7 @@ const Sentinel = () => {
                   >
                     {/* Red path (Competitors) */}
                     <path
+                      ref={redPathRef}
                       id="red-line"
                       d="M0 0.58374L23.1716 2.55755C24.979 2.71151 26.7962 2.71151 28.6036 2.55756L47.2184 0.971908C50.2409 0.714444 53.2846 0.888057 56.2583 1.48753L77.2217 5.7137C80.3892 6.35227 83.6352 6.5074 86.8492 6.17381L106.468 4.13758C108.581 3.91824 110.711 3.90991 112.825 4.11269L161.001 8.7319C162.979 8.92155 164.97 8.92657 166.949 8.74688L187.027 6.92368C189.803 6.67162 192.6 6.78331 195.347 7.25591L229.804 13.1842C233.424 13.807 237.124 13.8019 240.742 13.1693L268.039 8.39594C271.772 7.74316 275.591 7.75869 279.319 8.4418L321.829 16.2319C325.345 16.8763 328.944 16.9269 332.477 16.3817L354.571 12.9721L382.075 11.3659C386.831 11.0882 391.589 11.8759 396.002 13.6716L410.55 19.5914C416.628 22.0645 423.319 22.6096 429.716 21.1527L442.85 18.1619C447.876 17.0175 453.103 17.104 458.088 18.4139L473.478 22.4583C477.933 23.6289 482.588 23.8241 487.124 23.0306L512.5 18.5925L527.543 16.7777C530.843 16.3797 534.184 16.4981 537.448 17.1287L559.937 21.4749C562.153 21.9032 564.408 22.0958 566.665 22.0495L592.702 21.5155C594.962 21.4691 597.212 21.1833 599.412 20.6627L624.837 14.6482C628.614 13.7545 632.524 13.5557 636.373 14.0615L660.83 17.2755L684.516 23.8384C688.293 24.8848 692.23 25.2286 696.131 24.8526L723.799 22.1859"
                       stroke="url(#paint0_linear_red)"
@@ -1169,6 +1203,7 @@ const Sentinel = () => {
 
                     {/* Teal path (Spotter) */}
                     <path
+                      ref={tealPathRef}
                       id="teal-line"
                       d="M 0 9 L 25.2349 8.6072 C 28.8177 9.3565 32.5026 9.4856 36.129 8.9889 L 48.0187 7.3601 C 51.5142 6.8813 55.0647 6.9838 58.5267 7.6635 L 76.393 11.1713 C 79.7741 11.8351 83.2403 11.9485 86.6575 11.5071 L 106.092 8.9966 C 108.488 8.6871 110.912 8.65 113.316 8.8858 L 161.078 13.5713 C 162.887 13.7487 164.708 13.7717 166.521 13.64 L 186.909 12.1588 C 191.422 11.8309 195.898 13.1749 199.484 15.9346 V 15.9346 C 202.041 17.9018 212 32 221 40 L 246 50 L 259 57 C 267 61 278 63 295 63 L 306 65 C 316 69 318 69 337 69 L 354 70 C 365 70 381 74 387 74 L 406 77 C 421 78 444 75 459 83 L 475 91 C 491 100 499 99 520 101 L 542 104 C 550 107 558 108 577 113 L 594 115 C 609 122 605 121 628 122 L 639 122 L 671 128 C 685 134 686 132 697 132 L 707 130 C 710 129 723 130 724 130"
                       stroke="url(#paint1_linear_teal)"
@@ -1180,8 +1215,10 @@ const Sentinel = () => {
                       className="red-ball"
                       cx={chartState.redBallX}
                       cy={chartState.redBallY}
-                      r="4"
+                      r="6"
                       fill="#f84960"
+                      stroke="rgba(255,255,255,0.9)"
+                      strokeWidth="1"
                       style={{
                         visibility: chartState.isHovering ? 'visible' : 'hidden',
                       }}
@@ -1192,8 +1229,10 @@ const Sentinel = () => {
                       className="teal-ball"
                       cx={chartState.tealBallX}
                       cy={chartState.tealBallY}
-                      r="4"
+                      r="6"
                       fill="rgb(0, 128, 128)"
+                      stroke="rgba(255,255,255,0.9)"
+                      strokeWidth="1"
                       style={{
                         visibility: chartState.isHovering ? 'visible' : 'hidden',
                       }}
@@ -1552,18 +1591,19 @@ const Sentinel = () => {
                     <S.ButtonIcon>
                       <Rocket size={16} />
                     </S.ButtonIcon>
-                    Get started →
+                    Start for Free →
                   </S.PricingButton>
                 </S.PricingPlanCard>
 
                 {/* Enterprise Plan */}
                 <S.PricingPlanCard
+                  hasSavings={pricingPlan === 'yearly'}
                   isVisible={isVisible.pricing}
                   delay="0.3s"
                   isAnimating={isPricingAnimating}
                 >
                   <S.PricingCardGlow />
-                  <S.PricingCardHeader>
+                  <S.PricingCardHeader hasSavings={pricingPlan === 'yearly'}>
                     <S.PricingPlanName>Enterprise</S.PricingPlanName>
                     <S.PricingAmount>
                       <S.PricingPrice>${pricingPlan === 'monthly' ? '35' : '28'}</S.PricingPrice>
@@ -1574,7 +1614,7 @@ const Sentinel = () => {
                     </S.PricingSavings>
                   </S.PricingCardHeader>
 
-                  <S.PricingFeaturesEnterprise>
+                  <S.PricingFeaturesEnterprise hasSavings={pricingPlan === 'yearly'}>
                     <S.PricingFeature>
                       <S.PricingFeatureIcon>
                         <Check size={16} />
@@ -1629,7 +1669,7 @@ const Sentinel = () => {
                     <S.ButtonIcon>
                       <Rocket size={16} />
                     </S.ButtonIcon>
-                    Get started →
+                    Upgrade Now →
                   </S.PricingButton>
                 </S.PricingPlanCard>
               </S.PricingContent>

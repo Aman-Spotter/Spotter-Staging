@@ -116,11 +116,25 @@ const Sentinel = () => {
     }
   };
 
-  const seek = (time) => {
-    if (videoRef.current) {
-      videoRef.current.currentTime += time;
-    }
-  };
+  // Enhanced seek: instant feedback & bounds safety
+  const seek = useCallback(
+    (time) => {
+      if (videoRef.current) {
+        const videoEl = videoRef.current;
+        const duration = videoEl.duration || 0;
+        let newTime = videoEl.currentTime + time;
+        newTime = Math.max(0, Math.min(duration, newTime));
+        videoEl.currentTime = newTime;
+
+        // Optimistically update UI so controls feel snappier
+        setCurrentTime(newTime);
+        if (duration) {
+          setVideoProgress((newTime / duration) * 100);
+        }
+      }
+    },
+    [setCurrentTime, setVideoProgress]
+  );
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -145,37 +159,40 @@ const Sentinel = () => {
     }
   };
 
-  const handleKeyDown = useCallback((e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      return; // Don't interfere with input fields
-    }
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return; // Don't interfere with input fields
+      }
 
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault();
-        seek(-10);
-        break;
-      case 'ArrowRight':
-        e.preventDefault();
-        seek(10);
-        break;
-      case ' ':
-      case 'k':
-        e.preventDefault();
-        togglePlayPause();
-        break;
-      case 'f':
-        e.preventDefault();
-        toggleFullscreen();
-        break;
-      case 'm':
-        e.preventDefault();
-        toggleMute();
-        break;
-      default:
-        break;
-    }
-  }, []);
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          seek(-10);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          seek(10);
+          break;
+        case ' ':
+        case 'k':
+          e.preventDefault();
+          togglePlayPause();
+          break;
+        case 'f':
+          e.preventDefault();
+          toggleFullscreen();
+          break;
+        case 'm':
+          e.preventDefault();
+          toggleMute();
+          break;
+        default:
+          break;
+      }
+    },
+    [seek]
+  );
 
   const handlePricingPlanChange = (newPlan) => {
     if (newPlan === pricingPlan) return;
@@ -317,10 +334,17 @@ const Sentinel = () => {
                   >
                     <S.ModernTimelineBar
                       onClick={(e) => {
+                        if (!videoRef.current) return;
                         const rect = e.currentTarget.getBoundingClientRect();
                         const clickX = e.clientX - rect.left;
                         const percent = clickX / rect.width;
-                        videoRef.current.currentTime = percent * videoRef.current.duration;
+                        const duration = videoRef.current.duration || 0;
+                        const newTime = percent * duration;
+                        videoRef.current.currentTime = newTime;
+                        setCurrentTime(newTime);
+                        if (duration) {
+                          setVideoProgress((newTime / duration) * 100);
+                        }
                       }}
                     >
                       <S.ModernTimelineProgress style={{ width: `${videoProgress}%` }} />

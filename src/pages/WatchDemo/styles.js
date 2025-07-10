@@ -1193,15 +1193,17 @@ export const ModernSeekIcon = styled.span`
 `;
 
 export const PricingPlanCard = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 20px 20px 24px 20px;
+  /* Premium glassmorphic card */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(32, 178, 170, 0.08) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(15px) saturate(120%);
+  border-radius: 22px;
+  padding: 28px 24px 32px 24px;
   position: relative;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.3s;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s;
   width: 100%;
-  max-width: 370px;
+  max-width: 400px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -1212,29 +1214,32 @@ export const PricingPlanCard = styled.div`
     isAnimating ? 'scale(0.98) translateY(5px)' : isVisible ? 'translateY(0)' : 'translateY(30px)'};
   transition-delay: ${({ delay }) => delay};
   overflow: hidden;
+
   &:hover {
-    box-shadow: 0 8px 32px rgba(64, 224, 208, 0.18);
+    transform: none;
+    box-shadow: 0 0 60px rgba(64, 224, 208, 0.35), 0 0 0 2px rgba(64, 224, 208, 0.25);
   }
+
   @media (max-width: 768px) {
     padding: 24px 20px;
-    border-radius: 14px;
+    border-radius: 18px;
     max-width: 100%;
     width: 100%;
     font-size: 0.97em;
     margin: 0;
     &:hover {
-      box-shadow: 0 2px 8px rgba(64, 224, 208, 0.1);
+      box-shadow: 0 8px 24px rgba(64, 224, 208, 0.2);
     }
   }
   @media (max-width: 480px) {
     padding: 20px 16px;
-    border-radius: 12px;
+    border-radius: 16px;
     max-width: 100%;
     width: 100%;
     font-size: 0.95em;
     margin: 0;
     &:hover {
-      box-shadow: 0 1px 4px rgba(64, 224, 208, 0.08);
+      box-shadow: 0 4px 12px rgba(64, 224, 208, 0.25);
     }
   }
   & > * {
@@ -1283,10 +1288,10 @@ export const PricingToggleButton = styled.button`
 `;
 export const PricingCardGlow = styled.div`
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
+  top: -40px;
+  left: -40px;
+  right: -40px;
+  bottom: -40px;
   background: linear-gradient(135deg, #40e0d0, #20b2aa, #008080);
   border-radius: 24px;
   opacity: 0;
