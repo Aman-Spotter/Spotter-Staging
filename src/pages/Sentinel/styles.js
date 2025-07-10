@@ -3592,14 +3592,16 @@ const particleDrift = keyframes`
 
 // BENEFITS SECTION STYLES
 export const BenefitsSection = styled.section`
-  padding: 120px 0;
+  /* Reduced vertical padding for a more compact look */
+  padding: 80px 0;
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, #f8fffe 0%, #ffffff 100%);
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
   @media (max-width: 768px) {
-    padding: 80px 0;
+    /* Extra-small screens get slightly tighter spacing */
+    padding: 60px 0;
   }
 `;
 
@@ -3711,10 +3713,11 @@ export const BenefitsContainer = styled.div`
 
 export const BenefitsHeader = styled.div`
   text-align: center;
-  margin-bottom: 80px;
+  /* Reduce space between header and statistics grid */
+  margin-bottom: 40px;
 
   @media (max-width: 768px) {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
   }
 `;
 
@@ -6246,14 +6249,21 @@ export const PricingButton = styled.button`
 
 // Statistics Components
 export const StatisticsGrid = styled.div`
+  /* Implement fixed four-column layout as requested */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 32px;
-  margin-top: 48px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 
-  @media (max-width: 768px) {
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
-    gap: 24px;
   }
 `;
 
@@ -6276,26 +6286,28 @@ export const StatisticCard = styled.div`
 `;
 
 export const StatisticIcon = styled.div`
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 16px;
+  /* Circular teal icon container to match design */
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(64, 224, 208, 0.1);
-  border-radius: 16px;
+  background: rgba(0, 128, 128, 0.1);
+  border-radius: 50%;
 
   img {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
   }
 `;
 
 export const StatisticValue = styled.div`
-  font-size: 2.5rem;
+  /* Slightly smaller headline to align with screenshot */
+  font-size: 2rem;
   font-weight: 700;
-  color: #ffffff;
+  color: rgb(26, 32, 44);
   margin-bottom: 8px;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
@@ -6303,14 +6315,14 @@ export const StatisticValue = styled.div`
 export const StatisticTitle = styled.h4`
   font-size: 1.125rem;
   font-weight: 600;
-  color: #ffffff;
+  color: rgb(26, 32, 44);
   margin-bottom: 8px;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
 
 export const StatisticDescription = styled.p`
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgb(102, 102, 102);
   line-height: 1.5;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 `;

@@ -723,7 +723,7 @@ export const DesktopMockup = styled.div`
   /* Very large screens (1920px-2559px) */
   @media (min-width: 1920px) and (max-width: 2559px) {
     max-width: 1400px;
-    transform: scale(0.9);
+    transform: scale(1);
   }
 
   /* Large screens (1680px-1919px) */

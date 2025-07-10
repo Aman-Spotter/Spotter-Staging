@@ -1494,7 +1494,6 @@ const Sentinel = () => {
                     <S.PricingPlanName>Starter</S.PricingPlanName>
                     <S.PricingAmount>
                       <S.PricingPrice>Free</S.PricingPrice>
-                      <S.PricingPeriod>No subscription fees</S.PricingPeriod>
                     </S.PricingAmount>
                   </S.PricingCardHeader>
 
