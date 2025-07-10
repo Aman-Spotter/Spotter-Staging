@@ -609,38 +609,38 @@ const CardHoverOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(26, 35, 50, 0.95);
-  backdrop-filter: blur(30px) saturate(1.5);
+  background: rgba(26, 35, 50, 0.9);
+  backdrop-filter: blur(25px) saturate(1.4);
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 0.35s ease, transform 0.35s ease;
   z-index: 10;
   cursor: pointer;
   border: 2px solid transparent;
-  transform: scale(0.9) rotateY(180deg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: scale(0.92);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
   ${Card}:hover & {
     opacity: 1;
     visibility: visible;
-    border-color: rgba(64, 224, 208, 0.6);
-    background: rgba(26, 35, 50, 0.98);
-    transform: scale(1) rotateY(0deg);
-    box-shadow: 0 30px 60px rgba(64, 224, 208, 0.2), 0 15px 30px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(64, 224, 208, 0.55);
+    background: rgba(26, 35, 50, 0.96);
+    transform: scale(1);
+    box-shadow: 0 30px 60px rgba(64, 224, 208, 0.18), 0 15px 30px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
 
   &:hover {
-    background: rgba(26, 35, 50, 1);
-    border-color: rgba(64, 224, 208, 0.8);
-    transform: scale(1.05) rotateY(0deg);
+    background: rgba(26, 35, 50, 0.98);
+    border-color: rgba(64, 224, 208, 0.75);
+    transform: scale(1.04);
     animation: ${glowPulse} 2s ease-in-out infinite;
-    box-shadow: 0 40px 80px rgba(64, 224, 208, 0.3), 0 20px 40px rgba(0, 0, 0, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 40px 80px rgba(64, 224, 208, 0.28), 0 20px 40px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   @media (max-width: 768px) {
@@ -662,25 +662,46 @@ const CardHoverOverlay = styled.div`
 
 const CardHoverTitle = styled.div`
   color: #40e0d0;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
   animation: ${slideInUp} 0.5s ease-out;
   text-shadow: 0 0 10px rgba(64, 224, 208, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  word-break: break-word;
+
+  .visit {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
 
   ${CardHoverOverlay}:hover & {
     animation: ${pulseSoft} 1.5s ease-in-out infinite;
   }
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    font-size: 18px;
     letter-spacing: 1px;
+
+    .visit {
+      font-size: 12px;
+    }
   }
 
   @media (max-width: 480px) {
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.5px;
+
+    .visit {
+      font-size: 11px;
+    }
   }
 `;
 
@@ -2873,7 +2894,9 @@ const DashboardArtifact = () => {
         <Card>
           <GlassmorphismBackground />
           <CardHoverOverlay onClick={() => handleCardNavigation('https://spotter.ai/lens')}>
-            <CardHoverTitle>Lens</CardHoverTitle>
+            <CardHoverTitle>
+              <span className="visit">Visit</span> Lens →
+            </CardHoverTitle>
           </CardHoverOverlay>
           <LensContainer>
             <MapContainer>
@@ -2909,7 +2932,9 @@ const DashboardArtifact = () => {
         {/* CRM Card - Second */}
         <Card>
           <CardHoverOverlay onClick={() => handleCardNavigation('https://spotter.ai/')}>
-            <CardHoverTitle>CRM</CardHoverTitle>
+            <CardHoverTitle>
+              <span className="visit">Visit</span> CRM →
+            </CardHoverTitle>
           </CardHoverOverlay>
           <BottomCardContainer>
             <CRMGlow />
@@ -2939,7 +2964,9 @@ const DashboardArtifact = () => {
         <Card>
           <GlassmorphismBackground />
           <CardHoverOverlay onClick={() => handleCardNavigation('https://spotter.ai/')}>
-            <CardHoverTitle>Driver App</CardHoverTitle>
+            <CardHoverTitle>
+              <span className="visit">Visit</span> Driver&nbsp;App →
+            </CardHoverTitle>
           </CardHoverOverlay>
           <RedesignedLoadMatchContainer>
             <AnimatedPieChart
@@ -3012,7 +3039,9 @@ const DashboardArtifact = () => {
         <Card>
           <GlassmorphismBackground />
           <CardHoverOverlay onClick={() => handleCardNavigation('/tms')}>
-            <CardHoverTitle>TMS</CardHoverTitle>
+            <CardHoverTitle>
+              <span className="visit">Visit</span> TMS →
+            </CardHoverTitle>
           </CardHoverOverlay>
           <BottomCardContainer>
             <TMSGlow />
@@ -3041,7 +3070,9 @@ const DashboardArtifact = () => {
         {/* Sentinel Card - Fifth */}
         <Card>
           <CardHoverOverlay onClick={() => handleCardNavigation('/sentinel')}>
-            <CardHoverTitle>Sentinel</CardHoverTitle>
+            <CardHoverTitle>
+              <span className="visit">Visit</span> Sentinel →
+            </CardHoverTitle>
           </CardHoverOverlay>
           <BottomCardContainer>
             <BottomCardTitle>Safety Automation</BottomCardTitle>
@@ -3062,7 +3093,9 @@ const DashboardArtifact = () => {
         {/* Extension Card - Sixth */}
         <Card>
           <CardHoverOverlay onClick={() => handleCardNavigation('https://extension.spotter.ai/')}>
-            <CardHoverTitle>Extension</CardHoverTitle>
+            <CardHoverTitle>
+              <span className="visit">Visit</span> Extension →
+            </CardHoverTitle>
           </CardHoverOverlay>
           <BottomCardContainer>
             <ExtensionGlow />
