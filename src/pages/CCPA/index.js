@@ -118,8 +118,16 @@ const CCPA = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let processedValue = value;
+
+    // For the request dropdown, send the label instead of the value
+    if (name === 'request') {
+      const selected = requestOptions.find((opt) => opt.value === value);
+      processedValue = selected ? selected.label : '';
+    }
+
     // For ZIP code, allow only digits and limit to 5 characters
-    const processedValue = name === 'zipcode' ? value.replace(/\D/g, '').slice(0, 5) : value;
+    const processedZipcode = name === 'zipcode' ? value.replace(/\D/g, '').slice(0, 5) : value;
 
     const newFormData = {
       ...formData,
