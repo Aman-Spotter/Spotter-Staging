@@ -5,10 +5,7 @@
 
   "functions": {
     "api/ccpa-request.js": {
-      "includeFiles": [
-        "server/api/ccpa-request.js",
-        "server/api/*.js"
-      ]
+      "includeFiles": "server/api/**"
     }
   }
 }
