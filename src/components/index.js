@@ -28,3 +28,4 @@ export { default as ExtensionIntro } from './ExtensionComponents/Intro';
 export { default as ExtensionPricing } from './ExtensionComponents/MemberPlan';
 export { default as PaymentMethodModal } from './PaymentMethodModal';
 export { default as PublicLayout } from './PublicLayout';
+export { default as WatchDemoSection } from './WatchDemoSection';

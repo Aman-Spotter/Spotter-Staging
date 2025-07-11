@@ -10,7 +10,6 @@ export const FooterContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 10px 0;
 
   @media screen and (max-width: 768px) {
     padding: 8px 0;

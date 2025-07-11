@@ -15,6 +15,7 @@ const CCPA = () => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [touchedFields, setTouchedFields] = useState({});
 
   const requestOptions = [
@@ -213,8 +214,32 @@ const CCPA = () => {
       message: true,
     });
 
-    if (validateForm()) {
+    if (!validateForm()) return;
+
+    try {
+      setIsSending(true);
+
+      const response = await fetch('/api/ccpa-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to send CCPA request:', errorData);
+        alert(errorData.error || 'Failed to submit your request. Please try again later.');
+        return;
+      }
+
       setIsSubmitted(true);
+    } catch (err) {
+      console.error('CCPA request error:', err);
+      alert('Failed to submit your request. Please try again later.');
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -416,7 +441,9 @@ const CCPA = () => {
               </S.FormGroup>
             </S.FormRow>
 
-            <S.SubmitButton type="submit">Send</S.SubmitButton>
+            <S.SubmitButton type="submit" disabled={isSending}>
+              {isSending ? 'Sending...' : 'Send'}
+            </S.SubmitButton>
           </S.Form>
         </S.FormSection>
 

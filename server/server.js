@@ -1,5 +1,5 @@
-// Load environment variables
-require('dotenv').config();
+// Load environment variables from project root (.env). This works even if we run `node server/server.js` from inside `server`.
+require('dotenv').config({ path: require('path').resolve(__dirname, '..', '.env') });
 
 const express = require('express');
 const cors = require('cors');
@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const { createSubscription, registerPaidUser } = require('./api/create-subscription');
 const { requestQuote } = require('./api/request-quote');
+const { sendCcpaRequest } = require('./api/ccpa-request');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.post('/api/create-subscription', createSubscription);
 app.post('/api/register-paid-user', registerPaidUser);
 app.post('/api/request-quote', requestQuote);
+app.post('/api/ccpa-request', sendCcpaRequest);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

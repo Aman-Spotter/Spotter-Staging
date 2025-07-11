@@ -5,7 +5,6 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 ## 🏗️ Project Architecture
 
 ### Frontend (React Application)
-
 - **Framework**: React 17.0.1 with Create React App
 - **State Management**: Apollo Client for GraphQL, Context API for local state
 - **Styling**: Styled Components + SCSS
@@ -13,7 +12,6 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 - **UI Components**: Custom component library with responsive design
 
 ### Backend (Node.js/Express)
-
 - **Runtime**: Node.js 18.x with Express.js
 - **APIs**: RESTful endpoints for subscriptions, quotes, and payments
 - **Payment Processing**: Stripe integration for subscription management
@@ -21,7 +19,6 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 - **Notifications**: Slack webhook integrations
 
 ### Infrastructure & Deployment
-
 - **Cloud Platform**: Google Cloud Platform (App Engine)
 - **Build System**: Cloud Build with CI/CD pipelines
 - **Environment Management**: Separate dev/prod configurations
@@ -32,35 +29,30 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 ### 🎯 Core Applications
 
 #### **Spotter Lens** (Market Intelligence)
-
 - Real-time freight market analysis
 - Hot market visualization with interactive maps
 - Historical market data and trends
 - Load board optimization tools
 
 #### **Spotter Sentinel** (Fleet Management)
-
 - Driver monitoring and safety analytics
 - Compliance tracking and reporting
 - Fleet performance optimization
 - Real-time alerts and notifications
 
 #### **Spotter TMS** (Transportation Management)
-
 - Load planning and optimization
 - Route management
 - Dispatch coordination
 - Carrier management tools
 
 #### **Browser Extension**
-
 - Load board integration
 - Market data overlay
 - Email automation tools
 - Quick filtering and search
 
 ### 💼 Business Features
-
 - **Subscription Management**: Stripe-powered billing with monthly/yearly plans
 - **User Authentication**: Secure login/signup with password reset
 - **Quote System**: Automated quote requests with Slack notifications
@@ -70,7 +62,6 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 ## 🛠️ Technology Stack
 
 ### Frontend Dependencies
-
 ```json
 {
   "React": "17.0.1",
@@ -84,7 +75,6 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 ```
 
 ### Backend Dependencies
-
 ```json
 {
   "Express": "^4.17.1",
@@ -98,7 +88,6 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 ## 🚦 Getting Started
 
 ### Prerequisites
-
 - Node.js 18.x
 - Yarn 1.x
 - Google Cloud SDK (for deployment)
@@ -106,21 +95,18 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 ### Environment Setup
 
 1. **Clone the repository**
-
    ```bash
    git clone <repository-url>
    cd spotter.ai
    ```
 
 2. **Install dependencies**
-
    ```bash
    yarn install
    ```
 
 3. **Environment Configuration**
    Create a `.env` file in the root directory:
-
    ```env
    # Server Configuration
    SERVER_PORT=3001
@@ -129,7 +115,7 @@ A comprehensive trucking and logistics platform providing market intelligence, l
    # Frontend Configuration
    REACT_APP_API_URL=https://api-dev.ai/graphql/
    REACT_APP_GOOGLE_API_KEY=your_google_api_key
-
+   
    # Stripe Configuration
    REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_...
    STRIPE_SECRET_KEY=sk_test_...
@@ -153,11 +139,9 @@ A comprehensive trucking and logistics platform providing market intelligence, l
 ### Development
 
 1. **Start the development server**
-
    ```bash
    yarn start
    ```
-
    The React app will be available at `http://localhost:3000`
 
 2. **Start the backend server** (in a separate terminal)
@@ -175,7 +159,6 @@ yarn build
 ## 🌐 API Endpoints
 
 ### Core APIs
-
 - `POST /api/create-subscription` - Create Stripe subscription
 - `POST /api/register-paid-user` - Register paid user account
 - `POST /api/request-quote` - Submit quote requests
@@ -185,7 +168,6 @@ yarn build
 ## 🏢 Application Routes
 
 ### Public Routes
-
 - `/` - Landing page with product overview
 - `/driversapp` - Driver mobile app promotion
 - `/lens` - Market intelligence dashboard
@@ -194,14 +176,12 @@ yarn build
 - `/loan-calculators` - Financial tools
 
 ### Auth Routes
-
 - `/login` - User authentication
 - `/sign-up` - User registration
 - `/forgot-password` - Password recovery
 - `/password-reset/:token` - Password reset
 
 ### Extension Routes (extension.spotter.ai)
-
 - `/` - Extension landing page
 - `/pay` - Extension payment processing
 - `/billing` - Subscription management
@@ -215,19 +195,16 @@ yarn build
 The application is deployed using Google Cloud Build with separate configurations for development and production environments.
 
 **Development Deployment:**
-
 ```bash
 gcloud builds submit --config cloudbuild-dev.yaml
 ```
 
 **Production Deployment:**
-
 ```bash
 gcloud builds submit --config cloudbuild-prod.yaml
 ```
 
 ### Environment-Specific Configuration
-
 - **Development**: `dev.spotter.ai`
 - **Production**: `spotter.ai`
 - **Extension**: `extension.spotter.ai`
@@ -235,7 +212,6 @@ gcloud builds submit --config cloudbuild-prod.yaml
 ## 📱 Mobile Applications
 
 The platform includes companion mobile applications:
-
 - **iOS**: Available on the App Store
 - **Android**: Available on Google Play Store
 
@@ -244,14 +220,12 @@ Mobile apps provide driver-focused features and real-time notifications.
 ## 🔧 Development Tools
 
 ### Code Quality
-
 - **ESLint**: Airbnb configuration with custom rules
 - **Prettier**: Code formatting
 - **Husky**: Git hooks for pre-commit checks
 - **Lint-staged**: Run linters on staged files
 
 ### Build Optimization
-
 - **Webpack**: Custom configuration for optimal bundling
 - **Code Splitting**: Automatic route-based splitting
 - **Source Maps**: Disabled in production for performance
@@ -260,14 +234,12 @@ Mobile apps provide driver-focused features and real-time notifications.
 ## 🎨 UI/UX Features
 
 ### Design System
-
 - **Custom Typography**: Matter font family
 - **Color Palette**: Consistent brand colors throughout
 - **Responsive Design**: Mobile-first approach
 - **Accessibility**: WCAG compliance considerations
 
 ### Interactive Elements
-
 - **Data Visualization**: Custom D3.js charts and maps
 - **Real-time Updates**: Live market data feeds
 - **Interactive Maps**: Google Maps integration with custom overlays
@@ -291,14 +263,12 @@ Mobile apps provide driver-focused features and real-time notifications.
 ## 📈 Business Intelligence
 
 ### Market Data
-
 - Real-time freight rates
 - Supply and demand analytics
 - Geographic market analysis
 - Historical trend tracking
 
 ### Fleet Analytics
-
 - Driver performance metrics
 - Vehicle utilization reports
 - Safety compliance tracking
@@ -319,7 +289,6 @@ This project is proprietary software owned by Spotter.AI.
 ## 🆘 Support
 
 For technical support or business inquiries:
-
 - **Email**: support@spotter.ai
 - **Website**: [https://spotter.ai](https://spotter.ai)
 - **Documentation**: Internal team documentation available
@@ -327,5 +296,3 @@ For technical support or business inquiries:
 ---
 
 **Built with ❤️ by the Spotter.AI Team**
-#   S p o t t e r - S t a g i n g  
- 

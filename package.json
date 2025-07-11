@@ -2,6 +2,7 @@
   "name": "spotter",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "homepage": ".",
   "dependencies": {
     "@apollo/client": "^3.7.15",

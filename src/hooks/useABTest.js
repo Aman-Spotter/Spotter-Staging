@@ -61,7 +61,13 @@ export const useABTest = (testName, variations) => {
         experiment_variant: assignedVariationName,
       });
     }
-  }, [testName, variations]);
+    // `variations` is intentionally **not** included in the dependency array because callers often pass
+    // an inline array literal (e.g. `[ { name: 'A', text: 'Buy' }, { name: 'B', text: 'Try' } ]`)
+    // which would have a new reference on every render. Including it would cause this effect to run
+    // on **every** component update, leading to a state update loop and the "Maximum update depth exceeded" warning.
+    // The variations themselves are assumed to be static for the lifetime of the component instance, so
+    // it is safe to omit them here.
+  }, [testName]);
 
   return variation;
 };
