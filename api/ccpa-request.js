@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const {
     name = '',
@@ -40,15 +40,17 @@ module.exports = async (req, res) => {
 
   try {
     await transporter.sendMail({
-      from: `${process.env.ZOHO_SMTP_FROM_NAME || 'Spotter Sentinel'} <${process.env.ZOHO_SMTP_USER}>`,
+      from: `${process.env.ZOHO_SMTP_FROM_NAME || 'Spotter Sentinel'} <${
+        process.env.ZOHO_SMTP_USER
+      }>`,
       to: 'support@spottersentinel.com',
       subject,
       text: lines.join('\n'),
-      html: `<h2>CCPA Request</h2><ul>${lines.map(l => `<li>${l}</li>`).join('')}</ul>`,
+      html: `<h2>CCPA Request</h2><ul>${lines.map((l) => `<li>${l}</li>`).join('')}</ul>`,
     });
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error('CCPA email error:', err);
     return res.status(500).json({ error: 'Failed to send email' });
   }
-}; 
+};

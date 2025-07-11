@@ -18,24 +18,17 @@ const CCPA = () => {
   const [isSending, setIsSending] = useState(false);
   const [touchedFields, setTouchedFields] = useState({});
 
-  const requestOptions = [
-    { value: 'unsubscribe', label: 'Unsubscribe me from future marketing communications' },
-    {
-      value: 'categories',
-      label:
-        'Provide the categories of personal information about me that the business collects and uses',
-    },
-    { value: 'selling', label: 'Does the business sell my personal information?' },
-    {
-      value: 'specific',
-      label: 'Provide the specific personal information the business has about me',
-    },
-    {
-      value: 'delete_specific',
-      label: 'Delete specific data (You should specify in the text message field below)',
-    },
-    { value: 'delete_all', label: 'Delete all of my personal information' },
-  ];
+  const requestOptions = {
+    unsubscribe: 'Unsubscribe me from future marketing communications',
+    categories:
+      'Provide the categories of personal information about me that the business collects and uses',
+    selling: 'Does the business sell my personal information?',
+    specific: 'Provide the specific personal information the business has about me',
+    delete_specific: 'Delete specific data (You should specify in the text message field below)',
+    delete_all: 'Delete all of my personal information',
+  };
+
+  const requestLabel = requestOptions[formData.request] || formData.request || '';
 
   const stateOptions = [
     { value: 'AL', label: 'Alabama' },
@@ -118,16 +111,9 @@ const CCPA = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    let processedValue = value;
-
-    // For the request dropdown, send the label instead of the value
-    if (name === 'request') {
-      const selected = requestOptions.find((opt) => opt.value === value);
-      processedValue = selected ? selected.label : '';
-    }
 
     // For ZIP code, allow only digits and limit to 5 characters
-    const processedZipcode = name === 'zipcode' ? value.replace(/\D/g, '').slice(0, 5) : value;
+    const processedValue = name === 'zipcode' ? value.replace(/\D/g, '').slice(0, 5) : value;
 
     const newFormData = {
       ...formData,
@@ -387,9 +373,9 @@ const CCPA = () => {
                   onBlur={handleInputBlur}
                 >
                   <option value="">Selection</option>
-                  {requestOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
+                  {Object.entries(requestOptions).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
                     </option>
                   ))}
                 </S.Select>
