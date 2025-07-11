@@ -1,1 +1,2 @@
-module.exports = require('../server/api/ccpa-request');
+import ccpaRequest from '../server/api/ccpa-request.js';
+export default ccpaRequest;
