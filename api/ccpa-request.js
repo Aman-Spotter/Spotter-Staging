@@ -1,1 +1,1 @@
-module.exports = require('../server/api/ccpa-request.js');
+module.exports = require('../server/api/ccpa-request');
