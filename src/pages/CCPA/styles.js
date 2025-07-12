@@ -443,7 +443,7 @@ export const TextArea = styled.textarea`
 
 export const ErrorText = styled.span`
   color: #ff4444;
-  font-size: 14px;
+  font-size: 12px;
   margin-top: -4px;
   font-weight: 500;
 `;

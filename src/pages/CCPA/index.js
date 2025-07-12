@@ -93,6 +93,35 @@ const CCPA = () => {
           return 'Please enter a valid email address';
         }
         return '';
+      case 'phone':
+        // Phone is optional, but if provided it must be a valid US phone number
+        if (value && value.trim()) {
+          // Remove all non-digits
+          const digitsOnly = value.replace(/\D/g, '');
+
+          // Helper to check area and central office code
+          const isValidAreaAndCentral = (area, central) =>
+            /^[2-9]\d{2}$/.test(area) && /^[2-9]\d{2}$/.test(central);
+
+          if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) {
+            const area = digitsOnly.slice(1, 4);
+            const central = digitsOnly.slice(4, 7);
+            if (isValidAreaAndCentral(area, central)) {
+              return '';
+            }
+            return 'Area and central office code must start with 2-9';
+          }
+          if (digitsOnly.length === 10) {
+            const area = digitsOnly.slice(0, 3);
+            const central = digitsOnly.slice(3, 6);
+            if (isValidAreaAndCentral(area, central)) {
+              return '';
+            }
+            return 'Area and central office code must start with 2-9';
+          }
+          return 'Enter a valid US phone number (e.g. 555-123-4567)';
+        }
+        return '';
       case 'state':
         if (!value) {
           return 'Please select a state';
@@ -112,8 +141,43 @@ const CCPA = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
+    let processedValue = value;
+
     // For ZIP code, allow only digits and limit to 5 characters
-    const processedValue = name === 'zipcode' ? value.replace(/\D/g, '').slice(0, 5) : value;
+    if (name === 'zipcode') {
+      processedValue = value.replace(/\D/g, '').slice(0, 5);
+    }
+
+    // For phone number, format as user types
+    if (name === 'phone') {
+      // Remove all non-digits
+      const digitsOnly = value.replace(/\D/g, '');
+
+      // Format based on length
+      if (digitsOnly.length <= 3) {
+        processedValue = digitsOnly;
+      } else if (digitsOnly.length <= 6) {
+        processedValue = `${digitsOnly.slice(0, 3)}-${digitsOnly.slice(3)}`;
+      } else if (digitsOnly.length <= 10) {
+        processedValue = `${digitsOnly.slice(0, 3)}-${digitsOnly.slice(3, 6)}-${digitsOnly.slice(
+          6
+        )}`;
+      } else if (digitsOnly.length <= 11 && digitsOnly.startsWith('1')) {
+        // Handle 11 digits with country code
+        const withoutCountry = digitsOnly.slice(1);
+        processedValue = `+1 ${withoutCountry.slice(0, 3)}-${withoutCountry.slice(
+          3,
+          6
+        )}-${withoutCountry.slice(6)}`;
+      } else {
+        // Limit to 10 digits for standard US numbers
+        const limitedDigits = digitsOnly.slice(0, 10);
+        processedValue = `${limitedDigits.slice(0, 3)}-${limitedDigits.slice(
+          3,
+          6
+        )}-${limitedDigits.slice(6)}`;
+      }
+    }
 
     const newFormData = {
       ...formData,
@@ -122,7 +186,7 @@ const CCPA = () => {
     setFormData(newFormData);
 
     if (touchedFields[name]) {
-      const fieldError = validateField(name, value);
+      const fieldError = validateField(name, processedValue);
       setErrors((prev) => ({
         ...prev,
         [name]: fieldError,
@@ -180,6 +244,10 @@ const CCPA = () => {
     // Email validation
     const emailError = validateField('email', formData.email);
     if (emailError) newErrors.email = emailError;
+
+    // Phone validation (only if provided)
+    const phoneError = validateField('phone', formData.phone);
+    if (phoneError) newErrors.phone = phoneError;
 
     // State validation
     const stateError = validateField('state', formData.state);
@@ -359,7 +427,9 @@ const CCPA = () => {
                   onChange={handleInputChange}
                   onBlur={handleInputBlur}
                   placeholder="Optional - we never use this for marketing"
+                  $hasError={errors.phone}
                 />
+                {errors.phone && <S.ErrorText>{errors.phone}</S.ErrorText>}
               </S.FormGroup>
             </S.FormRow>
 
