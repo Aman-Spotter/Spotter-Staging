@@ -340,8 +340,7 @@ export const CenteredHeroContent = styled.div`
 
   @media (max-width: 480px) {
     position: relative;
-    top: 26px;
-    margin-bottom: 5px;
+    top: 0px;
   }
 
   @media (max-width: 375px) {
