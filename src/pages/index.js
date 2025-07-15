@@ -32,6 +32,8 @@ import TMS from './TMS';
 import LoanCalculators from './LoanCalculators';
 import WatchDemo from './WatchDemo';
 import CCPA from './CCPA';
+import Blog from './Blog';
+import BlogPost from './BlogPost';
 
 const Page = () => {
   const isExtensionHost =
@@ -145,6 +147,16 @@ const Page = () => {
           <Route path="/ccpa" exact>
             <Navbar showAuthUrls isSentinelPage />
             <CCPA />
+            <Footer />
+          </Route>
+          <Route path="/blog" exact>
+            <Navbar absolute showAuthUrls />
+            <Blog />
+            <Footer />
+          </Route>
+          <Route path="/blog/:id" exact>
+            <Navbar absolute showAuthUrls />
+            <BlogPost />
             <Footer />
           </Route>
           <Route path="*">

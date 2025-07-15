@@ -114,17 +114,17 @@ export const ErrorMessage = styled.div`
   display: ${({ show }) => (show ? 'block' : 'none')};
   color: #ef4444;
   font-size: 0.875rem;
-  margin-top: 6px;
+  margin-top: 2px;
   font-weight: 400;
 
   @media (max-width: 768px) {
     font-size: 0.8rem;
-    margin-top: 4px;
+    margin-top: 1px;
   }
 
   @media (max-width: 480px) {
     font-size: 0.75rem;
-    margin-top: 3px;
+    margin-top: 1px;
   }
 `;
 
@@ -172,14 +172,14 @@ export const InputIcon = styled.div`
 
 export const Input = styled.input`
   width: 100%;
-  padding: 12px 12px 12px 44px;
+  padding: 12px 12px 12px 40px;
   background: #ffffff;
-  border: 2px solid ${({ hasError }) => (hasError ? '#ef4444' : '#e2e8f0')};
-  border-radius: 6px;
+  border: 1.5px solid ${({ hasError }) => (hasError ? '#ef4444' : '#e2e8f0')};
+  border-radius: 8px;
   color: #1e293b;
   font-size: 0.85rem;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 
   @media (max-width: 768px) {
     padding: 10px 10px 10px 38px;
@@ -200,7 +200,8 @@ export const Input = styled.input`
     outline: none;
     border-color: ${({ hasError }) => (hasError ? '#ef4444' : '#40e0d0')};
     box-shadow: 0 0 0 3px
-      ${({ hasError }) => (hasError ? 'rgba(239, 68, 68, 0.1)' : 'rgba(64, 224, 208, 0.1)')};
+      ${({ hasError }) => (hasError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(64, 224, 208, 0.15)')};
+    transform: translateY(-1px);
   }
 
   &:focus + ${InputIcon} {
@@ -256,10 +257,10 @@ export const TextareaIcon = styled.div`
 
 export const Textarea = styled.textarea`
   width: 100%;
-  padding: 12px 12px 12px 44px;
+  padding: 12px 12px 12px 40px;
   background: #ffffff;
-  border: 2px solid ${({ hasError }) => (hasError ? '#ef4444' : '#e2e8f0')};
-  border-radius: 6px;
+  border: 1.5px solid ${({ hasError }) => (hasError ? '#ef4444' : '#e2e8f0')};
+  border-radius: 8px;
   color: #1e293b;
   font-size: 0.85rem;
   font-weight: 500;
@@ -267,7 +268,7 @@ export const Textarea = styled.textarea`
   resize: vertical;
   min-height: 60px;
   max-height: 100px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 
   @media (max-width: 768px) {
     padding: 10px 10px 10px 38px;
@@ -292,7 +293,8 @@ export const Textarea = styled.textarea`
     outline: none;
     border-color: ${({ hasError }) => (hasError ? '#ef4444' : '#40e0d0')};
     box-shadow: 0 0 0 3px
-      ${({ hasError }) => (hasError ? 'rgba(239, 68, 68, 0.1)' : 'rgba(64, 224, 208, 0.1)')};
+      ${({ hasError }) => (hasError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(64, 224, 208, 0.15)')};
+    transform: translateY(-1px);
   }
 
   &:focus + ${TextareaIcon} {
@@ -339,8 +341,8 @@ export const BackgroundElements = styled.div`
 
 // Hero Section
 export const HeroSection = styled.section`
-  padding: 40px 0 80px;
-  min-height: 80vh;
+  padding: 60px 0 60px;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -499,19 +501,19 @@ export const BadgeIcon = styled.span`
 `;
 
 export const Title = styled.h1`
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 700;
   line-height: 1.1;
   color: white;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   letter-spacing: -0.02em;
 
   @media (max-width: 768px) {
-    font-size: 2.5rem;
+    font-size: 3rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-top: 76px;
   }
 `;
@@ -562,31 +564,27 @@ export const Subtitle = styled.p`
 // Form Container
 export const FormContainer = styled.div`
   background: rgba(255, 255, 255, 0.98);
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 24px;
   position: relative;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  max-width: 1400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  max-width: 800px;
   margin: 0 auto;
 
-  /* Scale approach for large screens */
+  /* Responsive margins for large screens */
   @media (min-width: 1920px) {
-    transform: scale(1.3);
-    margin: 80px auto;
-  }
-
-  @media (min-width: 1680px) and (max-width: 1919px) {
-    transform: scale(1.2);
-    margin: 60px auto;
-  }
-
-  @media (min-width: 1440px) and (max-width: 1679px) {
-    transform: scale(1);
     margin: 40px auto;
   }
 
+  @media (min-width: 1680px) and (max-width: 1919px) {
+    margin: 30px auto;
+  }
+
+  @media (min-width: 1440px) and (max-width: 1679px) {
+    margin: 25px auto;
+  }
+
   @media (min-width: 1280px) and (max-width: 1439px) {
-    transform: scale(1);
     margin: 20px auto;
   }
 
@@ -605,61 +603,68 @@ export const FormContainer = styled.div`
 export const Form = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 16px;
+  gap: 12px 20px;
   position: relative;
   z-index: 2;
 
   /* Ultra-wide and very large screens (2560px+) */
   @media (min-width: 2560px) {
-    gap: 16px 32px;
+    gap: 8px 32px;
   }
 
   /* Very large screens (1920px-2559px) */
   @media (min-width: 1920px) and (max-width: 2559px) {
-    gap: 12px 24px;
+    gap: 6px 24px;
   }
 
   /* Large screens (1680px-1919px) */
   @media (min-width: 1680px) and (max-width: 1919px) {
-    gap: 10px 20px;
+    gap: 5px 20px;
   }
 
   /* Medium-large screens (1440px-1679px) */
   @media (min-width: 1440px) and (max-width: 1679px) {
-    gap: 8px 18px;
+    gap: 4px 18px;
   }
 
   /* Medium desktop screens (1280px-1439px) */
   @media (min-width: 1280px) and (max-width: 1439px) {
-    gap: 8px 16px;
+    gap: 4px 16px;
   }
 
   /* Small desktop screens (1024px-1279px) */
   @media (min-width: 1024px) and (max-width: 1279px) {
-    gap: 6px 14px;
+    gap: 3px 14px;
   }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 6px;
+    gap: 3px;
   }
 
   @media (max-width: 480px) {
-    gap: 4px;
+    gap: 2px;
   }
 `;
 
 export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 6px;
+  margin-bottom: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   @media (max-width: 768px) {
-    gap: 0;
+    gap: 4px;
+    margin-bottom: 8px;
   }
 
   @media (max-width: 480px) {
-    gap: 0;
+    gap: 3px;
+    margin-bottom: 6px;
   }
 
   /* Full width sections */
@@ -692,18 +697,18 @@ export const FormGroup = styled.div`
 export const Label = styled.label`
   font-size: 0.8rem;
   font-weight: 600;
-  color: #334155;
-  margin-bottom: 2px;
-  /* Hide labels visually but keep for accessibility */
-  position: absolute;
-  width: 1px;
-  height: 1px;
+  color: #475569;
+  margin-bottom: 4px;
+  display: block;
+  position: static;
+  width: auto;
+  height: auto;
   padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  margin: 0 0 4px 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  border: none;
 
   /* Show labels for apps grid */
   &.apps-grid-label {
@@ -774,8 +779,8 @@ export const FormHelperText = styled.p`
 export const AppsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-top: 4px;
+  gap: 8px;
+  margin-top: 6px;
   padding: ${({ hasError }) => (hasError ? '2px' : '0')};
   border: ${({ hasError }) => (hasError ? '1px solid #f84960' : 'none')};
   border-radius: ${({ hasError }) => (hasError ? '6px' : '0')};
@@ -794,8 +799,8 @@ export const AppsGrid = styled.div`
 export const AppCard = styled.label`
   background: #ffffff;
   border: 1px solid ${({ isSelected }) => (isSelected ? '#40e0d0' : '#e2e8f0')};
-  border-radius: 6px;
-  padding: 8px;
+  border-radius: 8px;
+  padding: 10px;
   cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   transition: all 0.2s ease;
   position: relative;
@@ -929,10 +934,10 @@ export const SubmitButton = styled.button`
   background: ${({ disabled }) => (disabled ? '#94a3b8' : '#40e0d0')};
   color: white;
   border: none;
-  padding: 14px 24px;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: all 0.2s ease;
   display: flex;
@@ -941,10 +946,10 @@ export const SubmitButton = styled.button`
   gap: 8px;
   position: relative;
   opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
-  min-height: 44px;
-  margin: 16px 0 0 0;
+  min-height: 40px;
+  margin: 12px 0 0 0;
   width: 100%;
-  box-shadow: ${({ disabled }) => (disabled ? 'none' : '0 3px 10px rgba(64, 224, 208, 0.3)')};
+  box-shadow: ${({ disabled }) => (disabled ? 'none' : '0 2px 8px rgba(64, 224, 208, 0.25)')};
 
   @media (max-width: 768px) {
     padding: 12px 20px;

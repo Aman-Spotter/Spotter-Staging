@@ -528,12 +528,13 @@ const RequestQuote = () => {
                     placeholder="John Doe"
                     value={formData.name}
                     onChange={handleInputChange}
-                    onBlur={handleInputBlur}
                     hasError={touchedFields.name && validationErrors.name}
                     aria-describedby={
                       touchedFields.name && validationErrors.name ? 'name-error' : undefined
                     }
                     aria-invalid={!!(touchedFields.name && validationErrors.name)}
+                    onFocus={() => setTouchedFields((prev) => ({ ...prev, name: true }))}
+                    onBlur={handleInputBlur}
                   />
                 </S.InputWrapper>
                 <S.ErrorMessage
@@ -575,12 +576,13 @@ const RequestQuote = () => {
                     placeholder="you@company.com"
                     value={formData.email}
                     onChange={handleInputChange}
-                    onBlur={handleInputBlur}
                     hasError={touchedFields.email && validationErrors.email}
                     aria-describedby={
                       touchedFields.email && validationErrors.email ? 'email-error' : undefined
                     }
                     aria-invalid={!!(touchedFields.email && validationErrors.email)}
+                    onFocus={() => setTouchedFields((prev) => ({ ...prev, email: true }))}
+                    onBlur={handleInputBlur}
                   />
                 </S.InputWrapper>
                 <S.ErrorMessage
@@ -620,7 +622,6 @@ const RequestQuote = () => {
                     placeholder="Acme Inc."
                     value={formData.company}
                     onChange={handleInputChange}
-                    onBlur={handleInputBlur}
                     hasError={touchedFields.company && validationErrors.company}
                     aria-describedby={
                       touchedFields.company && validationErrors.company
@@ -628,6 +629,8 @@ const RequestQuote = () => {
                         : undefined
                     }
                     aria-invalid={!!(touchedFields.company && validationErrors.company)}
+                    onFocus={() => setTouchedFields((prev) => ({ ...prev, company: true }))}
+                    onBlur={handleInputBlur}
                   />
                 </S.InputWrapper>
                 <S.ErrorMessage
@@ -666,6 +669,7 @@ const RequestQuote = () => {
                     value={formData.phone}
                     onChange={handlePhoneInputChange}
                     onBlur={handleInputBlur}
+                    onFocus={() => setTouchedFields((prev) => ({ ...prev, phone: true }))}
                   >
                     {(inputProps) => (
                       <S.Input
@@ -714,7 +718,6 @@ const RequestQuote = () => {
                     placeholder={placeholderText}
                     value={formData.message}
                     onChange={handleInputChange}
-                    onBlur={handleInputBlur}
                     rows={4}
                     hasError={touchedFields.message && validationErrors.message}
                     aria-describedby={
@@ -723,6 +726,8 @@ const RequestQuote = () => {
                         : undefined
                     }
                     aria-invalid={!!(touchedFields.message && validationErrors.message)}
+                    onFocus={() => setTouchedFields((prev) => ({ ...prev, message: true }))}
+                    onBlur={handleInputBlur}
                   />
                 </S.TextareaWrapper>
                 <S.ErrorMessage
@@ -751,9 +756,6 @@ const RequestQuote = () => {
                     )}
                   </S.FieldStatus>
                 </S.Label>
-                <S.FormHelperText>
-                  Please select at least one product you&apos;re interested in.
-                </S.FormHelperText>
                 <S.AppsGrid>
                   {apps.map((app, index) => {
                     const IconComponent = app.icon;
@@ -768,6 +770,12 @@ const RequestQuote = () => {
                         isDisabled={isDisabled}
                         onClick={() => handleAppToggle(app.id)}
                         style={{ animationDelay: `${0.8 + index * 0.1}s` }}
+                        onMouseEnter={() =>
+                          setTouchedFields((prev) => ({ ...prev, selectedApps: true }))
+                        }
+                        onMouseLeave={() =>
+                          setTouchedFields((prev) => ({ ...prev, selectedApps: false }))
+                        }
                       >
                         <S.AppIcon isSelected={isSelected} isDisabled={isDisabled}>
                           <IconComponent size={32} />
