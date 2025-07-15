@@ -46,7 +46,7 @@ export const Layout = styled.div`
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   padding-left: max(20px, env(safe-area-inset-left));
   padding-right: max(20px, env(safe-area-inset-right));
-  padding-top: 120px;
+  padding-top: 80px;
   padding-bottom: 20px;
   position: relative;
   z-index: 1;
@@ -79,12 +79,63 @@ export const Layout = styled.div`
   }
 `;
 
+// Blog Header
+export const BlogHeader = styled.div`
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 20px 0;
+  position: relative;
+  z-index: 1;
+  animation: ${slideIn} 0.8s ease-out;
+`;
+
+export const BlogPageTitle = styled.h1`
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  background: linear-gradient(
+    135deg,
+    ${colors.text} 0%,
+    ${colors.primary} 50%,
+    ${colors.primaryLight} 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.2;
+  padding-bottom: 0.3em;
+  animation: ${gradientShift} 3s ease infinite;
+  letter-spacing: -0.02em;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+`;
+
+export const BlogSubtitle = styled.p`
+  font-size: 1.3rem;
+  color: ${colors.textSecondary};
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-weight: 400;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+`;
+
 // Blog List
 export const BlogList = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 40px;
   position: relative;
   z-index: 1;

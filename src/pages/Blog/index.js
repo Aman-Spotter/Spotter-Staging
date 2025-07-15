@@ -22,6 +22,12 @@ const Blog = () => {
 
   return (
     <S.Layout>
+      {/* Blog Header */}
+      <S.BlogHeader>
+        <S.BlogPageTitle>Spotter Blog</S.BlogPageTitle>
+        <S.BlogSubtitle>Insights and industry knowledge for trucking professionals</S.BlogSubtitle>
+      </S.BlogHeader>
+
       {/* Blog List */}
       <S.BlogList>
         {blogData.map((blog) => (
