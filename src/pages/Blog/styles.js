@@ -15,7 +15,7 @@ const colors = {
   glow: 'rgba(20, 184, 166, 0.3)',
 };
 
-// Animations
+// Enhanced Animations
 const float = keyframes`
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(180deg); }
@@ -26,9 +26,9 @@ const pulse = keyframes`
   50% { opacity: 0.8; transform: scale(1.1); }
 `;
 
-const slideIn = keyframes`
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
 `;
 
 const gradientShift = keyframes`
@@ -37,10 +37,28 @@ const gradientShift = keyframes`
   100% { background-position: 0% 50%; }
 `;
 
+const floatParticle = keyframes`
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(10px, -10px) scale(1.1); }
+  50% { transform: translate(-5px, -20px) scale(0.9); }
+  75% { transform: translate(-15px, -5px) scale(1.05); }
+`;
+
+const glowPulse = keyframes`
+  0%, 100% { box-shadow: 0 0 20px rgba(20, 184, 166, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(20, 184, 166, 0.6); }
+`;
+
+const shimmer = keyframes`
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+`;
+
 // Layout Components
 export const Layout = styled.div`
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
   background: linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundLight} 100%);
   color: ${colors.text};
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
@@ -58,10 +76,10 @@ export const Layout = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(64, 224, 208, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(15, 118, 110, 0.05) 0%, transparent 50%);
-    animation: ${gradientShift} 15s ease infinite;
+    background: radial-gradient(circle at 20% 80%, rgba(20, 184, 166, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(64, 224, 208, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(15, 118, 110, 0.1) 0%, transparent 50%);
+    animation: ${gradientShift} 20s ease infinite;
     z-index: 0;
     pointer-events: none;
   }
@@ -73,20 +91,46 @@ export const Layout = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2314b8a6' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2314b8a6' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     z-index: 0;
     pointer-events: none;
   }
+`;
+
+// Animated Background Particles
+export const BackgroundParticles = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+`;
+
+export const Particle = styled.div`
+  position: absolute;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  background: ${({ color }) => color};
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: ${floatParticle} ${({ duration }) => duration}s ease-in-out infinite;
+  animation-delay: ${({ delay }) => delay}s;
+  left: ${({ left }) => left}%;
+  top: ${({ top }) => top}%;
+  filter: blur(1px);
 `;
 
 // Blog Header
 export const BlogHeader = styled.div`
   text-align: center;
   margin-bottom: 60px;
-  padding: 20px 0;
+  padding: 40px 0;
   position: relative;
-  z-index: 1;
-  animation: ${slideIn} 0.8s ease-out;
+  z-index: 2;
+  animation: ${fadeIn} 0.8s ease-out;
 `;
 
 export const BlogPageTitle = styled.h1`
@@ -111,6 +155,19 @@ export const BlogPageTitle = styled.h1`
   padding-bottom: 0.3em;
   animation: ${gradientShift} 3s ease infinite;
   letter-spacing: -0.02em;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, ${colors.primary}, transparent);
+    animation: ${shimmer} 2s ease-in-out infinite;
+  }
 
   @media (max-width: 768px) {
     font-size: 2.5rem;
@@ -124,21 +181,22 @@ export const BlogSubtitle = styled.p`
   margin: 0 auto;
   line-height: 1.6;
   font-weight: 400;
+  animation: ${fadeIn} 0.8s ease-out 0.2s both;
 
   @media (max-width: 768px) {
     font-size: 1.1rem;
   }
 `;
 
-// Blog List
+// Enhanced Blog List
 export const BlogList = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 40px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   padding: 0 40px;
   box-sizing: border-box;
 
@@ -150,18 +208,43 @@ export const BlogList = styled.div`
   }
 `;
 
-// Blog Card Image
+// Enhanced Blog Card Image
 export const BlogCardImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
   border-radius: 20px 20px 0 0;
   margin-bottom: 0;
   transition: transform 0.4s ease;
   background: linear-gradient(45deg, ${colors.backgroundLight}, ${colors.background});
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
+    pointer-events: none;
+  }
 `;
 
-// Blog Card
+// Enhanced Blog Content
+export const BlogContent = styled.div`
+  padding: 32px;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+`;
+
+// Enhanced Blog Card
 export const BlogCard = styled.div`
   background: ${colors.cardBackground};
   border-radius: 20px;
@@ -174,7 +257,8 @@ export const BlogCard = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  animation: ${slideIn} 0.8s ease-out;
+  opacity: 0;
+  animation: ${fadeIn} 0.6s ease-out forwards;
 
   &::before {
     content: '';
@@ -188,18 +272,39 @@ export const BlogCard = styled.div`
     transition: transform 0.3s ease;
   }
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
   &:hover {
-    transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 0 0 1px ${colors.primary}30,
-      0 0 10px ${colors.glow};
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px ${colors.primary}40,
+      0 0 20px ${colors.glow};
     border-color: ${colors.primary};
 
     &::before {
       transform: scaleX(1);
     }
 
+    &::after {
+      opacity: 1;
+    }
+
     ${BlogCardImage} {
-      transform: scale(1.03);
+      transform: scale(1.05);
+    }
+
+    ${BlogContent} {
+      transform: translateY(-5px);
     }
   }
 
@@ -217,14 +322,6 @@ export const BlogCard = styled.div`
   }
 `;
 
-export const BlogContent = styled.div`
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: space-between;
-`;
-
 export const BlogCategory = styled.div`
   display: inline-block;
   background: linear-gradient(135deg, ${colors.primary}, ${colors.primaryLight});
@@ -238,6 +335,7 @@ export const BlogCategory = styled.div`
   letter-spacing: 0.5px;
   box-shadow: 0 4px 12px ${colors.primary}30;
   align-self: flex-start;
+  animation: ${glowPulse} 2s ease-in-out infinite;
 `;
 
 export const BlogTitle = styled.h2`
@@ -254,22 +352,150 @@ export const BlogTitle = styled.h2`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  transition: color 0.3s ease;
+
+  ${BlogCard}:hover & {
+    color: ${colors.primaryLight};
+  }
 
   @media (max-width: 768px) {
     font-size: 1.3rem;
   }
 `;
 
-export const BlogExcerpt = styled.p`
+export const BlogExcerpt = styled.div`
   color: ${colors.textSecondary};
   line-height: 1.7;
   margin-bottom: 24px;
   font-size: 1rem;
   font-weight: 400;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  height: 100px; /* Fixed height for 4 lines of text */
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-grow: 1;
+  padding-right: 16px;
+  position: relative;
+
+  /* Hide scrollbar by default */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    width: 12px;
+    background: transparent !important;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent !important;
+    border-radius: 20px;
+    margin: 6px 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      ${colors.primary} 0%,
+      ${colors.primaryLight} 30%,
+      ${colors.primary} 70%,
+      ${colors.primaryDark} 100%
+    );
+    border-radius: 20px;
+    border: 2px solid rgba(20, 184, 166, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 12px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.9) 0%,
+        rgba(255, 255, 255, 0.4) 100%
+      );
+      border-radius: 2px;
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 12px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.9) 100%
+      );
+      border-radius: 2px;
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      180deg,
+      ${colors.primaryLight} 0%,
+      ${colors.primary} 30%,
+      ${colors.primaryLight} 70%,
+      ${colors.primary} 100%
+    );
+    box-shadow: 0 0 30px rgba(20, 184, 166, 0.6), 0 0 15px rgba(64, 224, 208, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    transform: scaleX(1.3) scaleY(1.1);
+    border-color: rgba(20, 184, 166, 0.5);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(
+      180deg,
+      ${colors.primaryDark} 0%,
+      ${colors.primary} 30%,
+      ${colors.primaryLight} 70%,
+      ${colors.primary} 100%
+    );
+    box-shadow: 0 0 40px rgba(20, 184, 166, 0.8), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transform: scaleX(1.4) scaleY(1.2);
+  }
+
+  /* Show scrollbar on hover */
+  &:hover {
+    // scrollbar-width: thin;
+    -ms-overflow-style: auto;
+
+    &::-webkit-scrollbar-track {
+      background: transparent !important;
+      border: none;
+      box-shadow: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: linear-gradient(
+        180deg,
+        ${colors.primary} 0%,
+        ${colors.primaryLight} 30%,
+        ${colors.primary} 70%,
+        ${colors.primaryDark} 100%
+      );
+      box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  /* Ensure text wraps properly */
+  word-wrap: break-word;
+  white-space: normal;
 `;
 
 export const BlogMeta = styled.div`
@@ -277,6 +503,7 @@ export const BlogMeta = styled.div`
   gap: 16px;
   margin-bottom: 24px;
   flex-wrap: wrap;
+  align-items: center;
 
   @media (max-width: 768px) {
     gap: 12px;
@@ -290,11 +517,21 @@ export const MetaItem = styled.div`
   color: ${colors.textMuted};
   font-size: 0.85rem;
   font-weight: 500;
+  transition: color 0.3s ease;
 
   svg {
     width: 14px;
     height: 14px;
     color: ${colors.primary};
+    transition: transform 0.3s ease;
+  }
+
+  ${BlogCard}:hover & {
+    color: ${colors.textSecondary};
+
+    svg {
+      transform: scale(1.1);
+    }
   }
 `;
 
@@ -309,14 +546,30 @@ export const ReadMoreButton = styled.div`
   margin-top: auto;
   padding: 12px 0;
   border-top: 1px solid ${colors.border};
+  position: relative;
 
   svg {
     transition: transform 0.3s ease;
     color: ${colors.primary};
   }
 
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, ${colors.primary}, ${colors.primaryLight});
+    transition: width 0.3s ease;
+  }
+
   ${BlogCard}:hover & {
     color: ${colors.primaryLight};
+
+    &::before {
+      width: 100%;
+    }
 
     svg {
       transform: translateX(6px);
@@ -382,12 +635,33 @@ export const ResponsiveTable = styled.div`
 export const GlobalStyle = createGlobalStyle`
   html, body {
     overflow-x: hidden !important;
+    overflow-y: auto;
     min-height: 100vh;
     width: 100%;
     box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(20, 184, 166, 0.3) transparent;
   }
   
   * {
     box-sizing: border-box;
+  }
+
+  /* Webkit scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(20, 184, 166, 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(20, 184, 166, 0.5);
   }
 `;

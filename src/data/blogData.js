@@ -1,21 +1,21 @@
-// Image paths for blog content (using public folder)
+// Image paths for blog content (using local images from public/blogs folder)
 export const blogImages = {
-  MarketMomentumSlows: '/images/blogs/Market_Momentum_Slows.png',
-  Class8TruckOrders: '/images/blogs/Class_8_Net_Orders.png',
-  Graph: '/images/blogs/blog-2-graph.png',
-  bl3img1: '/images/blogs/picture 1.png',
-  bl3img2: '/images/blogs/picture 2.png',
-  bl3img3: '/images/blogs/picture 3.png',
-  bl3img4: '/images/blogs/picture 4.png',
-  bl3img5: '/images/blogs/picture 5.png',
-  bl3img6: '/images/blogs/picture 6.png',
-  bl3img7: '/images/blogs/picture 7.png',
-  bl3img8: '/images/blogs/picture 8.png',
-  bl4img1: '/images/blogs/bg4img1.png',
-  bl4img2: '/images/blogs/bg4img2.png',
-  bl4img3: '/images/blogs/bg4img3.png',
-  bl4img4: '/images/blogs/bg4img4.png',
-  bl4img5: '/images/blogs/bg4img5.png',
+  bl1img1: '/blogs/Market_Momentum_Slows.png',
+  bl2img1: '/blogs/Class_8_Net_Orders.png',
+  bl2img2: '/blogs/blog-2-graph.png',
+  bl3img1: '/blogs/picture_1.png',
+  bl3img2: '/blogs/picture_2.png',
+  bl3img3: '/blogs/picture_3.png',
+  bl3img4: '/blogs/picture_4.png',
+  bl3img5: '/blogs/picture_5.png',
+  bl3img6: '/blogs/picture_6.png',
+  bl3img7: '/blogs/picture_7.png',
+  bl3img8: '/blogs/picture_8.png',
+  bl4img1: '/blogs/bg4img1.png',
+  bl4img2: '/blogs/bg4img2.png',
+  bl4img3: '/blogs/bg4img3.png',
+  bl4img4: '/blogs/bg4img4.png',
+  bl4img5: '/blogs/bg4img5.png',
 };
 
 const blogData = [
@@ -46,7 +46,7 @@ In response, the 2025 forecast for North American heavy-duty truck sales has bee
 <h3>North America in a Global Context</h3>
 <p>North America’s slowdown isn’t occurring in isolation. Global truck sales are seeing a general cooling trend, particularly in mature markets:</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_1" alt="Market Momentum Slows Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl1img1}" alt="Market Momentum Slows Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 <table border="1" cellpadding="6" style="border-collapse:collapse; width:100%; margin: 20px 0;">
 <thead>
@@ -86,8 +86,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     readTime: '8 min read',
     category: 'Market Analysis',
     tags: ['Truck Sales', 'Market Trends', 'North America', 'Q1 2025'],
-    image:
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80', // Truck highway
+    image: blogImages.bl1img1, // Market momentum chart
   },
   {
     id: 2,
@@ -109,7 +108,7 @@ For now, however, the data paints a picture of strategic pause across the North 
 <p>“New and pending U.S. tariffs and retaliatory tariffs will significantly increase costs for Class 8 trucks, tractors, and related components,” said FTR Senior Analyst Dan Moyer.</p>
 
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_2" alt="Class 8 Truck Orders Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl2img1}" alt="Class 8 Truck Orders Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 
 <p>In the chart above, April’s order volumes (shown in bright green) underscore how steep the drop-off has been compared to 2024 (blue line). It’s a continuation of a downward trend that began in January and has yet to show signs of bottoming out.</p>
@@ -118,7 +117,7 @@ For now, however, the data paints a picture of strategic pause across the North 
 <p>The second chart provides a broader perspective, showing Class 8 net orders from 2020 to April 2025. It’s easy to spot the highs of post-COVID recovery in 2021 and 2022 - and the steady decline since late 2023. April’s 7,600 units represent a 52% year-over-year drop, highlighting the industry's current volatility.</p>
 
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_3" alt="Long-term Order Trends Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl2img2}" alt="Long-term Order Trends Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 
 <p>Even seasonally adjusted (SA) orders are tracking below 9,000 units, suggesting that fleet confidence is waning. And the issue isn’t just declining orders - both ACT and FTR also report a recent spike in order cancellations, pointing to more than just caution… it's full-on hesitation.</p>
@@ -158,8 +157,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     readTime: '7 min read',
     category: 'Market Analysis',
     tags: ['Class 8 Trucks', 'Orders', 'Tariffs', 'Market Trends'],
-    image:
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80', // Safety helmet
+    image: blogImages.bl2img1, // Class 8 truck orders chart
   },
   {
     id: 3,
@@ -178,7 +176,7 @@ For now, however, the data paints a picture of strategic pause across the North 
 </ul>
 <p>Shippers are racing to move goods ahead of potential policy reversals.  Carriers are tightening space and raising rates in response.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_4" alt="Ocean Shipping Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl3img1}" alt="Ocean Shipping Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 
 <h4>Diversifying Gateways</h4>
@@ -190,8 +188,8 @@ For now, however, the data paints a picture of strategic pause across the North 
 </ul>
 <p>These shifts signal broader diversification in sourcing beyond China-a trend accelerated by trade friction and supply chain resilience planning.</p>
 <p style="text-align:center; margin: 0px 0; display: flex; flex-direction: row; gap: 10px; width: 50%">
-  <img src="BLOG_IMAGE_5" alt="Gateway Diversification Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
-  <img src="BLOG_IMAGE_6" alt="Gateway Diversification Chart 2" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;" />
+  <img src="${blogImages.bl3img2}" alt="Gateway Diversification Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl3img3}" alt="Gateway Diversification Chart 2" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;" />
 </p>
 
 <h3>Trucking Ripple Effect</h3>
@@ -206,8 +204,8 @@ For now, however, the data paints a picture of strategic pause across the North 
 </ul>
 <p>OEMs are pumping the brakes as demand cools.</p>
 <p style="text-align:center; margin: 0px 0; display: flex; flex-direction: row; gap: 10px; width: 50%">
-  <img src="BLOG_IMAGE_7" alt="Truck Orders Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
-  <img src="BLOG_IMAGE_8" alt="Truck Sales Chart" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;" />
+  <img src="${blogImages.bl3img4}" alt="Truck Orders Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl3img5}" alt="Truck Sales Chart" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;" />
 </p>
 
 <h4>Used Market Snapshot</h4>
@@ -229,13 +227,13 @@ For now, however, the data paints a picture of strategic pause across the North 
 <h3>Freight Rate Outlook: Capacity Tightens Ahead of Peak</h3>
 <p>As produce season takes hold, freight rates are climbing steadily. The National Truckload Index (NTI) is holding at $2.23/mi and trending upward.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_9" alt="Freight Rate Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl3img7}" alt="Freight Rate Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 
 <h4>Rejections Signal Spot Market Pressure</h4>
 <p>The Van Outbound Tender Rejection Index (VOTRI) is also rising, now at 5.44-well above this time in 2022 and 2023. This means contracted carriers are rejecting more freight, pushing volume into the spot market.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_10" alt="VOTRI Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl3img6}" alt="VOTRI Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 <p>Higher rejections = tighter capacity = potential for sustained rate spikes through the summer.</p>
 
@@ -250,7 +248,7 @@ For now, however, the data paints a picture of strategic pause across the North 
 <h4>Bonus Insight: Mode Share and Market Activity</h4>
 <p>New visual data reveals further insight into freight movement by mode and region. This snapshot gives a clear breakdown of truckload, intermodal, and LTL market share trends. For brokers and shippers, this type of breakdown is essential in identifying which freight paths are growing more competitive.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_11" alt="Mode Share Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl3img8}" alt="Mode Share Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 <p>This data supports the broader trend: truckload activity is trending upward, while intermodal has flattened out, signaling a continued preference for flexible OTR options during periods of high demand.</p>
 
@@ -271,8 +269,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     readTime: '8 min read',
     category: 'Market Analysis',
     tags: ['Freight', 'Tariffs', 'Trailers', 'Tender Rejections', 'May 2025'],
-    image:
-      'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80', // Map/route
+    image: blogImages.bl3img1,
   },
   {
     id: 4,
@@ -289,13 +286,13 @@ For now, however, the data paints a picture of strategic pause across the North 
 <h5>Long-Term Market Momentum</h5>
 <p>The global flatbed truck market is on pace to hit $9.45 billion by 2033, growing at a 5% CAGR from 2025. It’s not hype - it’s sustained growth tied to industrialization and infrastructure.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_12" alt="Flatbed Market Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl4img1}" alt="Flatbed Market Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 
 <h5>Q1 Performance: Best in Years</h5>
 <p>Spot rates for flatbeds climbed from $2.44 in February to $2.57 in April, a +1.6% YoY increase. That makes Q1 2025 the strongest flatbed rate environment since 2017.<br>Load-to-truck ratio data from DAT shows a 90.7% increase in April 2025 compared to April 2024. This isn’t just seasonal-it’s real freight movement.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_13" alt="Flatbed Performance Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl4img2}" alt="Flatbed Performance Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 <ul>
 <li>Shippers are:</li>
@@ -331,19 +328,19 @@ For now, however, the data paints a picture of strategic pause across the North 
 <h4>Manufacturing Is Still Contracting</h4>
 <p>The April 2025 Manufacturing PMI sits at 48.7%, signaling contraction for the second straight month - and not a single manufacturing sector reported growth.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_14" alt="Manufacturing PMI Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl4img3}" alt="Manufacturing PMI Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 
 <h4>Export Orders Hit Recession-Era Lows</h4>
 <p>The New Export Orders Index has fallen to 43.1, the lowest since April 2009, signaling reduced international demand.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_15" alt="Export Orders Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl4img4}" alt="Export Orders Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 
 <h4>Imports Are Contracting Too</h4>
 <p>April’s Import Index dropped to 47.1, reinforcing the slowdown in global goods movement.</p>
 <p style="text-align:center; margin: 20px 0;">
-  <img src="BLOG_IMAGE_16" alt="Import Index Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  <img src="${blogImages.bl4img5}" alt="Import Index Chart" style="max-width: 100%; height: auto; border-radius: 8px;" />
 </p>
 
 <h4>The Road Ahead: Flatbed Freight First to Rebound?</h4>
@@ -358,8 +355,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     readTime: '7 min read',
     category: 'Market Analysis',
     tags: ['Flatbed', 'Open Deck', 'Freight', 'Trump', 'Market Trends'],
-    image:
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80', // Freight/market
+    image: blogImages.bl4img1, // Flatbed market chart
   },
 ];
 
