@@ -1,39 +1,21 @@
-// Import images for blog content
-import MarketMomentumSlows from '../assets/images/blogs/Market_Momentum_Slows.png';
-import Class8TruckOrders from '../assets/images/blogs/Class_8_Net_Orders.png';
-import Graph from '../assets/images/blogs/blog-2-graph.png';
-import bl3img1 from '../assets/images/blogs/picture 1.png';
-import bl3img2 from '../assets/images/blogs/picture 2.png';
-import bl3img3 from '../assets/images/blogs/picture 3.png';
-import bl3img4 from '../assets/images/blogs/picture 4.png';
-import bl3img5 from '../assets/images/blogs/picture 5.png';
-import bl3img6 from '../assets/images/blogs/picture 6.png';
-import bl3img7 from '../assets/images/blogs/picture 7.png';
-import bl3img8 from '../assets/images/blogs/picture 8.png';
-import bl4img1 from '../assets/images/blogs/bg4img1.png';
-import bl4img2 from '../assets/images/blogs/bg4img2.png';
-import bl4img3 from '../assets/images/blogs/bg4img3.png';
-import bl4img4 from '../assets/images/blogs/bg4img4.png';
-import bl4img5 from '../assets/images/blogs/bg4img5.png';
-
-// Create a mapping object for easy access
+// Image paths for blog content (using public folder)
 export const blogImages = {
-  MarketMomentumSlows,
-  Class8TruckOrders,
-  Graph,
-  bl3img1,
-  bl3img2,
-  bl3img3,
-  bl3img4,
-  bl3img5,
-  bl3img6,
-  bl3img7,
-  bl3img8,
-  bl4img1,
-  bl4img2,
-  bl4img3,
-  bl4img4,
-  bl4img5,
+  MarketMomentumSlows: '/images/blogs/Market_Momentum_Slows.png',
+  Class8TruckOrders: '/images/blogs/Class_8_Net_Orders.png',
+  Graph: '/images/blogs/blog-2-graph.png',
+  bl3img1: '/images/blogs/picture 1.png',
+  bl3img2: '/images/blogs/picture 2.png',
+  bl3img3: '/images/blogs/picture 3.png',
+  bl3img4: '/images/blogs/picture 4.png',
+  bl3img5: '/images/blogs/picture 5.png',
+  bl3img6: '/images/blogs/picture 6.png',
+  bl3img7: '/images/blogs/picture 7.png',
+  bl3img8: '/images/blogs/picture 8.png',
+  bl4img1: '/images/blogs/bg4img1.png',
+  bl4img2: '/images/blogs/bg4img2.png',
+  bl4img3: '/images/blogs/bg4img3.png',
+  bl4img4: '/images/blogs/bg4img4.png',
+  bl4img5: '/images/blogs/bg4img5.png',
 };
 
 const blogData = [

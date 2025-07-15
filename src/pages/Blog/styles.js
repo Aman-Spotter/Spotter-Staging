@@ -132,19 +132,20 @@ export const Subtitle = styled.p`
 
 // Blog List
 export const BlogList = styled.div`
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
   position: relative;
   z-index: 1;
+  padding: 0 40px;
   box-sizing: border-box;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 25px;
-    padding: 0;
+    padding: 0 20px;
     max-width: 100%;
   }
 `;
