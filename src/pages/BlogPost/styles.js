@@ -16,6 +16,8 @@ const colors = {
 // Layout Components
 export const Layout = styled.div`
   min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundLight} 100%);
   color: ${colors.text};
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;

@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, createGlobalStyle } from 'styled-components';
 
 // Color palette matching brand identity
 const colors = {
@@ -40,12 +40,16 @@ const gradientShift = keyframes`
 // Layout Components
 export const Layout = styled.div`
   min-height: 100vh;
+  overflow-x: hidden;
   background: linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundLight} 100%);
   color: ${colors.text};
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  padding: 20px;
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+  padding-top: 20px;
+  padding-bottom: 20px;
   position: relative;
-  overflow-x: hidden;
+  z-index: 1;
 
   &::before {
     content: '';
@@ -131,15 +135,17 @@ export const BlogList = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 30px;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 25px;
-    padding: 0 10px;
+    padding: 0;
+    max-width: 100%;
   }
 `;
 
@@ -182,9 +188,9 @@ export const BlogCard = styled.div`
   }
 
   &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px ${colors.primary}40,
-      0 0 30px ${colors.glow};
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 0 0 1px ${colors.primary}30,
+      0 0 10px ${colors.glow};
     border-color: ${colors.primary};
 
     &::before {
@@ -192,7 +198,7 @@ export const BlogCard = styled.div`
     }
 
     ${BlogCardImage} {
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
   }
 
@@ -369,5 +375,18 @@ export const ResponsiveTable = styled.div`
     th {
       font-size: 13px;
     }
+  }
+`;
+
+export const GlobalStyle = createGlobalStyle`
+  html, body {
+    overflow-x: hidden !important;
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  * {
+    box-sizing: border-box;
   }
 `;
