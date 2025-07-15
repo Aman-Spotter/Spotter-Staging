@@ -22,13 +22,7 @@ const Blog = () => {
 
   return (
     <S.Layout>
-      {/* Simple Header */}
-      <S.Header>
-        <S.Title>Spotter Blog</S.Title>
-        <S.Subtitle>Insights and industry knowledge for trucking professionals</S.Subtitle>
-      </S.Header>
-
-      {/* Simple Blog List */}
+      {/* Blog List */}
       <S.BlogList>
         {blogData.map((blog) => (
           <S.BlogCard key={blog.id} onClick={() => handleBlogClick(blog.id)}>

@@ -79,11 +79,6 @@ export const BackButton = styled.button`
   }
 `;
 
-// Article Header
-export const ArticleHeader = styled.section`
-  margin-bottom: 40px;
-`;
-
 export const ArticleContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;

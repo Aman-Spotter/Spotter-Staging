@@ -46,7 +46,7 @@ export const Layout = styled.div`
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   padding-left: max(20px, env(safe-area-inset-left));
   padding-right: max(20px, env(safe-area-inset-right));
-  padding-top: 20px;
+  padding-top: 120px;
   padding-bottom: 20px;
   position: relative;
   z-index: 1;
@@ -76,57 +76,6 @@ export const Layout = styled.div`
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2314b8a6' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     z-index: 0;
     pointer-events: none;
-  }
-`;
-
-// Header Section
-export const Header = styled.div`
-  text-align: center;
-  margin-bottom: 60px;
-  padding: 40px 0;
-  position: relative;
-  z-index: 1;
-  animation: ${slideIn} 0.8s ease-out;
-`;
-
-export const Title = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin-bottom: 20px;
-  background: linear-gradient(
-    135deg,
-    ${colors.text} 0%,
-    ${colors.primary} 50%,
-    ${colors.primaryLight} 100%
-  );
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  overflow: visible;
-  text-overflow: unset;
-  white-space: normal;
-  word-break: break-word;
-  line-height: 1.2;
-  padding-bottom: 0.3em;
-  animation: ${gradientShift} 3s ease infinite;
-  letter-spacing: -0.02em;
-
-  @media (max-width: 768px) {
-    font-size: 2.5rem;
-  }
-`;
-
-export const Subtitle = styled.p`
-  font-size: 1.3rem;
-  color: ${colors.textSecondary};
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-  font-weight: 400;
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
   }
 `;
 

@@ -73,28 +73,6 @@ const BlogPost = () => {
 
   return (
     <S.Layout>
-      {/* Article Header */}
-      <S.ArticleHeader>
-        <S.ArticleContainer>
-          <S.ArticleCategory>{blog.category}</S.ArticleCategory>
-          <S.ArticleTitle>{blog.title}</S.ArticleTitle>
-          <S.ArticleMeta>
-            <S.MetaItem>
-              <User size={16} />
-              {blog.author}
-            </S.MetaItem>
-            <S.MetaItem>
-              <Calendar size={16} />
-              {formatDate(blog.publishDate)}
-            </S.MetaItem>
-            <S.MetaItem>
-              <Clock size={16} />
-              {blog.readTime}
-            </S.MetaItem>
-          </S.ArticleMeta>
-        </S.ArticleContainer>
-      </S.ArticleHeader>
-
       {/* Article Content */}
       <S.ArticleContent>
         <S.ContentContainer>
@@ -103,6 +81,27 @@ const BlogPost = () => {
             <ArrowLeft size={20} />
             Back to Blog
           </S.BackButton>
+
+          {/* Article Header Info */}
+          <S.ArticleContainer>
+            <S.ArticleCategory>{blog.category}</S.ArticleCategory>
+            <S.ArticleTitle>{blog.title}</S.ArticleTitle>
+            <S.ArticleMeta>
+              <S.MetaItem>
+                <User size={16} />
+                {blog.author}
+              </S.MetaItem>
+              <S.MetaItem>
+                <Calendar size={16} />
+                {formatDate(blog.publishDate)}
+              </S.MetaItem>
+              <S.MetaItem>
+                <Clock size={16} />
+                {blog.readTime}
+              </S.MetaItem>
+            </S.ArticleMeta>
+          </S.ArticleContainer>
+
           <S.ContentWrapper dangerouslySetInnerHTML={{ __html: processContent(blog.content) }} />
         </S.ContentContainer>
       </S.ArticleContent>
