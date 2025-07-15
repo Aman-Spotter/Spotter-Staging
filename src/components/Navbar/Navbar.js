@@ -85,10 +85,6 @@ const Navbar = ({ absolute, showAuthUrls, isSentinelPage }) => {
               <AppLogo />
             </Logo>
             <NavMenu>
-              {/* Blog Link */}
-              <NavItem>
-                <NavLinks to="/blog">Blog</NavLinks>
-              </NavItem>
               {/* <NavItem>
                 <NavLinks to="/watch-demo">Watch Demo</NavLinks>
               </NavItem> */}

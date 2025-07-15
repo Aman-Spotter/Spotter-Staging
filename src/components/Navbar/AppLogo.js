@@ -4,7 +4,7 @@ import { Menu, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import { QueryStats } from '@styled-icons/material-outlined';
-import { Shield, Truck, Home, Calculator } from 'lucide-react';
+import { Shield, Truck, Home, Calculator, FileText } from 'lucide-react';
 import { ReactComponent as Logo } from 'assets/svgs/logo.svg';
 import { ReactComponent as LogoIcon } from 'assets/svgs/logo_spotter.svg';
 import DriverAppIcon from 'assets/pngs/driver-app-icon.png';
@@ -62,6 +62,10 @@ export const AppLogo = () => (
       <StyledMenuItem href={`${HOSTNAME}/loan-calculators`}>
         <Calculator size={18} role="img" color="#d8d8d8" />
         loan calculators
+      </StyledMenuItem>
+      <StyledMenuItem href={`${HOSTNAME}/blog`}>
+        <FileText size={18} role="img" color="#d8d8d8" />
+        blog
       </StyledMenuItem>
     </Menu>
     <NavLogo href={`${HOSTNAME}/`}>

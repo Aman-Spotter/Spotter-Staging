@@ -20,6 +20,12 @@ export const Layout = styled.div`
   color: ${colors.text};
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   padding: 20px;
+  padding-top: 84px; /* Account for fixed navbar height (64px) + 20px padding */
+
+  @media (max-width: 768px) {
+    padding: 20px;
+    padding-top: 84px; /* Ensure consistent spacing on mobile */
+  }
 `;
 
 // Loading State
@@ -204,6 +210,40 @@ export const ContentWrapper = styled.div`
     border-radius: 8px;
   }
 
+  /* Responsive Table Styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+    background: ${colors.cardBackground};
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid ${colors.border};
+  }
+
+  th,
+  td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid ${colors.border};
+  }
+
+  th {
+    background: ${colors.backgroundLight};
+    color: ${colors.text};
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  td {
+    color: ${colors.textSecondary};
+    font-size: 14px;
+  }
+
+  tr:hover {
+    background: rgba(20, 184, 166, 0.05);
+  }
+
   @media (max-width: 768px) {
     font-size: 15px;
 
@@ -213,6 +253,27 @@ export const ContentWrapper = styled.div`
 
     h3 {
       font-size: 1.2rem;
+    }
+
+    /* Mobile Table Styles */
+    table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    th,
+    td {
+      padding: 8px 12px;
+      font-size: 13px;
+      min-width: 80px;
+    }
+
+    th {
+      font-size: 13px;
+      font-weight: 600;
     }
   }
 `;
