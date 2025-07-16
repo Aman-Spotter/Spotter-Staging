@@ -21,7 +21,7 @@ export const blogImages = {
 const blogData = [
   {
     id: 1,
-    title: '📉 North America Truck Sales Slump 13% in Q1 as Market Momentum Slows',
+    title: 'North America Truck Sales Slump 13% in Q1 as Market Momentum Slows',
     excerpt:
       'The North American heavy-duty truck market just posted its worst Q1 since the pandemic. Sales dropped 13% year-over-year-and the pain isn’t isolated. From interest rates to tariffs, pressure is mounting on every side of the supply chain.',
     content: `
@@ -81,10 +81,8 @@ In response, the 2025 forecast for North American heavy-duty truck sales has bee
 <p>Despite the current slowdown, industry analysts expect a potential rebound in late 2025 or early 2026 - assuming interest rates begin to ease and regulatory clarity improves. The push toward electrification, automated dispatching, and predictive analytics is likely to accelerate once market confidence returns.<br>
 For now, however, the data paints a picture of strategic pause across the North American heavy-duty truck sector.</p>
 `,
-    author: 'Market Analyst',
     publishDate: '2025-01-15',
     readTime: '8 min read',
-    category: 'Market Analysis',
     tags: ['Truck Sales', 'Market Trends', 'North America', 'Q1 2025'],
     image: blogImages.bl1img1, // Market momentum chart
   },
@@ -95,13 +93,12 @@ For now, however, the data paints a picture of strategic pause across the North 
     excerpt:
       'Class 8 truck orders just hit their lowest point since the early pandemic. With only 7,400–7,600 new trucks ordered in April, the industry is flashing warning lights-from tariffs to financing fatigue, uncertainty is steering the market into neutral.',
     content: `
-<p><strong>Class 8 Truck Orders Hit Post-Pandemic Low as Industry Faces Tariff Pressure and Market Uncertainty</strong> (Insights blog idea#1)</p>
 <p>Class 8 truck orders just hit their lowest point since the early pandemic. With only 7,400–7,600 new trucks ordered in April, the industry is flashing warning lights-from tariffs to financing fatigue, uncertainty is steering the market into neutral.</p>
 
 <h3>Class 8 Orders Plunge</h3>
 <p>According to preliminary figures from both FTR Transportation Intelligence and ACT Research, net orders for North American Class 8 trucks in April 2025 came in at just:</p>
 <ul>
-<li>FTR: 7,400 units (⬇️ 54% month-over-month and year-over-year)</li>
+<li>FTR: 7,400 units (54% month-over-month and year-over-year)</li>
 <li>ACT: 7,600 units, also reflecting sharp double-digit declines</li>
 </ul>
 <p>These numbers are well below the 7-year April average of 18,963 units, and down 30% year-to-date compared to 2024.</p>
@@ -113,7 +110,7 @@ For now, however, the data paints a picture of strategic pause across the North 
 
 <p>In the chart above, April’s order volumes (shown in bright green) underscore how steep the drop-off has been compared to 2024 (blue line). It’s a continuation of a downward trend that began in January and has yet to show signs of bottoming out.</p>
 
-<h4>Long-Term Order Trends: A Steady Decline</h4>
+<h3>Long-Term Order Trends: A Steady Decline</h3>
 <p>The second chart provides a broader perspective, showing Class 8 net orders from 2020 to April 2025. It’s easy to spot the highs of post-COVID recovery in 2021 and 2022 - and the steady decline since late 2023. April’s 7,600 units represent a 52% year-over-year drop, highlighting the industry's current volatility.</p>
 
 <p style="text-align:center; margin: 20px 0;">
@@ -152,10 +149,8 @@ For now, however, the data paints a picture of strategic pause across the North 
 
 <p>Fleet strategy in 2025 isn’t about expansion-it’s about positioning. The smart players aren’t sitting idle; they’re watching interest rates, holding cash, and prepping for a smarter Q3.<br>Want to lead that shift? Stay tuned-because the next freight upswing will reward those ready to move.</p>
 `,
-    author: 'Market Analyst',
     publishDate: '2025-05-10',
     readTime: '7 min read',
-    category: 'Market Analysis',
     tags: ['Class 8 Trucks', 'Orders', 'Tariffs', 'Market Trends'],
     image: blogImages.bl2img1, // Class 8 truck orders chart
   },
@@ -264,10 +259,8 @@ For now, however, the data paints a picture of strategic pause across the North 
 
 <p>May is more than a warm-up-it’s a signal flare. Ocean rates are up, trailers are moving, and tender rejections are climbing. Carriers who act early will ride the July wave. The rest? They’ll be playing catch-up.<br>Plan now. Scale smart. And stay ahead of the freight curve.</p>
 `,
-    author: 'Freight Analyst',
     publishDate: '2025-05-20',
     readTime: '8 min read',
-    category: 'Market Analysis',
     tags: ['Freight', 'Tariffs', 'Trailers', 'Tender Rejections', 'May 2025'],
     image: blogImages.bl3img1,
   },
@@ -350,10 +343,8 @@ For now, however, the data paints a picture of strategic pause across the North 
 
 <p>Flatbed is hot-and it may just stay that way.</p>
 `,
-    author: 'Market Analyst',
     publishDate: '2025-06-01',
     readTime: '7 min read',
-    category: 'Market Analysis',
     tags: ['Flatbed', 'Open Deck', 'Freight', 'Trump', 'Market Trends'],
     image: blogImages.bl4img1, // Flatbed market chart
   },

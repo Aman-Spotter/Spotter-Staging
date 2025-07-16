@@ -190,10 +190,10 @@ export const BlogSubtitle = styled.p`
 
 // Enhanced Blog List
 export const BlogList = styled.div`
-  max-width: 1400px;
+  max-width: 800px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 40px;
   position: relative;
   z-index: 2;
@@ -201,7 +201,6 @@ export const BlogList = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
     gap: 25px;
     padding: 0 20px;
     max-width: 100%;
@@ -260,51 +259,12 @@ export const BlogCard = styled.div`
   opacity: 0;
   animation: ${fadeIn} 0.6s ease-out forwards;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, ${colors.primary}, ${colors.primaryLight});
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
   &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px ${colors.primary}40,
-      0 0 20px ${colors.glow};
-    border-color: ${colors.primary};
-
-    &::before {
-      transform: scaleX(1);
-    }
-
-    &::after {
-      opacity: 1;
-    }
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 
     ${BlogCardImage} {
-      transform: scale(1.05);
-    }
-
-    ${BlogContent} {
-      transform: translateY(-5px);
+      transform: scale(1.02);
     }
   }
 
@@ -322,22 +282,6 @@ export const BlogCard = styled.div`
   }
 `;
 
-export const BlogCategory = styled.div`
-  display: inline-block;
-  background: linear-gradient(135deg, ${colors.primary}, ${colors.primaryLight});
-  color: ${colors.text};
-  padding: 8px 16px;
-  border-radius: 25px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px ${colors.primary}30;
-  align-self: flex-start;
-  animation: ${glowPulse} 2s ease-in-out infinite;
-`;
-
 export const BlogTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 700;
@@ -352,11 +296,6 @@ export const BlogTitle = styled.h2`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  transition: color 0.3s ease;
-
-  ${BlogCard}:hover & {
-    color: ${colors.primaryLight};
-  }
 
   @media (max-width: 768px) {
     font-size: 1.3rem;

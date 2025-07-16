@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import * as GS from '../../globalStyles';
 
 export const FooterContainer = styled.div`
-  background-color: #051830;
+  background-color: #051830 !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+  position: relative;
+  z-index: 10;
 
   @media screen and (max-width: 768px) {
     padding: 8px 0;

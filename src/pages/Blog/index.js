@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Calendar, User, Clock, ArrowRight } from 'lucide-react';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import * as S from './styles';
 import blogData from '../../data/blogData';
 
@@ -9,7 +9,7 @@ const Blog = () => {
   const history = useHistory();
 
   const handleBlogClick = (blogId) => {
-    history.push(`/blog/${blogId}`);
+    history.push(`/insights/${blogId}`);
   };
 
   const formatDate = (dateString) => {
@@ -51,8 +51,8 @@ const Blog = () => {
 
       {/* Blog Header */}
       <S.BlogHeader>
-        <S.BlogPageTitle>Spotter Blog</S.BlogPageTitle>
-        <S.BlogSubtitle>Insights and industry knowledge for trucking professionals</S.BlogSubtitle>
+        <S.BlogPageTitle>Insights & Analysis</S.BlogPageTitle>
+        <S.BlogSubtitle>Data-driven insights and industry knowledge</S.BlogSubtitle>
       </S.BlogHeader>
 
       {/* Blog List */}
@@ -61,14 +61,9 @@ const Blog = () => {
           <S.BlogCard key={blog.id} onClick={() => handleBlogClick(blog.id)}>
             <S.BlogCardImage src={blog.image} alt={blog.title} />
             <S.BlogContent>
-              <S.BlogCategory>{blog.category}</S.BlogCategory>
               <S.BlogTitle>{blog.title}</S.BlogTitle>
               <S.BlogExcerpt>{blog.excerpt}</S.BlogExcerpt>
               <S.BlogMeta>
-                <S.MetaItem>
-                  <User size={14} />
-                  {blog.author}
-                </S.MetaItem>
                 <S.MetaItem>
                   <Calendar size={14} />
                   {formatDate(blog.publishDate)}

@@ -17,7 +17,7 @@ const BlogPost = () => {
   }, [id]);
 
   const handleBackClick = () => {
-    history.push('/blog');
+    history.push('/insights');
   };
 
   const formatDate = (dateString) => {
@@ -79,7 +79,7 @@ const BlogPost = () => {
           {/* Back Button (left-aligned with content) */}
           <S.BackButton onClick={handleBackClick}>
             <ArrowLeft size={20} />
-            Back to Blog
+            Back
           </S.BackButton>
 
           {/* Article Header Info */}
@@ -87,10 +87,6 @@ const BlogPost = () => {
             <S.ArticleCategory>{blog.category}</S.ArticleCategory>
             <S.ArticleTitle>{blog.title}</S.ArticleTitle>
             <S.ArticleMeta>
-              <S.MetaItem>
-                <User size={16} />
-                {blog.author}
-              </S.MetaItem>
               <S.MetaItem>
                 <Calendar size={16} />
                 {formatDate(blog.publishDate)}

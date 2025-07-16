@@ -162,7 +162,10 @@ const Footer = () => {
             <div>
               <Copyright right>
                 {new Date().getFullYear()} Copyright spotter.ai. All rights reserved.{' '}
-                <a href="/terms-and-services">Terms</a> | <a href="/ccpa">CCPA</a>.
+                <a href="https://careers.spotter.ai/" target="_blank" rel="noreferrer">
+                  Careers
+                </a>{' '}
+                | <a href="/terms-and-services">Terms</a> | <a href="/ccpa">CCPA</a>.
               </Copyright>
               <Address>251 Little Falls Dr. Wilmington DE 19808</Address>
             </div>

@@ -33,6 +33,20 @@ if (process.env.REACT_APP_GTAG) {
 
 const App = () => {
   useEffect(() => {
+    // Capture UTM parameters and store in localStorage
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('utm_source')) {
+      const utm = {
+        source: params.get('utm_source'),
+        medium: params.get('utm_medium'),
+        campaign: params.get('utm_campaign'),
+        timestamp: Date.now(),
+      };
+      localStorage.setItem('utm_data', JSON.stringify(utm));
+    }
+  }, []);
+
+  useEffect(() => {
     const isTruckbaseDomain = window.location.hostname.includes('truckbase');
 
     if (isTruckbaseDomain) {

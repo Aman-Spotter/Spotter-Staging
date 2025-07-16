@@ -63,9 +63,9 @@ export const AppLogo = () => (
         <Calculator size={18} role="img" color="#d8d8d8" />
         loan calculators
       </StyledMenuItem>
-      <StyledMenuItem href={`${HOSTNAME}/blog`}>
+      <StyledMenuItem href={`${HOSTNAME}/insights`}>
         <FileText size={18} role="img" color="#d8d8d8" />
-        blog
+        insights
       </StyledMenuItem>
     </Menu>
     <NavLogo href={`${HOSTNAME}/`}>

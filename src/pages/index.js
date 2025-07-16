@@ -3,6 +3,7 @@ import { Route, Switch, useLocation, Redirect } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 
 import { Footer, Navbar } from 'components';
+import FooterLandingPage from 'components/FooterLandingPage';
 
 import Home from './Home';
 import NewHome from './NewHome';
@@ -149,12 +150,12 @@ const Page = () => {
             <CCPA />
             <Footer />
           </Route>
-          <Route path="/blog" exact>
+          <Route path="/insights" exact>
             <Navbar absolute showAuthUrls />
             <Blog />
             <Footer />
           </Route>
-          <Route path="/blog/:id" exact>
+          <Route path="/insights/:id" exact>
             <Navbar absolute showAuthUrls />
             <BlogPost />
             <Footer />
