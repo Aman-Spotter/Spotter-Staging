@@ -37,7 +37,7 @@ import {
 import * as GS from '../../globalStyles';
 import Button from '../LandingPageButton';
 
-const HOSTNAME = process.env.REACT_APP_HOSTNAME || 'localhost:3000';
+const HOSTNAME = process.env.REACT_APP_HOSTNAME || window.location.hostname;
 const isExtensionHost =
   window.location.hostname.includes('extension') || process.env.REACT_APP_EXTENSION_MODE;
 
@@ -174,7 +174,8 @@ const Footer = () => {
                 <a href="https://careers.spotter.ai/" target="_blank" rel="noreferrer">
                   Careers
                 </a>{' '}
-                | <a href="/terms-and-services">Terms of service</a> | <a href="/ccpa">CCPA</a>
+                | <a href={`${HOSTNAME}/terms-and-services`}>Terms of service</a> |{' '}
+                <a href={`${HOSTNAME}/ccpa`}>CCPA</a>
               </Copyright>
               <Address>251 Little Falls Dr. Wilmington DE 19808</Address>
             </div>
