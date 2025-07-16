@@ -79,6 +79,7 @@ const Navbar = ({ absolute, showAuthUrls, isSentinelPage }) => {
                 location.pathname === '/request-quote' ||
                 location.pathname === '/loan-calculators' ||
                 location.pathname === '/insights' ||
+                location.pathname === '/ccpa' ||
                 location.pathname.startsWith('/insights/')) &&
               !isExtensionHost
             }
