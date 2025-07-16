@@ -30,7 +30,7 @@ export const Layout = styled.div`
   background: linear-gradient(135deg, #061830 0%, #043344 100%);
   position: relative;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: auto;
 
   &::before {
     content: '';
@@ -75,7 +75,6 @@ export const Container = styled.div`
   padding: 20px 20px;
   position: relative;
   z-index: 2;
-  animation: ${fadeIn} 0.8s ease-out;
   width: 100%;
   box-sizing: border-box;
 
@@ -231,7 +230,6 @@ export const FormSection = styled.div`
   border-radius: 16px;
   padding: 40px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  animation: ${fadeIn} 0.8s ease-out 0.2s both;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
