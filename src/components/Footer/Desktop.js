@@ -37,7 +37,7 @@ import {
 import * as GS from '../../globalStyles';
 import Button from '../LandingPageButton';
 
-const HOSTNAME = process.env.REACT_APP_HOSTNAME || window.location.hostname;
+const BASE_URL = process.env.REACT_APP_HOSTNAME || `https://${window.location.hostname}`;
 const isExtensionHost =
   window.location.hostname.includes('extension') || process.env.REACT_APP_EXTENSION_MODE;
 
@@ -87,7 +87,7 @@ const Footer = () => {
 
             <GS.Column colNum={7} justifyContent="center">
               <NavigationGrid>
-                <MenuItemA href={`${HOSTNAME}/driversapp`}>
+                <MenuItemA href={`${BASE_URL}/driversapp`}>
                   <img className="icon" src={DriverAppIcon} alt="driver-app-icon" />
                   <span>spotter app</span>
                 </MenuItemA>
@@ -103,11 +103,11 @@ const Footer = () => {
                     <span>extension</span>
                   </MenuItemA>
                 )}
-                <MenuItemA href={`${HOSTNAME}/lens`}>
+                <MenuItemA href={`${BASE_URL}/lens`}>
                   <QueryStats className="icon" size={19} />
                   <span>lens</span>
                 </MenuItemA>
-                <MenuItemA href={`${HOSTNAME}/sentinel`}>
+                <MenuItemA href={`${BASE_URL}/sentinel`}>
                   <Shield className="icon" size={18} color="#d8d8d8" />
                   <span>sentinel</span>
                 </MenuItemA>
@@ -174,8 +174,8 @@ const Footer = () => {
                 <a href="https://careers.spotter.ai/" target="_blank" rel="noreferrer">
                   Careers
                 </a>{' '}
-                | <a href={`${HOSTNAME}/terms-and-services`}>Terms of service</a> |{' '}
-                <a href={`${HOSTNAME}/ccpa`}>CCPA</a>
+                | <a href={`${BASE_URL}/terms-and-services`}>Terms of service</a> |{' '}
+                <a href={`${BASE_URL}/ccpa`}>CCPA</a>
               </Copyright>
               <Address>251 Little Falls Dr. Wilmington DE 19808</Address>
             </div>
