@@ -178,14 +178,63 @@ export const BlogSubtitle = styled.p`
   font-size: 1.3rem;
   color: ${colors.textSecondary};
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 30px auto;
   line-height: 1.6;
   font-weight: 400;
   animation: ${fadeIn} 0.8s ease-out 0.2s both;
 
   @media (max-width: 768px) {
     font-size: 1.1rem;
+    margin-bottom: 25px;
   }
+`;
+
+// Search Components
+export const SearchContainer = styled.div`
+  max-width: 500px;
+  margin: 0 auto;
+  animation: ${fadeIn} 0.8s ease-out 0.4s both;
+`;
+
+export const SearchWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: ${colors.cardBackground};
+  border: 1px solid ${colors.border};
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:focus-within {
+    border-color: ${colors.primary};
+    box-shadow: 0 0 0 3px ${colors.glow};
+    transform: translateY(-2px);
+  }
+`;
+
+export const SearchInput = styled.input`
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: ${colors.text};
+  font-size: 1rem;
+  margin-left: 12px;
+  outline: none;
+  font-family: inherit;
+
+  &::placeholder {
+    color: ${colors.textMuted};
+  }
+`;
+
+export const SearchResults = styled.div`
+  text-align: center;
+  margin-top: 12px;
+  color: ${colors.textSecondary};
+  font-size: 0.9rem;
+  animation: ${fadeIn} 0.3s ease-out;
 `;
 
 // Enhanced Blog List
@@ -474,6 +523,15 @@ export const MetaItem = styled.div`
   }
 `;
 
+export const BlogActions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding: 12px 0;
+  border-top: 1px solid ${colors.border};
+`;
+
 export const ReadMoreButton = styled.div`
   display: flex;
   align-items: center;
@@ -482,9 +540,6 @@ export const ReadMoreButton = styled.div`
   font-weight: 600;
   font-size: 0.95rem;
   transition: all 0.3s ease;
-  margin-top: auto;
-  padding: 12px 0;
-  border-top: 1px solid ${colors.border};
   position: relative;
 
   svg {
@@ -514,6 +569,41 @@ export const ReadMoreButton = styled.div`
       transform: translateX(6px);
       color: ${colors.primaryLight};
     }
+  }
+`;
+
+export const ShareButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${colors.border};
+  border-radius: 8px;
+  background: transparent;
+  color: ${colors.textMuted};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    border-color: ${colors.primary};
+    color: ${colors.primary};
+    background: rgba(20, 184, 166, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
   }
 `;
 

@@ -1,15 +1,39 @@
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Search, Share2 } from 'lucide-react';
 import * as S from './styles';
 import blogData from '../../data/blogData';
 
 const Blog = () => {
   const history = useHistory();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Update page title for SEO
+  React.useEffect(() => {
+    document.title = 'Insights & Analysis | Spotter.ai - Data-driven Industry Knowledge';
+  }, []);
 
   const handleBlogClick = (blogId) => {
     history.push(`/insights/${blogId}`);
+  };
+
+  const handleShare = (e, blog) => {
+    e.stopPropagation(); // Prevent card click
+    const url = `${window.location.origin}/insights/${blog.id}`;
+    const text = `Check out this insight: ${blog.title}`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: blog.title,
+        text: blog.excerpt,
+        url,
+      });
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(`${text}\n\n${url}`);
+      alert('Link copied to clipboard!');
+    }
   };
 
   const formatDate = (dateString) => {
@@ -19,6 +43,13 @@ const Blog = () => {
       day: 'numeric',
     });
   };
+
+  // Filter blogs based on search term
+  const filteredBlogs = blogData.filter(
+    (blog) =>
+      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Background particles configuration
   const particles = [
@@ -53,13 +84,31 @@ const Blog = () => {
       <S.BlogHeader>
         <S.BlogPageTitle>Insights & Analysis</S.BlogPageTitle>
         <S.BlogSubtitle>Data-driven insights and industry knowledge</S.BlogSubtitle>
+
+        {/* Search Bar */}
+        <S.SearchContainer>
+          <S.SearchWrapper>
+            <Search size={20} color="#94a3b8" />
+            <S.SearchInput
+              type="text"
+              placeholder="Search insights..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </S.SearchWrapper>
+          {searchTerm && (
+            <S.SearchResults>
+              Found {filteredBlogs.length} result{filteredBlogs.length !== 1 ? 's' : ''}
+            </S.SearchResults>
+          )}
+        </S.SearchContainer>
       </S.BlogHeader>
 
       {/* Blog List */}
       <S.BlogList>
-        {blogData.map((blog) => (
+        {filteredBlogs.map((blog) => (
           <S.BlogCard key={blog.id} onClick={() => handleBlogClick(blog.id)}>
-            <S.BlogCardImage src={blog.image} alt={blog.title} />
+            <S.BlogCardImage src={blog.image} alt={blog.title} loading="lazy" />
             <S.BlogContent>
               <S.BlogTitle>{blog.title}</S.BlogTitle>
               <S.BlogExcerpt>{blog.excerpt}</S.BlogExcerpt>
@@ -73,9 +122,14 @@ const Blog = () => {
                   {blog.readTime}
                 </S.MetaItem>
               </S.BlogMeta>
-              <S.ReadMoreButton>
-                Read Article <ArrowRight size={16} />
-              </S.ReadMoreButton>
+              <S.BlogActions>
+                <S.ReadMoreButton>
+                  Read Article <ArrowRight size={16} />
+                </S.ReadMoreButton>
+                <S.ShareButton onClick={(e) => handleShare(e, blog)}>
+                  <Share2 size={16} />
+                </S.ShareButton>
+              </S.BlogActions>
             </S.BlogContent>
           </S.BlogCard>
         ))}

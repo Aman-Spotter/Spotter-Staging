@@ -190,7 +190,7 @@ For now, however, the data paints a picture of strategic pause across the North 
 <h3>Trucking Ripple Effect</h3>
 <p>Ocean transit times average ~30 days, meaning the trucking sector will start to feel the effects by early July-right in time for the 4th of July freight peak. Brokers and carriers should expect rate pressure and tighter capacity just as summer promotions hit full swing.</p>
 
-<h4>Class 8 Truck Orders Hit a Wall</h4>
+<h3>Class 8 Truck Orders Hit a Wall</h3>
 <p>While ocean freight surges, new truck orders continue their dramatic fall. April was particularly harsh:</p>
 <ul>
 <li>New truck orders: 7,400 units (down 54% YoY)</li>

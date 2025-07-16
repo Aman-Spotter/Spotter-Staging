@@ -166,20 +166,56 @@ export const ContentWrapper = styled.div`
   font-size: 16px;
   color: ${colors.textSecondary};
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: ${colors.text} !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    margin-top: 2.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
   h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: ${colors.text};
-    margin: 40px 0 20px 0;
-    line-height: 1.4;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: ${colors.text} !important;
+    margin: 3rem 0 1.5rem 0 !important;
+    line-height: 1.3 !important;
+    border-bottom: 2px solid ${colors.primary};
+    padding-bottom: 0.5rem;
   }
 
   h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: ${colors.text};
-    margin: 30px 0 15px 0;
-    line-height: 1.4;
+    font-size: 1.6rem !important;
+    font-weight: 600 !important;
+    color: ${colors.text} !important;
+    margin: 2.5rem 0 1rem 0 !important;
+    line-height: 1.3 !important;
+    border-left: 4px solid ${colors.primary};
+    padding-left: 1rem;
+  }
+
+  h4 {
+    font-size: 1.3rem !important;
+    font-weight: 600 !important;
+    color: ${colors.primary} !important;
+    margin: 2rem 0 0.8rem 0 !important;
+    line-height: 1.3 !important;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  h4::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: ${colors.primary};
+    font-size: 1.2rem;
+    font-weight: bold;
   }
 
   p {
@@ -244,12 +280,38 @@ export const ContentWrapper = styled.div`
   @media (max-width: 768px) {
     font-size: 15px;
 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 2rem !important;
+      margin-bottom: 0.8rem !important;
+    }
+
     h2 {
-      font-size: 1.5rem;
+      font-size: 1.7rem !important;
+      margin: 2.5rem 0 1.2rem 0 !important;
+      border-bottom: 1px solid ${colors.primary};
+      padding-bottom: 0.4rem;
     }
 
     h3 {
-      font-size: 1.2rem;
+      font-size: 1.4rem !important;
+      margin: 2rem 0 0.8rem 0 !important;
+      border-left: 3px solid ${colors.primary};
+      padding-left: 0.8rem;
+    }
+
+    h4 {
+      font-size: 1.2rem !important;
+      margin: 1.5rem 0 0.6rem 0 !important;
+      padding-left: 1.2rem;
+    }
+
+    h4::before {
+      font-size: 1rem;
     }
 
     /* Mobile Table Styles */

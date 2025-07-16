@@ -87,7 +87,7 @@ const Footer = () => {
 
             <GS.Column colNum={7} justifyContent="center">
               <NavigationGrid>
-                <MenuItemA href={`${BASE_URL}/driversapp`}>
+                <MenuItemA href="/driversapp">
                   <img className="icon" src={DriverAppIcon} alt="driver-app-icon" />
                   <span>spotter app</span>
                 </MenuItemA>
@@ -103,11 +103,11 @@ const Footer = () => {
                     <span>extension</span>
                   </MenuItemA>
                 )}
-                <MenuItemA href={`${BASE_URL}/lens`}>
+                <MenuItemA href="/lens">
                   <QueryStats className="icon" size={19} />
                   <span>lens</span>
                 </MenuItemA>
-                <MenuItemA href={`${BASE_URL}/sentinel`}>
+                <MenuItemA href="/sentinel">
                   <Shield className="icon" size={18} color="#d8d8d8" />
                   <span>sentinel</span>
                 </MenuItemA>
@@ -174,8 +174,7 @@ const Footer = () => {
                 <a href="https://careers.spotter.ai/" target="_blank" rel="noreferrer">
                   Careers
                 </a>{' '}
-                | <a href={`${BASE_URL}/terms-and-services`}>Terms of service</a> |{' '}
-                <a href={`${BASE_URL}/ccpa`}>CCPA</a>
+                | <a href="/terms-and-services">Terms of service</a> | <a href="/ccpa">CCPA</a>
               </Copyright>
               <Address>251 Little Falls Dr. Wilmington DE 19808</Address>
             </div>
