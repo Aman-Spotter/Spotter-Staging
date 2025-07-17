@@ -5,13 +5,6 @@ import { ArrowLeft, Calendar, User, Clock } from 'lucide-react';
 import * as S from './styles';
 import blogData, { blogImages } from '../../data/blogData';
 
-// Debug: Log the imported data
-console.log('Imported blogData:', blogData);
-console.log(
-  'Available blog IDs:',
-  blogData.map((b) => b.id)
-);
-
 const BlogPost = () => {
   const { id } = useParams();
   const history = useHistory();
@@ -22,19 +15,7 @@ const BlogPost = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     const blogId = parseInt(id, 10);
-    console.log('Looking for blog with ID:', blogId);
-    console.log(
-      'Available blog IDs:',
-      blogData.map((b) => b.id)
-    );
-
     const foundBlog = blogData.find((b) => b.id === blogId);
-    console.log('Found blog:', foundBlog);
-
-    if (!foundBlog) {
-      console.error('Blog not found for ID:', blogId);
-    }
-
     setBlog(foundBlog);
   }, [id]);
 
