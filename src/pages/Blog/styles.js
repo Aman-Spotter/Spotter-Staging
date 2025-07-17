@@ -239,7 +239,7 @@ export const SearchResults = styled.div`
 // Enhanced Blog List - Updated to Grid Layout
 export const BlogGrid = styled.div`
   max-width: 1200px;
-  margin: 20 auto;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
@@ -247,16 +247,20 @@ export const BlogGrid = styled.div`
   z-index: 2;
   padding: 0 40px;
   box-sizing: border-box;
+  justify-items: center;
+  align-items: start;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
     max-width: 800px;
+    justify-items: center;
   }
 
   @media (max-width: 768px) {
     gap: 20px;
     padding: 0 20px;
     max-width: 100%;
+    justify-items: center;
   }
 `;
 
@@ -309,6 +313,8 @@ export const BlogCard = styled.div`
   opacity: 0;
   animation: ${fadeIn} 0.6s ease-out forwards;
   height: 270px;
+  width: 100%;
+  max-width: 580px;
 
   &:hover {
     transform: translateY(-2px);
@@ -335,6 +341,7 @@ export const BlogCard = styled.div`
 
   @media (max-width: 768px) {
     height: auto;
+    max-width: 100%;
 
     // Stack layout on mobile
     ${CardContent} {

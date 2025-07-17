@@ -157,7 +157,7 @@ For now, however, the data paints a picture of strategic pause across the North 
   },
   {
     id: 3,
-    title: 'Tariffs, Trailers & Tender Rejections: What’s Moving Freight in May',
+    title: 'Tariffs, Trailers & Tender Rejections: What’s Moving Freight in May.',
     excerpt:
       'A 90-day tariff truce between the U.S. and China is shaking up global logistics. Importers are rushing to capitalize, ocean volumes and container rates are spiking, and the ripple is about to hit U.S. trucking and trailers. Here’s what’s moving freight in May.',
 

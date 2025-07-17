@@ -5,6 +5,13 @@ import { ArrowLeft, Calendar, User, Clock } from 'lucide-react';
 import * as S from './styles';
 import blogData, { blogImages } from '../../data/blogData';
 
+// Debug: Log the imported data
+console.log('Imported blogData:', blogData);
+console.log(
+  'Available blog IDs:',
+  blogData.map((b) => b.id)
+);
+
 const BlogPost = () => {
   const { id } = useParams();
   const history = useHistory();
@@ -15,7 +22,19 @@ const BlogPost = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     const blogId = parseInt(id, 10);
+    console.log('Looking for blog with ID:', blogId);
+    console.log(
+      'Available blog IDs:',
+      blogData.map((b) => b.id)
+    );
+
     const foundBlog = blogData.find((b) => b.id === blogId);
+    console.log('Found blog:', foundBlog);
+
+    if (!foundBlog) {
+      console.error('Blog not found for ID:', blogId);
+    }
+
     setBlog(foundBlog);
   }, [id]);
 
@@ -65,10 +84,25 @@ const BlogPost = () => {
   };
 
   if (!blog) {
+    const blogId = parseInt(id, 10);
+    const blogExists = blogData.find((b) => b.id === blogId);
+
     return (
       <S.Layout>
         <S.LoadingContainer>
-          <S.LoadingText>Loading article...</S.LoadingText>
+          <S.LoadingText>
+            {blogExists
+              ? 'Loading article...'
+              : `Article with ID ${blogId} not found. Available articles: ${blogData
+                  .map((b) => b.id)
+                  .join(', ')}`}
+          </S.LoadingText>
+          {!blogExists && (
+            <S.BackButton onClick={handleBackClick} style={{ marginTop: '20px' }}>
+              <ArrowLeft size={20} />
+              Back to Insights
+            </S.BackButton>
+          )}
         </S.LoadingContainer>
       </S.Layout>
     );
