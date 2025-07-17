@@ -10,26 +10,12 @@ const BlogPost = () => {
   const history = useHistory();
   const [blog, setBlog] = useState(null);
 
-  console.log('🚀 BlogPost component mounted with ID:', id);
-
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     const blogId = parseInt(id, 10);
-    console.log('🔍 Looking for blog ID:', blogId);
-    console.log(
-      '📊 Available blog IDs:',
-      blogData.map((b) => b.id)
-    );
-
     const foundBlog = blogData.find((b) => b.id === blogId);
-    console.log('✅ Found blog:', foundBlog ? 'YES' : 'NO');
-
-    if (!foundBlog) {
-      console.error('❌ Blog not found for ID:', blogId);
-    }
-
     setBlog(foundBlog);
   }, [id]);
 
