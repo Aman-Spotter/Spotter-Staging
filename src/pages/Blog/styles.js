@@ -126,7 +126,6 @@ export const Particle = styled.div`
 // Blog Header
 export const BlogHeader = styled.div`
   text-align: center;
-  margin-bottom: 60px;
   padding: 40px 0;
   position: relative;
   z-index: 2;
@@ -240,7 +239,7 @@ export const SearchResults = styled.div`
 // Enhanced Blog List - Updated to Grid Layout
 export const BlogGrid = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 20 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
