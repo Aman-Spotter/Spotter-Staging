@@ -177,7 +177,7 @@ export const BlogSubtitle = styled.p`
   font-size: 1.3rem;
   color: ${colors.textSecondary};
   max-width: 600px;
-  margin: 0 auto 0px auto;
+  margin: 0 auto 30px auto;
   line-height: 1.6;
   font-weight: 400;
   animation: ${fadeIn} 0.8s ease-out 0.2s both;
@@ -239,7 +239,7 @@ export const SearchResults = styled.div`
 // Enhanced Blog List - Updated to Grid Layout
 export const BlogGrid = styled.div`
   max-width: 1200px;
-  margin: 40 auto;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
