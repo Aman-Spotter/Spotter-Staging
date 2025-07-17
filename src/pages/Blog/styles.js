@@ -126,10 +126,15 @@ export const Particle = styled.div`
 // Blog Header
 export const BlogHeader = styled.div`
   text-align: center;
+  margin-bottom: 10px;
   padding: 40px 0;
   position: relative;
   z-index: 2;
   animation: ${fadeIn} 0.8s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const BlogPageTitle = styled.h1`
@@ -236,31 +241,26 @@ export const SearchResults = styled.div`
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
-// Enhanced Blog List - Updated to Grid Layout
+// Enhanced Blog List - Updated to Single Column Layout
 export const BlogGrid = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 24px;
   position: relative;
   z-index: 2;
-  padding: 0 40px;
+  padding: 0 40px 80px 40px;
   box-sizing: border-box;
   justify-items: center;
-  align-items: start;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    max-width: 800px;
-    justify-items: center;
-  }
+  align-items: center;
 
   @media (max-width: 768px) {
     gap: 20px;
-    padding: 0 20px;
+    padding: 0 20px 60px 20px;
     max-width: 100%;
     justify-items: center;
+    align-items: center;
   }
 `;
 
@@ -269,6 +269,7 @@ export const CardContent = styled.div`
   display: flex;
   align-items: stretch;
   height: 270px;
+  width: 100%;
 `;
 
 // Left-aligned image container - full height, 40% width
@@ -314,7 +315,7 @@ export const BlogCard = styled.div`
   animation: ${fadeIn} 0.6s ease-out forwards;
   height: 270px;
   width: 100%;
-  max-width: 580px;
+  max-width: 100%;
 
   &:hover {
     transform: translateY(-2px);
@@ -341,7 +342,6 @@ export const BlogCard = styled.div`
 
   @media (max-width: 768px) {
     height: auto;
-    max-width: 100%;
 
     // Stack layout on mobile
     ${CardContent} {

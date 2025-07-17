@@ -16,6 +16,11 @@ export const blogImages = {
   bl4img3: '/blogs/bg4img3.png',
   bl4img4: '/blogs/bg4img4.png',
   bl4img5: '/blogs/bg4img5.png',
+  // New blog card thumbnail images
+  blogCard1: '/blogs/image1.jpg',
+  blogCard2: '/blogs/image2.jpg',
+  blogCard3: '/blogs/image3.jpg',
+  blogCard4: '/blogs/image4.jpg',
 };
 
 const blogData = [
@@ -84,7 +89,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     publishDate: '2025-01-15',
     readTime: '8 min read',
     tags: ['Truck Sales', 'Market Trends', 'North America', 'Q1 2025'],
-    image: blogImages.bl1img1, // Market momentum chart
+    image: blogImages.blogCard1, // New thumbnail image
   },
   {
     id: 2,
@@ -153,7 +158,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     publishDate: '2025-05-10',
     readTime: '7 min read',
     tags: ['Class 8 Trucks', 'Orders', 'Tariffs', 'Market Trends'],
-    image: blogImages.bl2img1, // Class 8 truck orders chart
+    image: blogImages.blogCard2, // New thumbnail image
   },
   {
     id: 3,
@@ -264,7 +269,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     publishDate: '2025-05-20',
     readTime: '8 min read',
     tags: ['Freight', 'Tariffs', 'Trailers', 'Tender Rejections', 'May 2025'],
-    image: blogImages.bl3img1,
+    image: blogImages.blogCard3, // New thumbnail image
   },
   {
     id: 4,
@@ -349,7 +354,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     publishDate: '2025-06-01',
     readTime: '7 min read',
     tags: ['Flatbed', 'Open Deck', 'Freight', 'Trump', 'Market Trends'],
-    image: blogImages.bl4img1, // Flatbed market chart
+    image: blogImages.blogCard4, // New thumbnail image
   },
 ];
 
