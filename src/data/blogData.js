@@ -92,6 +92,7 @@ For now, however, the data paints a picture of strategic pause across the North 
       'Class 8 Truck Orders Hit Post-Pandemic Low as Industry Faces Tariff Pressure and Market Uncertainty',
     excerpt:
       'Class 8 truck orders just hit their lowest point since the early pandemic. With only 7,400–7,600 new trucks ordered in April, the industry is flashing warning lights-from tariffs to financing fatigue, uncertainty is steering the market into neutral.',
+
     content: `
 <p>Class 8 truck orders just hit their lowest point since the early pandemic. With only 7,400–7,600 new trucks ordered in April, the industry is flashing warning lights-from tariffs to financing fatigue, uncertainty is steering the market into neutral.</p>
 
@@ -159,6 +160,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     title: 'Tariffs, Trailers & Tender Rejections: What’s Moving Freight in May.',
     excerpt:
       'A 90-day tariff truce between the U.S. and China is shaking up global logistics. Importers are rushing to capitalize, ocean volumes and container rates are spiking, and the ripple is about to hit U.S. trucking and trailers. Here’s what’s moving freight in May.',
+
     content: `
 <h3>International Shipping Surge</h3>
 <p>A 90-day tariff truce between the U.S. and China, effective May 12, 2025, is already shaking up global logistics. Importers are rushing to capitalize on the policy window, sparking a sharp spike in ocean volumes and container rates.<br>This isn’t business as usual-it’s a signal that peak season may come earlier and hotter than expected.</p>
@@ -269,6 +271,7 @@ For now, however, the data paints a picture of strategic pause across the North 
     title: 'Why Open Deck Might Be the Future Under Trump',
     excerpt:
       'Dry vans are getting crushed, but flatbeds are heating up. With a policy shift toward domestic manufacturing and infrastructure, open deck freight is poised for growth. Here’s why flatbed could lead the next freight recovery.',
+
     content: `
 <h3>Dry Vans Are Struggling, But Flatbeds Are Heating Up</h3>
 <p>Dry vans are getting crushed. Rates are flat, demand is weak, and the short and long-term outlooks look uncertain. But one segment is standing tall-open deck freight.</p>

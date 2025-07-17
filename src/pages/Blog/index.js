@@ -1,13 +1,12 @@
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Calendar, Clock, ArrowRight, Search, Share2 } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Share2 } from 'lucide-react';
 import * as S from './styles';
 import blogData from '../../data/blogData';
 
 const Blog = () => {
   const history = useHistory();
-  const [searchTerm, setSearchTerm] = useState('');
 
   // Update page title for SEO
   React.useEffect(() => {
@@ -44,13 +43,6 @@ const Blog = () => {
     });
   };
 
-  // Filter blogs based on search term
-  const filteredBlogs = blogData.filter(
-    (blog) =>
-      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   // Background particles configuration
   const particles = [
     { id: 1, size: 4, color: '#14b8a6', left: 10, top: 20, duration: 8, delay: 0 },
@@ -84,56 +76,61 @@ const Blog = () => {
       <S.BlogHeader>
         <S.BlogPageTitle>Insights & Analysis</S.BlogPageTitle>
         <S.BlogSubtitle>Data-driven insights and industry knowledge</S.BlogSubtitle>
-
-        {/* Search Bar */}
-        <S.SearchContainer>
-          <S.SearchWrapper>
-            <Search size={20} color="#94a3b8" />
-            <S.SearchInput
-              type="text"
-              placeholder="Search insights..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </S.SearchWrapper>
-          {searchTerm && (
-            <S.SearchResults>
-              Found {filteredBlogs.length} result{filteredBlogs.length !== 1 ? 's' : ''}
-            </S.SearchResults>
-          )}
-        </S.SearchContainer>
       </S.BlogHeader>
 
-      {/* Blog List */}
-      <S.BlogList>
-        {filteredBlogs.map((blog) => (
+      {/* Blog Grid - Redesigned Card Layout */}
+      <S.BlogGrid>
+        {blogData.map((blog) => (
           <S.BlogCard key={blog.id} onClick={() => handleBlogClick(blog.id)}>
-            <S.BlogCardImage src={blog.image} alt={blog.title} loading="lazy" />
-            <S.BlogContent>
-              <S.BlogTitle>{blog.title}</S.BlogTitle>
-              <S.BlogExcerpt>{blog.excerpt}</S.BlogExcerpt>
-              <S.BlogMeta>
-                <S.MetaItem>
-                  <Calendar size={14} />
-                  {formatDate(blog.publishDate)}
-                </S.MetaItem>
-                <S.MetaItem>
-                  <Clock size={14} />
-                  {blog.readTime}
-                </S.MetaItem>
-              </S.BlogMeta>
-              <S.BlogActions>
-                <S.ReadMoreButton>
-                  Read Article <ArrowRight size={16} />
-                </S.ReadMoreButton>
-                <S.ShareButton onClick={(e) => handleShare(e, blog)}>
-                  <Share2 size={16} />
-                </S.ShareButton>
-              </S.BlogActions>
-            </S.BlogContent>
+            <S.CardContent>
+              {/* Left-aligned image (smaller, supporting content) */}
+              <S.CardImageContainer>
+                <S.CardImage src={blog.image} alt={blog.title} loading="lazy" />
+              </S.CardImageContainer>
+
+              {/* Right-aligned content block */}
+              <S.CardTextContent>
+                <S.CardContentWrapper>
+                  {/* Date at the top */}
+                  <S.CardMeta>
+                    <S.MetaItem>
+                      <Calendar size={11} />
+                      {formatDate(blog.publishDate)}
+                    </S.MetaItem>
+                    <S.MetaItem>
+                      <Clock size={11} />
+                      {blog.readTime}
+                    </S.MetaItem>
+                  </S.CardMeta>
+
+                  {/* Bold, attention-grabbing article title */}
+                  <S.CardTitle>{blog.title}</S.CardTitle>
+
+                  {/* Short preview text (description snippet) */}
+                  <S.CardExcerpt>{blog.excerpt}</S.CardExcerpt>
+
+                  {/* Category tags */}
+                  <S.CardTags>
+                    {blog.tags &&
+                      blog.tags.slice(0, 2).map((tag) => <S.Tag key={tag}>{tag}</S.Tag>)}
+                  </S.CardTags>
+                </S.CardContentWrapper>
+
+                {/* Clear CTA button */}
+                <S.CardActions>
+                  <S.ReadMoreButton>
+                    Read More
+                    <ArrowRight size={12} />
+                  </S.ReadMoreButton>
+                  <S.ShareButton onClick={(e) => handleShare(e, blog)}>
+                    <Share2 size={12} />
+                  </S.ShareButton>
+                </S.CardActions>
+              </S.CardTextContent>
+            </S.CardContent>
           </S.BlogCard>
         ))}
-      </S.BlogList>
+      </S.BlogGrid>
     </S.Layout>
   );
 };

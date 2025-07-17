@@ -11,6 +11,9 @@ const BlogPost = () => {
   const [blog, setBlog] = useState(null);
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     const blogId = parseInt(id, 10);
     const foundBlog = blogData.find((b) => b.id === blogId);
     setBlog(foundBlog);
@@ -79,12 +82,11 @@ const BlogPost = () => {
           {/* Back Button (left-aligned with content) */}
           <S.BackButton onClick={handleBackClick}>
             <ArrowLeft size={20} />
-            Back
+            Back to Insights
           </S.BackButton>
 
           {/* Article Header Info */}
           <S.ArticleContainer>
-            <S.ArticleCategory>{blog.category}</S.ArticleCategory>
             <S.ArticleTitle>{blog.title}</S.ArticleTitle>
             <S.ArticleMeta>
               <S.MetaItem>
@@ -96,6 +98,15 @@ const BlogPost = () => {
                 {blog.readTime}
               </S.MetaItem>
             </S.ArticleMeta>
+
+            {/* Category Tags */}
+            {blog.tags && blog.tags.length > 0 && (
+              <S.ArticleTags>
+                {blog.tags.slice(0, 5).map((tag) => (
+                  <S.ArticleTag key={tag}>{tag}</S.ArticleTag>
+                ))}
+              </S.ArticleTags>
+            )}
           </S.ArticleContainer>
 
           <S.ContentWrapper dangerouslySetInnerHTML={{ __html: processContent(blog.content) }} />

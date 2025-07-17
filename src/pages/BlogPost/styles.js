@@ -130,6 +130,35 @@ export const MetaItem = styled.div`
   }
 `;
 
+// Article Tags
+export const ArticleTags = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+`;
+
+export const ArticleTag = styled.span`
+  background: rgba(20, 184, 166, 0.1);
+  color: ${colors.primary};
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(20, 184, 166, 0.2);
+    border-color: rgba(20, 184, 166, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+`;
+
 // Featured Image
 export const FeaturedImageSection = styled.section`
   margin-bottom: 40px;

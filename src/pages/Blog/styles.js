@@ -237,83 +237,87 @@ export const SearchResults = styled.div`
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
-// Enhanced Blog List
-export const BlogList = styled.div`
-  max-width: 800px;
+// Enhanced Blog List - Updated to Grid Layout
+export const BlogGrid = styled.div`
+  max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
   position: relative;
   z-index: 2;
   padding: 0 40px;
   box-sizing: border-box;
 
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+  }
+
   @media (max-width: 768px) {
-    gap: 25px;
+    gap: 20px;
     padding: 0 20px;
     max-width: 100%;
   }
 `;
 
-// Enhanced Blog Card Image
-export const BlogCardImage = styled.img`
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 20px 20px 0 0;
-  margin-bottom: 0;
-  transition: transform 0.4s ease;
-  background: linear-gradient(45deg, ${colors.backgroundLight}, ${colors.background});
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
-    pointer-events: none;
-  }
+// Card content container - editorial horizontal layout
+export const CardContent = styled.div`
+  display: flex;
+  align-items: stretch;
+  height: 270px;
 `;
 
-// Enhanced Blog Content
-export const BlogContent = styled.div`
-  padding: 32px;
-  padding-top: 24px;
+// Left-aligned image container - full height, 40% width
+export const CardImageContainer = styled.div`
+  width: 40%;
+  min-width: 40%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+`;
+
+// Card image - fills entire left side
+export const CardImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  background: linear-gradient(45deg, ${colors.backgroundLight}, ${colors.background});
+`;
+
+// Right-aligned content block - 60% width
+export const CardTextContent = styled.div`
+  flex: 1;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  flex: 1;
   justify-content: space-between;
-  transition: transform 0.3s ease;
-  position: relative;
-  z-index: 1;
+  height: 100%;
 `;
 
-// Enhanced Blog Card
+// Enhanced Blog Card - Editorial layout
 export const BlogCard = styled.div`
   background: ${colors.cardBackground};
-  border-radius: 20px;
+  border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   border: 1px solid ${colors.border};
   backdrop-filter: blur(10px);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
   position: relative;
   opacity: 0;
   animation: ${fadeIn} 0.6s ease-out forwards;
+  height: 270px;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: rgba(20, 184, 166, 0.3);
 
-    ${BlogCardImage} {
-      transform: scale(1.02);
+    ${CardImage} {
+      transform: scale(1.05);
     }
   }
 
@@ -329,216 +333,126 @@ export const BlogCard = styled.div`
   &:nth-child(4) {
     animation-delay: 0.4s;
   }
+
+  @media (max-width: 768px) {
+    height: auto;
+
+    // Stack layout on mobile
+    ${CardContent} {
+      flex-direction: column;
+      height: auto;
+    }
+
+    ${CardImageContainer} {
+      width: 100%;
+      height: 200px;
+    }
+
+    ${CardTextContent} {
+      padding: 16px;
+      height: auto;
+    }
+  }
 `;
 
-export const BlogTitle = styled.h2`
-  font-size: 1.5rem;
+// Card meta information (author and date)
+export const CardMeta = styled.div`
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+`;
+
+// Card tags container - more prominent
+export const CardTags = styled.div`
+  display: flex;
+  gap: 6px;
+  margin-bottom: 0;
+  flex-wrap: wrap;
+`;
+
+// Enhanced Tag styling - more prominent
+export const Tag = styled.span`
+  background: rgba(20, 184, 166, 0.15);
+  color: ${colors.primary};
+  padding: 3px 6px;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  ${BlogCard}:hover & {
+    background: rgba(20, 184, 166, 0.25);
+    border-color: rgba(20, 184, 166, 0.5);
+    transform: translateY(-1px);
+  }
+`;
+
+// Card title - bold and attention-grabbing
+export const CardTitle = styled.h2`
+  font-size: 1.1rem;
   font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 16px;
+  line-height: 1.3;
+  margin-bottom: 4px;
   color: ${colors.text};
   word-break: break-word;
   white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
 
   @media (max-width: 768px) {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
 `;
 
-export const BlogExcerpt = styled.div`
+// Card excerpt - short preview (2-3 lines)
+export const CardExcerpt = styled.div`
   color: ${colors.textSecondary};
-  line-height: 1.7;
-  margin-bottom: 24px;
-  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
   font-weight: 400;
-  height: 100px; /* Fixed height for 4 lines of text */
-  overflow-y: auto;
-  overflow-x: hidden;
-  flex-grow: 1;
-  padding-right: 16px;
-  position: relative;
-
-  /* Hide scrollbar by default */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-
-  &::-webkit-scrollbar {
-    width: 12px;
-    background: transparent !important;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent !important;
-    border-radius: 20px;
-    margin: 6px 0;
-    border: none;
-    box-shadow: none;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-      180deg,
-      ${colors.primary} 0%,
-      ${colors.primaryLight} 30%,
-      ${colors.primary} 70%,
-      ${colors.primaryDark} 100%
-    );
-    border-radius: 20px;
-    border: 2px solid rgba(20, 184, 166, 0.3);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 4px;
-      height: 12px;
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.9) 0%,
-        rgba(255, 255, 255, 0.4) 100%
-      );
-      border-radius: 2px;
-      box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 4px;
-      height: 12px;
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.4) 0%,
-        rgba(255, 255, 255, 0.9) 100%
-      );
-      border-radius: 2px;
-      box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
-    }
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(
-      180deg,
-      ${colors.primaryLight} 0%,
-      ${colors.primary} 30%,
-      ${colors.primaryLight} 70%,
-      ${colors.primary} 100%
-    );
-    box-shadow: 0 0 30px rgba(20, 184, 166, 0.6), 0 0 15px rgba(64, 224, 208, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-    transform: scaleX(1.3) scaleY(1.1);
-    border-color: rgba(20, 184, 166, 0.5);
-  }
-
-  &::-webkit-scrollbar-thumb:active {
-    background: linear-gradient(
-      180deg,
-      ${colors.primaryDark} 0%,
-      ${colors.primary} 30%,
-      ${colors.primaryLight} 70%,
-      ${colors.primary} 100%
-    );
-    box-shadow: 0 0 40px rgba(20, 184, 166, 0.8), inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    transform: scaleX(1.4) scaleY(1.2);
-  }
-
-  /* Show scrollbar on hover */
-  &:hover {
-    // scrollbar-width: thin;
-    -ms-overflow-style: auto;
-
-    &::-webkit-scrollbar-track {
-      background: transparent !important;
-      border: none;
-      box-shadow: none;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: linear-gradient(
-        180deg,
-        ${colors.primary} 0%,
-        ${colors.primaryLight} 30%,
-        ${colors.primary} 70%,
-        ${colors.primaryDark} 100%
-      );
-      box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-    }
-  }
-
-  /* Ensure text wraps properly */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   word-wrap: break-word;
   white-space: normal;
+  min-height: 2.8em; /* Ensure minimum height for 2 lines */
+  max-height: 2.8em; /* Limit to 2 lines */
 `;
 
-export const BlogMeta = styled.div`
+// Card content wrapper
+export const CardContentWrapper = styled.div`
   display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    gap: 12px;
-  }
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
 `;
 
-export const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: ${colors.textMuted};
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: color 0.3s ease;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    color: ${colors.primary};
-    transition: transform 0.3s ease;
-  }
-
-  ${BlogCard}:hover & {
-    color: ${colors.textSecondary};
-
-    svg {
-      transform: scale(1.1);
-    }
-  }
-`;
-
-export const BlogActions = styled.div`
+// Card actions container
+export const CardActions = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: auto;
-  padding: 12px 0;
-  border-top: 1px solid ${colors.border};
+  padding-top: 15px;
 `;
 
+// Enhanced Read More Button
 export const ReadMoreButton = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   color: ${colors.primary};
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   transition: all 0.3s ease;
   position: relative;
 
@@ -566,20 +480,21 @@ export const ReadMoreButton = styled.div`
     }
 
     svg {
-      transform: translateX(6px);
+      transform: translateX(3px);
       color: ${colors.primaryLight};
     }
   }
 `;
 
+// Enhanced Share Button
 export const ShareButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   border: 1px solid ${colors.border};
-  border-radius: 8px;
+  border-radius: 6px;
   background: transparent;
   color: ${colors.textMuted};
   cursor: pointer;
@@ -590,8 +505,8 @@ export const ShareButton = styled.button`
     border-color: ${colors.primary};
     color: ${colors.primary};
     background: rgba(20, 184, 166, 0.1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.2);
   }
 
   &:active {
@@ -604,6 +519,32 @@ export const ShareButton = styled.button`
 
   &:hover svg {
     transform: scale(1.1);
+  }
+`;
+
+// Enhanced Meta Item
+export const MetaItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: ${colors.textMuted};
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+
+  svg {
+    width: 11px;
+    height: 11px;
+    color: ${colors.primary};
+    transition: transform 0.3s ease;
+  }
+
+  ${BlogCard}:hover & {
+    color: ${colors.textSecondary};
+
+    svg {
+      transform: scale(1.1);
+    }
   }
 `;
 
