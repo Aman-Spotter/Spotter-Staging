@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, useLocation, Redirect } from 'react-router-dom';
 import ReactGA from 'react-ga4';
+import styled from 'styled-components';
 
 import { Footer, Navbar } from 'components';
 import FooterLandingPage from 'components/FooterLandingPage';
@@ -36,6 +37,17 @@ import WatchDemo from './WatchDemo';
 import CCPA from './CCPA';
 import Blog from './Blog';
 import BlogPost from './BlogPost';
+
+// Styled component for testing
+const StyledTestDiv = styled.div`
+  background-color: #3b82f6;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 500px;
+  font-weight: bold;
+`;
 
 // Debug imports
 console.log('MVRPricing component imported:', !!MVRPricing);
@@ -172,6 +184,15 @@ const Page = () => {
                   </tbody>
                 </table>
               </div>
+            </div>
+          </Route>
+          <Route path="/sentinel/styled-test" exact>
+            <div style={{ padding: '20px', textAlign: 'center', minHeight: '100vh' }}>
+              <h1>Styled Components Test</h1>
+              <p>Testing if styled-components work in production</p>
+              <StyledTestDiv>
+                This should have a blue background and white text if styled-components work
+              </StyledTestDiv>
             </div>
           </Route>
           <Route path="/test-mvr" exact>
