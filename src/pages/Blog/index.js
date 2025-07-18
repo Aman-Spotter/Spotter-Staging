@@ -129,56 +129,58 @@ const Blog = () => {
 
       {/* Blog Grid - Full Width */}
       <S.BlogGrid>
-        {blogData.map((blog) => (
-          <S.BlogCard key={blog.id} onClick={() => handleBlogClick(blog.id)}>
-            <S.CardContent>
-              {/* Left-aligned image (smaller, supporting content) */}
-              <S.CardImageContainer>
-                <S.CardImage src={blog.image} alt={blog.title} loading="lazy" />
-              </S.CardImageContainer>
+        {blogData
+          .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate))
+          .map((blog) => (
+            <S.BlogCard key={blog.id} onClick={() => handleBlogClick(blog.id)}>
+              <S.CardContent>
+                {/* Left-aligned image (smaller, supporting content) */}
+                <S.CardImageContainer>
+                  <S.CardImage src={blog.image} alt={blog.title} loading="lazy" />
+                </S.CardImageContainer>
 
-              {/* Right-aligned content block */}
-              <S.CardTextContent>
-                <S.CardContentWrapper>
-                  {/* Date at the top */}
-                  <S.CardMeta>
-                    <S.MetaItem>
-                      <Calendar size={11} />
-                      {formatDate(blog.publishDate)}
-                    </S.MetaItem>
-                    <S.MetaItem>
-                      <Clock size={11} />
-                      {blog.readTime}
-                    </S.MetaItem>
-                  </S.CardMeta>
+                {/* Right-aligned content block */}
+                <S.CardTextContent>
+                  <S.CardContentWrapper>
+                    {/* Date at the top */}
+                    <S.CardMeta>
+                      <S.MetaItem>
+                        <Calendar size={11} />
+                        {formatDate(blog.publishDate)}
+                      </S.MetaItem>
+                      <S.MetaItem>
+                        <Clock size={11} />
+                        {blog.readTime}
+                      </S.MetaItem>
+                    </S.CardMeta>
 
-                  {/* Bold, attention-grabbing article title */}
-                  <S.CardTitle>{blog.title}</S.CardTitle>
+                    {/* Bold, attention-grabbing article title */}
+                    <S.CardTitle>{blog.title}</S.CardTitle>
 
-                  {/* Short preview text (description snippet) */}
-                  <S.CardExcerpt>{blog.excerpt}</S.CardExcerpt>
+                    {/* Short preview text (description snippet) */}
+                    <S.CardExcerpt>{blog.excerpt}</S.CardExcerpt>
 
-                  {/* Category tags */}
-                  <S.CardTags>
-                    {blog.tags &&
-                      blog.tags.slice(0, 2).map((tag) => <S.Tag key={tag}>{tag}</S.Tag>)}
-                  </S.CardTags>
-                </S.CardContentWrapper>
+                    {/* Category tags */}
+                    <S.CardTags>
+                      {blog.tags &&
+                        blog.tags.slice(0, 2).map((tag) => <S.Tag key={tag}>{tag}</S.Tag>)}
+                    </S.CardTags>
+                  </S.CardContentWrapper>
 
-                {/* Clear CTA button */}
-                <S.CardActions>
-                  <S.ReadMoreButton>
-                    Read More
-                    <ArrowRight size={12} />
-                  </S.ReadMoreButton>
-                  <S.ShareButton onClick={(e) => handleShare(e, blog)}>
-                    <Share2 size={12} />
-                  </S.ShareButton>
-                </S.CardActions>
-              </S.CardTextContent>
-            </S.CardContent>
-          </S.BlogCard>
-        ))}
+                  {/* Clear CTA button */}
+                  <S.CardActions>
+                    <S.ReadMoreButton>
+                      Read More
+                      <ArrowRight size={12} />
+                    </S.ReadMoreButton>
+                    <S.ShareButton onClick={(e) => handleShare(e, blog)}>
+                      <Share2 size={12} />
+                    </S.ShareButton>
+                  </S.CardActions>
+                </S.CardTextContent>
+              </S.CardContent>
+            </S.BlogCard>
+          ))}
       </S.BlogGrid>
 
       {/* Newsletter Section */}
