@@ -120,16 +120,17 @@ const Page = () => {
             <Footer />
           </Route>
           <Redirect from="/market" to="/lens" />
+          <Route path="/sentinel/mvr-price" exact>
+            <Navbar showAuthUrls isSentinelPage />
+            <MVRPricing />
+            <Footer />
+          </Route>
           <Route path="/sentinel" exact>
             <Navbar showAuthUrls isSentinelPage />
             <Sentinel />
             <Footer />
           </Route>
-          <Route exact path="/sentinel/mvr-price">
-            <Navbar showAuthUrls isSentinelPage />
-            <MVRPricing />
-            <Footer />
-          </Route>
+
           <Route exact path="/tms" component={TMS}>
             <Navbar absolute showAuthUrls />
             <TMS />
