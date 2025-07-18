@@ -377,9 +377,8 @@ export const ControlsSection = styled.div`
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
-  position: sticky;
-  top: 20px;
-  z-index: 20;
+  position: relative;
+  z-index: 5;
   width: 100%;
   max-width: 900px;
 
@@ -406,7 +405,6 @@ export const ControlsSection = styled.div`
   @media (max-width: 768px) {
     padding: 1rem;
     border-radius: 12px;
-    top: 10px;
   }
 `;
 
