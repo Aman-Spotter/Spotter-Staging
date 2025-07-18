@@ -18,17 +18,21 @@ const Footer = () => (
         <S.Social>
           <LogoLabel color="white" className="logo" />
           <S.IconsWrapper>
-            <a href="https://www.facebook.com/spotterai" target="_blank" rel="noreferrer">
+            <a
+              href="https://www.facebook.com/people/Spotter-Sentinel/61577984011373/"
+              target="_blank"
+              rel="noreferrer"
+            >
               <S.Icon src={Facebook} alt="facebook" />
             </a>
             <a
-              href="https://www.linkedin.com/company/spotter-labs"
+              href="https://www.linkedin.com/company/spotter-sentinel/about/?viewAsMember=true"
               target="_blank"
               rel="noreferrer"
             >
               <S.Icon src={Linkedin} alt="linkedin" />
             </a>
-            <a href="https://www.instagram.com/spotter.ai/" target="_blank" rel="noreferrer">
+            <a href="https://www.instagram.com/spottersentinel/" target="_blank" rel="noreferrer">
               <S.Icon src={Instagram} alt="instagram" />
             </a>
           </S.IconsWrapper>
