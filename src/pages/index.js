@@ -130,10 +130,49 @@ const Page = () => {
             <Footer />
           </Route>
           <Redirect from="/market" to="/lens" />
-          <Route path="/sentinel/mvr-price" exact>
+          <Route path="/sentinel/mvrprice" exact>
             <Navbar showAuthUrls isSentinelPage />
             <MVRPricing />
             <Footer />
+          </Route>
+          <Route path="/sentinel/mvr-simple" exact>
+            <div
+              style={{
+                padding: '20px',
+                textAlign: 'center',
+                minHeight: '100vh',
+                backgroundColor: '#f0f0f0',
+              }}
+            >
+              <h1>MVR Pricing - Simple Test</h1>
+              <p>If you can see this, the route is working.</p>
+              <p>Pathname: {location.pathname}</p>
+              <div style={{ marginTop: '20px' }}>
+                <h2>Simple MVR Data:</h2>
+                <table style={{ margin: '0 auto', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ backgroundColor: '#e3f2fd' }}>
+                      <th style={{ padding: '8px', border: '1px solid #ddd' }}>State</th>
+                      <th style={{ padding: '8px', border: '1px solid #ddd' }}>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>CA</td>
+                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>$4.13</td>
+                    </tr>
+                    <tr>
+                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>TX</td>
+                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>$8.63</td>
+                    </tr>
+                    <tr>
+                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>NY</td>
+                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>$9.13</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </Route>
           <Route path="/test-mvr" exact>
             <div style={{ padding: '20px', textAlign: 'center' }}>
