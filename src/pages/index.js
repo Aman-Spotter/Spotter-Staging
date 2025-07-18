@@ -47,8 +47,11 @@ const Page = () => {
   const location = useLocation();
 
   // Debug routing
+  console.log('=== ROUTING DEBUG ===');
   console.log('Current pathname:', location.pathname);
   console.log('Is extension host:', isExtensionHost);
+  console.log('Environment:', process.env.NODE_ENV);
+  console.log('App loaded at:', new Date().toISOString());
 
   useEffect(() => {
     // Only send pageview if Google Analytics is initialized
@@ -131,6 +134,13 @@ const Page = () => {
             <Navbar showAuthUrls isSentinelPage />
             <MVRPricing />
             <Footer />
+          </Route>
+          <Route path="/test-mvr" exact>
+            <div style={{ padding: '20px', textAlign: 'center' }}>
+              <h1>Test Route Working!</h1>
+              <p>If you can see this, routing is working.</p>
+              <p>Pathname: {location.pathname}</p>
+            </div>
           </Route>
           <Route path="/sentinel" exact>
             <Navbar showAuthUrls isSentinelPage />
