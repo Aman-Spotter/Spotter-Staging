@@ -130,6 +130,6 @@
   "engines": {
     "yarn": "1.x",
     "npm": "6.x",
-    "node": "18.x"
+    "node": "22.x"
   }
 }
