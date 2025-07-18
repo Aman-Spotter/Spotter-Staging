@@ -241,7 +241,7 @@ export const SearchResults = styled.div`
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
-// Enhanced Blog List - Updated to Single Column Layout
+// Blog Grid - Full Width Layout
 export const BlogGrid = styled.div`
   max-width: 1000px;
   margin: 0 auto;
@@ -250,17 +250,12 @@ export const BlogGrid = styled.div`
   gap: 24px;
   position: relative;
   z-index: 2;
-  padding: 0 40px 80px 40px;
+  padding: 0 40px 60px 40px;
   box-sizing: border-box;
-  justify-items: center;
-  align-items: center;
 
   @media (max-width: 768px) {
     gap: 20px;
-    padding: 0 20px 60px 20px;
-    max-width: 100%;
-    justify-items: center;
-    align-items: center;
+    padding: 0 20px 40px 20px;
   }
 `;
 
@@ -606,6 +601,224 @@ export const ResponsiveTable = styled.div`
       font-size: 13px;
     }
   }
+`;
+
+export const NewsletterSection = styled.section`
+  margin: 3rem 0;
+  padding: 0 1rem;
+
+  @media (max-width: 768px) {
+    margin: 2rem 0;
+    padding: 0 0.5rem;
+  }
+`;
+
+export const NewsletterContainer = styled.div`
+  max-width: 720px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  padding: 3rem;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 2.5rem 1.5rem;
+    border-radius: 6px;
+  }
+`;
+
+export const NewsletterContent = styled.div`
+  position: relative;
+  z-index: 1;
+`;
+
+export const NewsletterHeader = styled.div`
+  margin-bottom: 1.5rem;
+  text-align: center;
+`;
+
+export const NewsletterTitle = styled.h2`
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.3;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+`;
+
+export const NewsletterSubtitle = styled.p`
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 400px;
+  margin: 0 auto;
+  font-weight: 300;
+`;
+
+export const NewsletterForm = styled.form`
+  position: relative;
+  margin-bottom: 0.5rem;
+  text-align: center;
+`;
+
+export const FormGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+`;
+
+export const EmailInput = styled.input`
+  width: 320px;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    width: 300px;
+  }
+`;
+
+export const SubscribeButton = styled.button`
+  padding: 1rem 1.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    width: 160px;
+    justify-content: center;
+  }
+`;
+
+export const ArrowIcon = styled.span`
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+
+  ${SubscribeButton}:hover & {
+    transform: translateX(1px);
+  }
+`;
+
+export const LoadingSpinner = styled.div`
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+export const SuccessMessage = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(66, 186, 150, 0.1);
+  border: 1px solid rgba(66, 186, 150, 0.2);
+  border-radius: 6px;
+  color: #42ba96;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  font-weight: 300;
+`;
+
+export const ErrorMessage = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(248, 73, 96, 0.1);
+  border: 1px solid rgba(248, 73, 96, 0.2);
+  border-radius: 6px;
+  color: #f84960;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  font-weight: 300;
+`;
+
+export const CheckIcon = styled.span`
+  display: flex;
+  align-items: center;
+  color: #42ba96;
+`;
+
+export const ErrorIcon = styled.span`
+  display: flex;
+  align-items: center;
+  color: #f84960;
+`;
+
+export const PrivacyNote = styled.p`
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  line-height: 1.4;
+  text-align: center;
+  font-weight: 400;
 `;
 
 export const GlobalStyle = createGlobalStyle`
