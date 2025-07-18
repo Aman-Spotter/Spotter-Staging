@@ -1,8 +1,6 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, Filter, Download, ChevronDown, ChevronUp } from 'lucide-react';
-import * as S from './styles';
+import React, { useState, useMemo } from 'react';
 
-// MVR pricing data
+// Simple MVR pricing data
 const mvrPricingData = [
   { state: 'Alabama', price: 8.63 },
   { state: 'Alaska', price: 9.13 },
@@ -56,274 +54,323 @@ const mvrPricingData = [
   { state: 'Wyoming', price: 8.63 },
 ];
 
-console.log('MVRPricing component loading...');
-
-// Test if styled-components are working
-console.log('Styled components imported:', Object.keys(S));
-
 const MVRPricing = () => {
-  console.log('MVRPricing component rendering...');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('asc');
 
-  try {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [priceFilter, setPriceFilter] = useState('all');
-    const [sortOrder, setSortOrder] = useState('asc');
-    const [showExportMenu, setShowExportMenu] = useState(false);
-    const exportMenuRef = useRef(null);
+  // Filter and sort data
+  const filteredAndSortedData = useMemo(() => {
+    const filtered = mvrPricingData.filter((item) =>
+      item.state.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-    // Set page title
-    useEffect(() => {
-      document.title = 'MVR Pricing by State | Spotter Sentinel';
-    }, []);
-
-    // Handle click outside export menu
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (exportMenuRef.current && !exportMenuRef.current.contains(event.target)) {
-          setShowExportMenu(false);
-        }
-      };
-
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    // Filter and sort data
-    const filteredAndSortedData = useMemo(() => {
-      let filtered = mvrPricingData.filter((item) =>
-        item.state.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
-      // Apply price filter
-      if (priceFilter !== 'all') {
-        filtered = filtered.filter((item) => {
-          switch (priceFilter) {
-            case 'under10':
-              return item.price < 10;
-            case '10to15':
-              return item.price >= 10 && item.price <= 15;
-            case 'over20':
-              return item.price > 20;
-            default:
-              return true;
-          }
-        });
+    // Sort data
+    return filtered.sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a.price - b.price;
       }
+      return b.price - a.price;
+    });
+  }, [searchTerm, sortOrder]);
 
-      // Sort data
-      filtered.sort((a, b) => {
-        if (sortOrder === 'asc') {
-          return a.price - b.price;
-        }
-        return b.price - a.price;
-      });
+  // Find min and max prices for highlighting
+  const minPrice = Math.min(...mvrPricingData.map((item) => item.price));
+  const maxPrice = Math.max(...mvrPricingData.map((item) => item.price));
 
-      return filtered;
-    }, [searchTerm, priceFilter, sortOrder]);
+  // Get price badge type
+  const getPriceBadgeType = (price) => {
+    if (price === minPrice) return 'lowest';
+    if (price === maxPrice) return 'highest';
+    return null;
+  };
 
-    // Find min and max prices for highlighting
-    const minPrice = Math.min(...mvrPricingData.map((item) => item.price));
-    const maxPrice = Math.max(...mvrPricingData.map((item) => item.price));
+  // Export to CSV
+  const exportToCSV = () => {
+    const csvContent = [
+      'State,MVR Price',
+      ...filteredAndSortedData.map((item) => `${item.state},$${item.price.toFixed(2)}`),
+    ].join('\n');
 
-    // Get price badge type
-    const getPriceBadgeType = (price) => {
-      if (price === minPrice) return 'lowest';
-      if (price === maxPrice) return 'highest';
-      return null;
-    };
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mvr-pricing.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
-    // Export functions
-    const exportToCSV = () => {
-      const csvContent = [
-        'State,MVR Price',
-        ...filteredAndSortedData.map((item) => `${item.state},$${item.price.toFixed(2)}`),
-      ].join('\n');
-
-      const blob = new Blob([csvContent], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'mvr-pricing.csv';
-      a.click();
-      URL.revokeObjectURL(url);
-      setShowExportMenu(false);
-    };
-
-    const exportToPDF = () => {
-      window.print();
-      setShowExportMenu(false);
-    };
-
-    console.log('MVRPricing component rendering JSX...');
-
-    // Check if styled components are available
-    if (!S.PageContainer) {
-      console.error('Styled components not loaded properly');
-      return (
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        padding: '20px',
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: '16px',
+          padding: '32px',
+          marginBottom: '24px',
+          textAlign: 'center',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+        }}
+      >
         <div
           style={{
-            padding: '20px',
-            textAlign: 'center',
-            backgroundColor: '#f0f0f0',
-            minHeight: '100vh',
+            width: '40px',
+            height: '40px',
+            background: '#0F172A',
+            borderRadius: '8px',
+            margin: '0 auto 16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          <h1 style={{ color: '#333' }}>MVR Pricing by State</h1>
-          <p style={{ color: '#666' }}>Spotter Sentinel MVR price by state</p>
-          <div style={{ marginTop: '20px' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', backgroundColor: 'white' }}>
-              <thead>
-                <tr style={{ backgroundColor: '#e3f2fd' }}>
-                  <th style={{ padding: '12px', border: '1px solid #ddd', textAlign: 'left' }}>
-                    State
-                  </th>
-                  <th style={{ padding: '12px', border: '1px solid #ddd', textAlign: 'left' }}>
-                    MVR Price
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {mvrPricingData.slice(0, 10).map((item, index) => (
-                  <tr
-                    key={item.state}
-                    style={{ backgroundColor: index % 2 === 0 ? '#f9f9f9' : 'white' }}
-                  >
-                    <td style={{ padding: '12px', border: '1px solid #ddd' }}>{item.state}</td>
-                    <td style={{ padding: '12px', border: '1px solid #ddd' }}>
-                      ${item.price.toFixed(2)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p style={{ marginTop: '20px', color: '#666' }}>
-            Spotter Sentinel LLC | Info@spottersentinel.com | +1 (269) 682-2181
-          </p>
+          <div
+            style={{
+              width: '24px',
+              height: '24px',
+              background: '#3B82F6',
+              borderRadius: '50%',
+              border: '2px solid #60A5FA',
+            }}
+          />
         </div>
-      );
-    }
-
-    return (
-      <S.PageContainer>
-        <S.HeaderSection>
-          <S.LogoContainer>
-            <SentinelLogo />
-          </S.LogoContainer>
-          <S.Title>MVR Pricing by State</S.Title>
-          <S.Subtitle>Spotter Sentinel MVR price by state</S.Subtitle>
-        </S.HeaderSection>
-
-        <S.ContentSection>
-          <S.ControlsSection>
-            <S.SearchContainer>
-              <S.SearchIcon>
-                <Search size={20} />
-              </S.SearchIcon>
-              <S.SearchInput
-                type="text"
-                placeholder="Search states..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </S.SearchContainer>
-
-            <S.FilterContainer>
-              <S.FilterIcon>
-                <Filter size={20} />
-              </S.FilterIcon>
-              <S.FilterSelect value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
-                <option value="all">All Prices</option>
-                <option value="under10">Under $10</option>
-                <option value="10to15">$10 - $15</option>
-                <option value="over20">Over $20</option>
-              </S.FilterSelect>
-            </S.FilterContainer>
-
-            <S.SortContainer>
-              <S.SortButton onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
-                Price {sortOrder === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-              </S.SortButton>
-            </S.SortContainer>
-
-            <S.ExportContainer ref={exportMenuRef}>
-              <S.ExportButton onClick={() => setShowExportMenu(!showExportMenu)}>
-                <Download size={16} />
-                Export
-              </S.ExportButton>
-              {showExportMenu && (
-                <S.ExportMenu>
-                  <S.ExportMenuItem onClick={exportToCSV}>Export to CSV</S.ExportMenuItem>
-                  <S.ExportMenuItem onClick={exportToPDF}>Export to PDF</S.ExportMenuItem>
-                </S.ExportMenu>
-              )}
-            </S.ExportContainer>
-          </S.ControlsSection>
-
-          <S.TableSection>
-            <S.TableContainer>
-              <S.Table>
-                <S.TableHeader>
-                  <S.TableHeaderCell>State</S.TableHeaderCell>
-                  <S.TableHeaderCell>MVR Price</S.TableHeaderCell>
-                </S.TableHeader>
-                <S.TableBody>
-                  {filteredAndSortedData.map((item, index) => {
-                    const badgeType = getPriceBadgeType(item.price);
-                    return (
-                      <S.TableRow key={item.state} $isEven={index % 2 === 0}>
-                        <S.TableCell>{item.state}</S.TableCell>
-                        <S.TableCell>
-                          ${item.price.toFixed(2)}
-                          {badgeType && (
-                            <S.PriceBadge $type={badgeType}>
-                              {badgeType === 'lowest' ? 'Lowest' : 'Highest'}
-                            </S.PriceBadge>
-                          )}
-                        </S.TableCell>
-                      </S.TableRow>
-                    );
-                  })}
-                </S.TableBody>
-              </S.Table>
-            </S.TableContainer>
-          </S.TableSection>
-        </S.ContentSection>
-
-        <S.FooterSection>
-          <S.FooterText>
-            Spotter Sentinel LLC | Info@spottersentinel.com | +1 (269) 682-2181
-          </S.FooterText>
-        </S.FooterSection>
-      </S.PageContainer>
-    );
-  } catch (error) {
-    console.error('Error in MVRPricing component:', error);
-    return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
-        <h1>Error Loading MVR Pricing Page</h1>
-        <p>Something went wrong. Please try refreshing the page.</p>
-        <p>Error: {error.message}</p>
+        <h1
+          style={{
+            fontSize: '2.5rem',
+            fontWeight: '700',
+            color: '#04283c',
+            margin: '0 0 8px 0',
+          }}
+        >
+          MVR Pricing by State
+        </h1>
+        <p
+          style={{
+            fontSize: '1.1rem',
+            color: '#6b7280',
+            margin: '0',
+          }}
+        >
+          Spotter Sentinel MVR price by state
+        </p>
       </div>
-    );
-  }
-};
 
-// Sentinel Logo Component
-const SentinelLogo = () => (
-  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="40" height="40" rx="8" fill="#0F172A" />
-    <path
-      d="M20 8C13.3726 8 8 13.3726 8 20C8 26.6274 13.3726 32 20 32C26.6274 32 32 26.6274 32 20C32 13.3726 26.6274 8 20 8ZM20 30C14.4772 30 10 25.5228 10 20C10 14.4772 14.4772 10 20 10C20 10 20 10 20 10C25.5228 10 30 14.4772 30 20C30 25.5228 25.5228 30 20 30Z"
-      fill="#3B82F6"
-    />
-    <path
-      d="M20 12C15.5817 12 12 15.5817 12 20C12 24.4183 15.5817 28 20 28C24.4183 28 28 24.4183 28 20C28 15.5817 24.4183 12 20 12ZM20 26C16.6863 26 14 23.3137 14 20C14 16.6863 16.6863 14 20 14C20 14 20 14 20 14C23.3137 14 26 16.6863 26 20C26 23.3137 23.3137 26 20 26Z"
-      fill="#60A5FA"
-    />
-    <circle cx="20" cy="20" r="4" fill="#93C5FD" />
-    <path d="M18 18H22V22H18V18Z" fill="#DBEAFE" />
-  </svg>
-);
+      {/* Controls */}
+      <div
+        style={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: '16px',
+          padding: '24px',
+          marginBottom: '24px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          gap: '16px',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+        }}
+      >
+        {/* Search */}
+        <div
+          style={{
+            flex: '1',
+            minWidth: '200px',
+            position: 'relative',
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Search states..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '12px 16px',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              fontSize: '14px',
+              outline: 'none',
+            }}
+          />
+        </div>
+
+        {/* Sort */}
+        <button
+          type="button"
+          onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+          style={{
+            padding: '12px 16px',
+            background: '#0f8181',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          Price {sortOrder === 'asc' ? '↑' : '↓'}
+        </button>
+
+        {/* Export */}
+        <button
+          type="button"
+          onClick={exportToCSV}
+          style={{
+            padding: '12px 16px',
+            background: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          📥 Export CSV
+        </button>
+      </div>
+
+      {/* Table */}
+      <div
+        style={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: '16px',
+          padding: '24px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          overflow: 'hidden',
+        }}
+      >
+        <table
+          style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            fontSize: '14px',
+          }}
+        >
+          <thead>
+            <tr
+              style={{
+                background: '#e3f2fd',
+                borderBottom: '2px solid #e5e7eb',
+              }}
+            >
+              <th
+                style={{
+                  padding: '16px',
+                  textAlign: 'left',
+                  fontWeight: '600',
+                  color: '#04283c',
+                }}
+              >
+                State
+              </th>
+              <th
+                style={{
+                  padding: '16px',
+                  textAlign: 'left',
+                  fontWeight: '600',
+                  color: '#04283c',
+                }}
+              >
+                MVR Price
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredAndSortedData.map((item, index) => {
+              const badgeType = getPriceBadgeType(item.price);
+              return (
+                <tr
+                  key={item.state}
+                  style={{
+                    background: index % 2 === 0 ? '#f8fafc' : 'white',
+                    borderBottom: '1px solid #f1f5f9',
+                  }}
+                >
+                  <td
+                    style={{
+                      padding: '16px',
+                      fontWeight: '500',
+                      color: '#374151',
+                    }}
+                  >
+                    {item.state}
+                  </td>
+                  <td
+                    style={{
+                      padding: '16px',
+                      color: '#374151',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    ${item.price.toFixed(2)}
+                    {badgeType && (
+                      <span
+                        style={{
+                          padding: '4px 8px',
+                          borderRadius: '12px',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          textTransform: 'uppercase',
+                          background: badgeType === 'lowest' ? '#dcfce7' : '#fef3c7',
+                          color: badgeType === 'lowest' ? '#166534' : '#92400e',
+                          border: `1px solid ${
+                            badgeType === 'lowest'
+                              ? 'rgba(34, 197, 94, 0.2)'
+                              : 'rgba(245, 158, 11, 0.2)'
+                          }`,
+                        }}
+                      >
+                        {badgeType === 'lowest' ? 'Lowest' : 'Highest'}
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Footer */}
+      <div
+        style={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: '16px',
+          padding: '24px',
+          marginTop: '24px',
+          textAlign: 'center',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        <p
+          style={{
+            fontSize: '14px',
+            color: '#6b7280',
+            margin: '0',
+          }}
+        >
+          Spotter Sentinel LLC | Info@spottersentinel.com | +1 (269) 682-2181
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export default MVRPricing;

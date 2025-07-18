@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, useLocation, Redirect } from 'react-router-dom';
 import ReactGA from 'react-ga4';
-import styled from 'styled-components';
 
 import { Footer, Navbar } from 'components';
 import FooterLandingPage from 'components/FooterLandingPage';
@@ -37,17 +36,6 @@ import WatchDemo from './WatchDemo';
 import CCPA from './CCPA';
 import Blog from './Blog';
 import BlogPost from './BlogPost';
-
-// Styled component for testing
-const StyledTestDiv = styled.div`
-  background-color: #3b82f6;
-  color: white;
-  padding: 20px;
-  border-radius: 8px;
-  margin: 20px auto;
-  max-width: 500px;
-  font-weight: bold;
-`;
 
 // Debug imports
 console.log('MVRPricing component imported:', !!MVRPricing);
@@ -147,60 +135,10 @@ const Page = () => {
             <MVRPricing />
             <Footer />
           </Route>
-          <Route path="/sentinel/mvr-simple" exact>
-            <div
-              style={{
-                padding: '20px',
-                textAlign: 'center',
-                minHeight: '100vh',
-                backgroundColor: '#f0f0f0',
-              }}
-            >
-              <h1>MVR Pricing - Simple Test</h1>
-              <p>If you can see this, the route is working.</p>
-              <p>Pathname: {location.pathname}</p>
-              <div style={{ marginTop: '20px' }}>
-                <h2>Simple MVR Data:</h2>
-                <table style={{ margin: '0 auto', borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr style={{ backgroundColor: '#e3f2fd' }}>
-                      <th style={{ padding: '8px', border: '1px solid #ddd' }}>State</th>
-                      <th style={{ padding: '8px', border: '1px solid #ddd' }}>Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>CA</td>
-                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>$4.13</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>TX</td>
-                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>$8.63</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>NY</td>
-                      <td style={{ padding: '8px', border: '1px solid #ddd' }}>$9.13</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </Route>
-          <Route path="/sentinel/styled-test" exact>
-            <div style={{ padding: '20px', textAlign: 'center', minHeight: '100vh' }}>
-              <h1>Styled Components Test</h1>
-              <p>Testing if styled-components work in production</p>
-              <StyledTestDiv>
-                This should have a blue background and white text if styled-components work
-              </StyledTestDiv>
-            </div>
-          </Route>
-          <Route path="/test-mvr" exact>
-            <div style={{ padding: '20px', textAlign: 'center' }}>
-              <h1>Test Route Working!</h1>
-              <p>If you can see this, routing is working.</p>
-              <p>Pathname: {location.pathname}</p>
-            </div>
+          <Route path="/sentinel/mvr-price" exact>
+            <Navbar showAuthUrls isSentinelPage />
+            <MVRPricing />
+            <Footer />
           </Route>
           <Route path="/sentinel" exact>
             <Navbar showAuthUrls isSentinelPage />
