@@ -37,11 +37,18 @@ import CCPA from './CCPA';
 import Blog from './Blog';
 import BlogPost from './BlogPost';
 
+// Debug imports
+console.log('MVRPricing component imported:', !!MVRPricing);
+
 const Page = () => {
   const isExtensionHost =
     window.location.hostname.includes('extension') || process.env.REACT_APP_EXTENSION_MODE;
 
   const location = useLocation();
+
+  // Debug routing
+  console.log('Current pathname:', location.pathname);
+  console.log('Is extension host:', isExtensionHost);
 
   useEffect(() => {
     // Only send pageview if Google Analytics is initialized
