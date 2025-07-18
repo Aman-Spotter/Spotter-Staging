@@ -18,7 +18,6 @@ import ForgotPassword from './ForgotPassword';
 import RequestQuote from './RequestQuote';
 import Payment from './Sentinel/Payment';
 import PaymentSuccess from './Sentinel/PaymentSuccess';
-import MVRPricing from './Sentinel/MVRPricing';
 
 import Market from './Market';
 import ExtensionLandingPage from './ExtensionLandingPage';
@@ -123,11 +122,6 @@ const Page = () => {
           <Route path="/sentinel" exact>
             <Navbar showAuthUrls isSentinelPage />
             <Sentinel />
-            <Footer />
-          </Route>
-          <Route path="/sentinel/mvr-price" exact>
-            <Navbar showAuthUrls isSentinelPage />
-            <MVRPricing />
             <Footer />
           </Route>
           <Route exact path="/tms" component={TMS}>
