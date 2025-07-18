@@ -125,7 +125,7 @@ const Page = () => {
             <Sentinel />
             <Footer />
           </Route>
-          <Route path="/sentinel/mvr-price">
+          <Route path="/mvr-price">
             <Navbar showAuthUrls isSentinelPage />
             <MVRPricing />
             <Footer />
